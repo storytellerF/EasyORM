@@ -8,7 +8,7 @@ public class WhereQuery extends AbstractExpressionList{
     }
     @Override
     public String parse(boolean safe) throws Exception {
-        if (expression==null) {
+        if (headerPointer ==null) {
             return "";
         }
         return "where "+ super.parse(safe);

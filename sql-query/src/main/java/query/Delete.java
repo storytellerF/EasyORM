@@ -33,7 +33,7 @@ public class Delete<T> extends Changer<T> {
 
     @Override
     public ExpressionQuery getExpressionQuery() {
-        return whereQuery.getExpression();
+        return whereQuery.getHeaderPointer();
     }
 
     public Delete<T> and(ExpressionQuery expressionQuery) {

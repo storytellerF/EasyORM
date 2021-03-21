@@ -3,21 +3,20 @@ package query.query;
 import java.util.HashMap;
 
 import query.Query;
-import query.query.ExpressionQuery;
 
 public abstract class AbstractExpressionList implements Query {
-	protected ExpressionQuery expression;
+	protected ExpressionQuery headerPointer;
 	protected ExpressionQuery pointer;
 
-	public ExpressionQuery getExpression() {
-		return expression;
+	public ExpressionQuery getHeaderPointer() {
+		return headerPointer;
 	}
 
 	public void next(ExpressionQuery expressionQuery, HashMap<String, String> tableMap) {
 		if (pointer == null) {
-			this.expression = expressionQuery;
+			this.headerPointer = expressionQuery;
 			expressionQuery.setTableMap(tableMap);
-			pointer = this.expression;
+			pointer = this.headerPointer;
 		} else {
 			pointer.next = expressionQuery;
 			expressionQuery.setTableMap(tableMap);
@@ -27,8 +26,8 @@ public abstract class AbstractExpressionList implements Query {
 	}
 
 	public String parse(boolean safe) throws Exception {
-		if (expression != null) {
-			return expression.parse(safe);
+		if (headerPointer != null) {
+			return headerPointer.parse(safe);
 		}
 		return "";
 	}

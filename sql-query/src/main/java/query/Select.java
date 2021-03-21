@@ -109,7 +109,7 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
 
     @Override
     public ExpressionQuery getExpressionQuery() {
-        return whereQuery.getExpression();
+        return whereQuery.getHeaderPointer();
     }
 
     public WhereQuery getWhereQuery() {

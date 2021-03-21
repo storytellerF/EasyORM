@@ -11,6 +11,7 @@ import query.query.SetQuery;
 import query.query.WhereQuery;
 import query.type.Changer;
 
+@SuppressWarnings("unused")
 public class Update<T> extends Changer<T> {
 	private final SetQuery setQuery;
 	private final WhereQuery whereQuery;
@@ -41,14 +42,14 @@ public class Update<T> extends Changer<T> {
 	}
 
 	@Override
-	public void add(Class<?> claxx, String fieldName, Object value) {
-		set(new SetExpression<>(claxx, fieldName, value));
+	public void add(Class<?> lax, String fieldName, Object value) {
+		set(new SetExpression<>(lax, fieldName, value));
 	}
 
 	@Override
 	public String parse(boolean safe) throws Exception {
 		super.parse(safe);
-		if (whereQuery.getExpression()==null) System.out.println("警告，未设定条件");
+		if (whereQuery.getHeaderPointer()==null) System.out.println("警告，未设定条件");
 		return "update " + tableQuery.parse(safe) + " " + setQuery.parse(safe) + " " + whereQuery.parse(safe) + ";";
 	}
 
@@ -68,13 +69,11 @@ public class Update<T> extends Changer<T> {
 				expressionQuery=expressionQuery.next;
 				setExpression = (SetExpression<?>) setExpression.next;
 			}
-			ExpressionQuery expressionQuery2 = whereQuery.getExpression();
+			ExpressionQuery expressionQuery2 = whereQuery.getHeaderPointer();
 			while (expressionQuery2 != null) {
 
 				Object clone = expressionQuery2.clone();
 				ExpressionQuery clone2 = (ExpressionQuery) clone;
-//				System.out.println(expressionQuery2.getClass().getName() + " to:" + clone.getClass().getName() + " 2:"
-//						+ clone2.getClass().getName());
 				expressionQuery.next(clone2);
 				expressionQuery=expressionQuery.next;
 				expressionQuery2 = expressionQuery2.next;

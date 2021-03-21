@@ -81,7 +81,7 @@ public abstract class Obtain {
      */
     Class<?> getReturnType(ExecutableQuery<?> executableQuery) throws UnexpectedException {
         Class<?> returnType = executableQuery.getReturnType();
-        System.out.println("return:" + returnType.getName());
+//        System.out.println("return:" + returnType.getName());
         if (returnType == Integer.class) {
             // 出现错误
             throw new UnexpectedException("返回值是整形，却做的select 请求");

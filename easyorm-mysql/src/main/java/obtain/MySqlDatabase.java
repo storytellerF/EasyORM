@@ -26,21 +26,29 @@ public class MySqlDatabase extends Obtain {
 
     public MySqlDatabase(DataSource dataSource) {
         super();
+        this.dataSource=dataSource;
     }
 
     @Override
     public Result getResult(ExecutableQuery<?> executableQuery)
             throws Exception {
-        Class<?> returnType = getReturnType(executableQuery);
-        ResultSet resultSet = getResultSet(executableQuery);
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-        int columnCount = resultSetMetaData.getColumnCount();
-        Columns columns = getColumns(resultSetMetaData);
-        Fields fields = getFields(returnType);
-        DatabaseTable databaseTable = getDatabaseTable(columns, columnCount, fields);
-        Result result = getResult(resultSet, columnCount, databaseTable);
-        provide(returnType, fields, databaseTable, result);
-        return result;
+        try {
+            Class<?> returnType = getReturnType(executableQuery);
+            ResultSet resultSet = getResultSet(executableQuery);
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            int columnCount = resultSetMetaData.getColumnCount();
+            Columns columns = getColumns(resultSetMetaData);
+            Fields fields = getFields(returnType);
+            DatabaseTable databaseTable = getDatabaseTable(columns, columnCount, fields);
+            Result result = getResult(resultSet, columnCount, databaseTable);
+            provide(returnType, fields, databaseTable, result);
+            connection.close();
+            return result;
+        } catch (Exception e) {
+            System.out.println(executableQuery.parse(true));
+            throw  e;
+        }
+
     }
 
 
@@ -116,7 +124,8 @@ public class MySqlDatabase extends Obtain {
                 } else if (class1 instanceof String) {
                     preparedStatement.setString(index, (String) class1);
                 } else if (class1 instanceof Date) {
-                    preparedStatement.setDate(index, (java.sql.Date) class1);
+                    java.sql.Date date = new java.sql.Date(((Date) class1).getTime());
+                    preparedStatement.setDate(index, date);
                 } else {
                     throw new IllegalArgumentException("type can't be tacked:" + class1.getClass().getName());
                 }
@@ -126,18 +135,22 @@ public class MySqlDatabase extends Obtain {
             temp = temp.next();
             index++;
         }
-        if (dataSource != null) {
-            connection.close();
-        }
+
         return preparedStatement;
     }
 
     @Override
     public int getInt(ExecutableQuery<?> executableQuery) throws Exception {
-
-        PreparedStatement preparedStatement = getPreparedStatement(executableQuery,
-                executableQuery.getExpressionQuery());
-        return preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = getPreparedStatement(executableQuery,
+                    executableQuery.getExpressionQuery());
+            int i = preparedStatement.executeUpdate();
+            connection.close();
+            return i;
+        } catch (Exception e) {
+            System.out.println(executableQuery.parse(true));
+            throw  e;
+        }
     }
 
 }

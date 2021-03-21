@@ -16,7 +16,7 @@ public class GroupQuery extends AbstractExpressionList {
     @Override
     public String parse(boolean safe) throws Exception {
         if (tableClass!=null) {
-            return "group by "+ORMUtil.getTrueTableName(tableClass)+expression.parse(safe);
+            return "group by "+ORMUtil.getTrueTableName(tableClass)+ headerPointer.parse(safe);
         }
         return "";
     }
