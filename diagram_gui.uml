@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="56.56944444444444" y="0.0">com.gui.model</node>
+    <node x="220.0" y="112.0">com.gui.createHtml</node>
+    <node x="122.56944444444446" y="244.0">com.gui.view</node>
+    <node x="40.0" y="112.0">com.gui.main</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.gui.view" target="com.gui.view">
+      <point x="32.0" y="16.0" />
+      <point x="218.56944444444446" y="306.0" />
+      <point x="92.56944444444446" y="306.0" />
+      <point x="92.56944444444446" y="252.0" />
+      <point x="-64.0" y="-8.0" />
+    </edge>
+    <edge source="com.gui.model" target="com.gui.model">
+      <point x="-34.0" y="16.0" />
+      <point x="90.56944444444444" y="62.0" />
+      <point x="26.569444444444457" y="62.0" />
+      <point x="26.569444444444457" y="8.0" />
+      <point x="-68.0" y="-8.0" />
+    </edge>
+    <edge source="com.gui.createHtml" target="com.gui.createHtml">
+      <point x="-66.0" y="16.0" />
+      <point x="242.0" y="164.0" />
+      <point x="200.0" y="164.0" />
+      <point x="200.0" y="128.0" />
+      <point x="-88.0" y="-0.0" />
+    </edge>
+    <edge source="com.gui.view" target="com.gui.model">
+      <point x="8.0" y="-16.0" />
+      <point x="194.56944444444446" y="224.0" />
+      <point x="189.50000000000003" y="224.0" />
+      <point x="189.50000000000003" y="82.0" />
+      <point x="181.23611111111114" y="82.0" />
+      <point x="56.6666666666667" y="16.0" />
+    </edge>
+    <edge source="com.gui.main" target="com.gui.main">
+      <point x="-10.666666666666671" y="16.0" />
+      <point x="93.33333333333333" y="184.0" />
+      <point x="0.0" y="184.0" />
+      <point x="0.0" y="117.33333333333334" />
+      <point x="-64.0" y="-10.666666666666657" />
+    </edge>
+    <edge source="com.gui.main" target="com.gui.model">
+      <point x="-32.0" y="-16.0" />
+      <point x="72.0" y="92.0" />
+      <point x="113.23611111111111" y="92.0" />
+      <point x="-11.333333333333329" y="16.0" />
+    </edge>
+    <edge source="com.gui.view" target="com.gui.createHtml">
+      <point x="24.0" y="-16.0" />
+      <point x="210.56944444444446" y="204.0" />
+      <point x="286.0" y="204.0" />
+      <point x="-22.0" y="16.0" />
+    </edge>
+    <edge source="com.gui.view" target="com.gui.main">
+      <point x="-56.0" y="-16.0" />
+      <point x="130.56944444444446" y="224.0" />
+      <point x="114.66666666666667" y="224.0" />
+      <point x="10.666666666666671" y="16.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="344.0" y="95.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

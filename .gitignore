@@ -1,0 +1,10 @@
+/build/
+/output/
+/config-editor/out/
+/easyorm-mysql/build/
+/easyorm-mysql/out/
+/gui/build/
+/gui/out/
+/mybatis-generator/out/
+/sql-query/build/
+/sql-query/out/
