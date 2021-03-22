@@ -1,11 +1,11 @@
 package t;
 
-import annotation.RealName;
-import annotation.constraint.Nullable;
-import annotation.constraint.PrimaryKey;
-import annotation.type.exact.IntColumn;
-import annotation.type.string.CharColumn;
-import annotation.type.string.VarcharColumn;
+import com.storyteller_f.sql_query.annotation.RealName;
+import com.storyteller_f.sql_query.annotation.constraint.Nullable;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.type.exact.IntColumn;
+import com.storyteller_f.sql_query.annotation.type.string.CharColumn;
+import com.storyteller_f.sql_query.annotation.type.string.VarcharColumn;
 
 public class Users {
     public int getId() {

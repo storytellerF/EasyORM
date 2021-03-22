@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import annotation.type.exact.IntColumn;
-import annotation.type.exact.TinyIntColumn;
-import annotation.type.fixed_point.DecimalColumn;
-import annotation.type.string.CharColumn;
-import annotation.type.string.VarcharColumn;
-import exception.UnexpectedTypeException;
-import util.Util;
+import com.storyteller_f.sql_query.annotation.type.exact.IntColumn;
+import com.storyteller_f.sql_query.annotation.type.exact.TinyIntColumn;
+import com.storyteller_f.sql_query.annotation.type.fixed_point.DecimalColumn;
+import com.storyteller_f.sql_query.annotation.type.string.CharColumn;
+import com.storyteller_f.sql_query.annotation.type.string.VarcharColumn;
+import com.storyteller_f.sql_query.exception.UnexpectedTypeException;
+import com.storyteller_f.sql_query.util.Util;
 
 public class CustomField {
     private String name;

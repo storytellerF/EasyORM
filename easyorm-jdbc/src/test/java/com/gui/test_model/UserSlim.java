@@ -1,6 +1,6 @@
 package com.gui.test_model;
 
-import annotation.Column;
+import com.storyteller_f.sql_query.annotation.Column;
 
 public class UserSlim {
 	@Column(name = "name")

@@ -1,6 +1,6 @@
 package com.gui.model;
 
-import annotation.type.string.EnumColumn;
+import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 import com.config_editor.model.Config;
 
 public class HTMLCreatorConfig extends Config {

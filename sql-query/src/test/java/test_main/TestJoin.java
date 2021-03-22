@@ -1,10 +1,9 @@
 package test_main;
 
-import query.Select;
-import query.column.EqualColumn;
+import com.storyteller_f.sql_query.query.Select;
+import com.storyteller_f.sql_query.query.column.EqualColumn;
 import test_model.Cart;
 import test_model.User;
-import test_model.UserSlim;
 
 public class TestJoin {
 

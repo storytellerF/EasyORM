@@ -1,12 +1,12 @@
 package com.gui.test_model;
-import annotation.Comment;
-import annotation.DefaultValue;
-import annotation.RealName;
-import annotation.constraint.ForeignKey;
-import annotation.constraint.PrimaryKey;
-import annotation.type.exact.BigIntColumn;
-import annotation.type.exact.IntColumn;
-import annotation.type.string.VarcharColumn;
+import com.storyteller_f.sql_query.annotation.Comment;
+import com.storyteller_f.sql_query.annotation.DefaultValue;
+import com.storyteller_f.sql_query.annotation.RealName;
+import com.storyteller_f.sql_query.annotation.constraint.ForeignKey;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.type.exact.BigIntColumn;
+import com.storyteller_f.sql_query.annotation.type.exact.IntColumn;
+import com.storyteller_f.sql_query.annotation.type.string.VarcharColumn;
 
 @SuppressWarnings("unused")
 @Comment(comment = "购物车")

@@ -1,7 +1,7 @@
 package com.gui.view;
 
-import annotation.RealName;
-import annotation.type.string.EnumColumn;
+import com.storyteller_f.sql_query.annotation.RealName;
+import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 import com.config_editor.model.Config;
 import com.config_editor.view.ConfigEditor;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
@@ -11,7 +11,6 @@ import com.gui.createHtml.HTMLFormItem;
 import com.gui.createHtml.RegularType;
 import com.gui.main.FileState;
 import com.gui.model.HTMLCreatorConfig;
-import com.gui.model.MainViewDatabaseConnectionConfig;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;

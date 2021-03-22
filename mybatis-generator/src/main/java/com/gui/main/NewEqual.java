@@ -1,6 +1,6 @@
 package com.gui.main;
 
-import query.expression.EqualExpression;
+import com.storyteller_f.sql_query.query.expression.EqualExpression;
 
 public class NewEqual<T> extends EqualExpression<T> {
     public NewEqual(Class<?> tableClass, String column, T value) {

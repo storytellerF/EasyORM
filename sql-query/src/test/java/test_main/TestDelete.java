@@ -1,6 +1,6 @@
 package test_main;
 
-import query.Delete;
+import com.storyteller_f.sql_query.query.Delete;
 import test_model.User;
 
 public class TestDelete {

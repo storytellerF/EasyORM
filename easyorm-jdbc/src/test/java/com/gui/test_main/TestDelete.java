@@ -1,7 +1,7 @@
 package com.gui.test_main;
 
 import com.gui.test_model.User;
-import query.Delete;
+import com.storyteller_f.sql_query.query.Delete;
 
 public class TestDelete {
     public static void main(String[] args) {

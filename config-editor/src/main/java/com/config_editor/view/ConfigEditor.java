@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.io.*;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class ConfigEditor {
     private JComboBox<String> config_editor_comboBox1;
@@ -59,6 +60,7 @@ public class ConfigEditor {
                         int index = configs.size() - 1;
                         configs.choose(configs.getConfigAt(index).getId());
                         updateList(index);
+                        return;
                     }
                 }
                 int selectedIndex1 = config_editor_comboBox1.getSelectedIndex();

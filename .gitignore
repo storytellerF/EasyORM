@@ -6,8 +6,8 @@
 /gui/build/
 /gui/out/
 /mybatis-generator/out/
-/sql-query/build/
-/sql-query/out/
+/sql-com.storyteller_f.sql_query.query/build/
+/sql-com.storyteller_f.sql_query.query/out/
 /.gradle/
 /easyorm-jdbc/build/
 /easyorm-jdbc/out/

@@ -1,6 +1,6 @@
 package test_main;
 
-import query.Update;
+import com.storyteller_f.sql_query.query.Update;
 import test_model.User;
 
 public class Test {

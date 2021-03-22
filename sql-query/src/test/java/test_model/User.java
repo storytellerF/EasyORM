@@ -2,11 +2,11 @@ package test_model;
 
 import java.util.Date;
 
-import annotation.Children;
-import annotation.EnumRemark;
-import annotation.Table;
-import annotation.constraint.PrimaryKey;
-import annotation.type.string.EnumColumn;
+import com.storyteller_f.sql_query.annotation.Children;
+import com.storyteller_f.sql_query.annotation.EnumRemark;
+import com.storyteller_f.sql_query.annotation.Table;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 
 @Table(name = "User")
 public class User {

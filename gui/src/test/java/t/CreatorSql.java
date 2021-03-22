@@ -1,8 +1,8 @@
 package t;
 
 import com.gui.model.Users;
-import query.Select;
-import query.expression.EqualExpression;
+import com.storyteller_f.sql_query.query.Select;
+import com.storyteller_f.sql_query.query.expression.EqualExpression;
 
 public class CreatorSql {
     public static void main(String[] args) throws Exception {

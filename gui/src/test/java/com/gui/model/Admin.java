@@ -1,11 +1,11 @@
 package com.gui.model;
 
-import annotation.NoQuery;
-import annotation.type.exact.IntColumn;
-import annotation.constraint.PrimaryKey;
-import annotation.RealName;
-import annotation.type.string.VarcharColumn;
-import annotation.constraint.Nullable;
+import com.storyteller_f.sql_query.annotation.NoQuery;
+import com.storyteller_f.sql_query.annotation.type.exact.IntColumn;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.RealName;
+import com.storyteller_f.sql_query.annotation.type.string.VarcharColumn;
+import com.storyteller_f.sql_query.annotation.constraint.Nullable;
 
 public class Admin {
     @IntColumn

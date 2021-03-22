@@ -1,7 +1,7 @@
 package com.gui.test_main;
 
 import com.gui.test_model.User;
-import query.Update;
+import com.storyteller_f.sql_query.query.Update;
 
 public class Test {
 	public static void main(String[] args) {

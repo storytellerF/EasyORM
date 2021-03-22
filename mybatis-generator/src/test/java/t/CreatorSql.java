@@ -1,7 +1,7 @@
 package t;
 
 import com.gui.main.NewEqual;
-import query.Select;
+import com.storyteller_f.sql_query.query.Select;
 
 public class CreatorSql {
     public static void main(String[] args) throws Exception {

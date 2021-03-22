@@ -1,7 +1,7 @@
 package com.gui.test_main;
 
 import com.gui.test_model.User;
-import obtain.MySqlDatabase;
+import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 
 import java.sql.*;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 
 public class TestHelper {
     public static void main(String[] args) {
-        MySqlDatabase plice=new MySqlDatabase(new Connection() {
+        JDBCObtain plice=new JDBCObtain(new Connection() {
             @Override
             public Statement createStatement() throws SQLException {
                 return null;

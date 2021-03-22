@@ -2,9 +2,9 @@ package com.gui.test_main;
 
 import com.gui.test_model.Cart;
 import com.gui.test_model.User;
-import obtain.MySqlDatabase;
-import query.Select;
-import query.column.EqualColumn;
+import com.storyteller_f.easyorm_jdbc.JDBCObtain;
+import com.storyteller_f.sql_query.query.Select;
+import com.storyteller_f.sql_query.query.column.EqualColumn;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,8 +17,8 @@ public class TestJoin {
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=Asia/Shanghai", "root", "");
-			MySqlDatabase mySqlDatabase=new MySqlDatabase(connection);
-			Select<User> select=new Select<>(mySqlDatabase);
+			JDBCObtain JDBCObtain =new JDBCObtain(connection);
+			Select<User> select=new Select<>(JDBCObtain);
 			select.table(User.class).select(User.class).leftJoin(Cart.class,
 					new EqualColumn(User.class,User.name(),Cart.class,Cart.user())
 			);

@@ -1,6 +1,6 @@
 package com.gui.view;
 
-import annotation.NoQuery;
+import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.config_editor.model.Config;
 import com.config_editor.view.ConfigEditor;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
@@ -9,8 +9,8 @@ import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import com.gui.main.*;
 import com.gui.model.Constraint;
 import com.gui.model.Table;
-import query.Create;
-import util.Util;
+import com.storyteller_f.sql_query.query.Create;
+import com.storyteller_f.sql_query.util.Util;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -294,7 +294,7 @@ public class Main {
                     Create create = new Create(clazz);
                     String parse = create.parse(true);
                     System.out.println(parse);
-                    //connection.createStatement().execute(parse);
+                    //com.storyteller_f.easyorm_jdbc.connection.createStatement().execute(parse);
                 }
                 System.out.println("执行完毕");
 

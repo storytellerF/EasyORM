@@ -2,7 +2,7 @@ package com.gui.test_main;
 
 
 import com.gui.test_model.Cart;
-import query.Create;
+import com.storyteller_f.sql_query.query.Create;
 
 import java.rmi.UnexpectedException;
 

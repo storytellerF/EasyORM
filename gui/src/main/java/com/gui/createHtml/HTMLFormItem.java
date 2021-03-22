@@ -3,10 +3,10 @@ package com.gui.createHtml;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import annotation.EnumRange;
-import annotation.EnumRemark;
-import annotation.constraint.Nullable;
-import annotation.type.string.EnumColumn;
+import com.storyteller_f.sql_query.annotation.EnumRange;
+import com.storyteller_f.sql_query.annotation.EnumRemark;
+import com.storyteller_f.sql_query.annotation.constraint.Nullable;
+import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 
 public abstract class HTMLFormItem {
 
@@ -106,29 +106,29 @@ public abstract class HTMLFormItem {
 		if (annotation != null) {
 			String annotationName = annotation.annotationType().getName();
 			switch (annotationName) {
-			case "annotation.type.exact.BigIntColumn":
-			case "annotation.type.exact.MediumIntColumn":
-			case "annotation.type.exact.TinyIntColumn":
-			case "annotation.type.exact.SmallIntColumn":
-			case "annotation.type.exact.DecimalColumn":
-			case "annotation.type.exact.NumericColumn":
-			case "annotation.type.exact.IntColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.BigIntColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.MediumIntColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.TinyIntColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.SmallIntColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.DecimalColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.NumericColumn":
+			case "com.storyteller_f.sql_query.annotation.type.exact.IntColumn":
 				type = "number";
 				break;
-			case "annotation.type.string.TextColumn":
-			case "annotation.type.string.CharColumn":
-			case "annotation.type.string.VarcharColumn":
+			case "com.storyteller_f.sql_query.annotation.type.string.TextColumn":
+			case "com.storyteller_f.sql_query.annotation.type.string.CharColumn":
+			case "com.storyteller_f.sql_query.annotation.type.string.VarcharColumn":
 				type = "text";
 				break;
-			case "annotation.type.date.DateColumn":
+			case "com.storyteller_f.sql_query.annotation.type.date.DateColumn":
 				type = "date";
 				break;
-//                case "annotation.type.string.BinaryColumn":
-//                    return "binary("+((BinaryColumn)annotation).length()+")";
-//                case "annotation.type.string.BlobColumn":
-//                    return "blog("+((BlobColumn)annotation).length()+")";
-//                case "annotation.type.string.VarbinaryColumn":
-//                    return "varbinary("+((VarbinaryColumn)annotation).length()+")";
+//                case "com.storyteller_f.sql_query.annotation.type.string.BinaryColumn":
+//                    return "binary("+((BinaryColumn)com.storyteller_f.sql_query.annotation).length()+")";
+//                case "com.storyteller_f.sql_query.annotation.type.string.BlobColumn":
+//                    return "blog("+((BlobColumn)com.storyteller_f.sql_query.annotation).length()+")";
+//                case "com.storyteller_f.sql_query.annotation.type.string.VarbinaryColumn":
+//                    return "varbinary("+((VarbinaryColumn)com.storyteller_f.sql_query.annotation).length()+")";
 			default:
 				throw new Exception("当前类型不受支持:" + annotationName);
 			}

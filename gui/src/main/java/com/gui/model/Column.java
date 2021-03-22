@@ -1,20 +1,20 @@
 package com.gui.model;
 
-import annotation.Convert;
-import annotation.NoQuery;
+import com.storyteller_f.sql_query.annotation.Convert;
+import com.storyteller_f.sql_query.annotation.NoQuery;
 
 public class Column {
-	@annotation.Column(name = "column_comment")
+	@com.storyteller_f.sql_query.annotation.Column(name = "column_comment")
 	private String comment;
 	@NoQuery
 	private Object data;
-	@annotation.Column(name = "column_key")
+	@com.storyteller_f.sql_query.annotation.Column(name = "column_key")
 	private String key;
-	@annotation.Column(name = "column_name")
+	@com.storyteller_f.sql_query.annotation.Column(name = "column_name")
 	private String name;
-	@annotation.Column(name = "column_type")
+	@com.storyteller_f.sql_query.annotation.Column(name = "column_type")
 	private String type;
-	@annotation.Column(name = "is_nullable")
+	@com.storyteller_f.sql_query.annotation.Column(name = "is_nullable")
 	@Convert(name = "nullable")
 	private boolean nullable;
 	public boolean nullable(String param) {

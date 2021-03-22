@@ -1,9 +1,9 @@
 package com.gui.view;
 
 
-import annotation.RealName;
-import annotation.constraint.Nullable;
-import annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.RealName;
+import com.storyteller_f.sql_query.annotation.constraint.Nullable;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
 import com.config_editor.model.Config;
 import com.config_editor.view.ConfigEditor;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;

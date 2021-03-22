@@ -12,8 +12,8 @@ import com.gui.model.Column;
 import com.gui.model.Table;
 import org.apache.commons.text.CaseUtils;
 
-import annotation.constraint.PrimaryKey;
-import annotation.constraint.Unique;
+import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
+import com.storyteller_f.sql_query.annotation.constraint.Unique;
 import com.gui.model.validate.CustomField;
 
 public class ParseDatabase {
@@ -71,9 +71,9 @@ public class ParseDatabase {
         } else if (type.contains("varchar")) {
             return null;
         } else if (type.contains("datetime")) {
-            return "import java.com.gui.util.Date;";
+            return "import java.com.gui.com.storyteller_f.sql_query.util.Date;";
         } else if (type.contains("ArrayList")) {
-            return "import java.com.gui.util.ArrayList;";
+            return "import java.com.gui.com.storyteller_f.sql_query.util.ArrayList;";
         } else {
             return null;
         }
