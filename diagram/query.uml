@@ -15,8 +15,8 @@
     <node x="42.0" y="464.0">query.query.LimitQuery</node>
     <node x="164.0" y="172.0">query.query.AbstractExpressionList</node>
     <node x="71.0" y="245.0">query.query.SelectQuery</node>
-    <node x="121.0" y="391.0">query.query.SetQuery</node>
     <node x="441.0" y="2.0">query.query.RightJoinQuery</node>
+    <node x="121.0" y="391.0">query.query.SetQuery</node>
   </nodes>
   <notes />
   <edges>
@@ -48,11 +48,11 @@
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.query.WhereQuery" target="query.query.AbstractExpressionList">
+    <edge source="query.query.SelectQuery" target="query.Query">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.query.SelectQuery" target="query.Query">
+    <edge source="query.query.WhereQuery" target="query.query.AbstractExpressionList">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
@@ -60,11 +60,11 @@
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.query.ValueQuery" target="query.Query">
+    <edge source="query.query.RightJoinQuery" target="query.query.JoinQuery">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.query.RightJoinQuery" target="query.query.JoinQuery">
+    <edge source="query.query.ValueQuery" target="query.Query">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
@@ -73,7 +73,7 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Orthogonal" zoom="1.0" x="564.0" y="315.0" />
+  <settings layout="Orthogonal" zoom="0.9015280135823429" x="320.5" y="284.5" />
   <SelectedNodes>
     <node>query.query.ExecutableQuery</node>
   </SelectedNodes>

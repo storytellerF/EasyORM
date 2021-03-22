@@ -19,7 +19,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
     implementation(project(":sql-query"))
-    implementation(project(":easyorm-mysql"))
+    implementation(project(":easyorm-jdbc"))
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 

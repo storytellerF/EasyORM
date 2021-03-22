@@ -29,7 +29,9 @@
     </edge>
   </edges>
   <settings layout="Hierarchic Group" zoom="1.0" x="174.0" y="136.5" />
-  <SelectedNodes />
+  <SelectedNodes>
+    <node>com.gui.createHtml.RegularType</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

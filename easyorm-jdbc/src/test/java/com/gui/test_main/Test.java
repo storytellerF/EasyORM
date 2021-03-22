@@ -1,7 +1,6 @@
 package com.gui.test_main;
 
 import com.gui.test_model.User;
-import obtain.Plice;
 import query.Update;
 
 public class Test {

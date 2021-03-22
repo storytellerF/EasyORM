@@ -4,6 +4,9 @@ import annotation.Children;
 import annotation.Column;
 import annotation.Convert;
 import org.apache.commons.text.WordUtils;
+import query.Insert;
+import query.Select;
+import query.Update;
 import query.query.ExecutableQuery;
 import query.result.Result;
 import util.ORMUtil;
@@ -13,10 +16,29 @@ import java.lang.reflect.Method;
 import java.rmi.UnexpectedException;
 
 public abstract class Obtain {
+
+    public <T> Select<T> getSelect() {
+        return new Select<>(this);
+    }
+
+    public <T> Select<T> getSelect(Class<T> tClass) {
+        return new Select<T>(this).select(tClass);
+    }
+
+    public <T> Update<T> getUpdate() {
+        return new Update<>(this);
+    }
+
+    public <T> Insert<T> getInsert() {
+        return new Insert<>(this);
+    }
+
     public abstract Result getResult(ExecutableQuery<?> executableQuery) throws Exception;
+
     public abstract int getInt(ExecutableQuery<?> executableQuery) throws Exception;
+
     void provide(Class<?> returnType, Fields fields, DatabaseTable databaseTable, Result result) throws NoSuchFieldException, NoSuchMethodException {
-        int columnCount= result.getColumnCount();
+        int columnCount = result.getColumnCount();
         /*
          */
         for (int i = 0; i < columnCount; i++) {
@@ -30,7 +52,7 @@ public abstract class Obtain {
                  不做空指针判断，因为找不到就会抛出异常
                  */
                 String columnName = databaseTable.getName(i);
-                try{
+                try {
                     Field field = returnType.getDeclaredField(columnName);
                     if (field.isAnnotationPresent(Convert.class)) {
                         result.add(field, i);
@@ -40,13 +62,13 @@ public abstract class Obtain {
                         String methodName = "set" + WordUtils.capitalize(columnName);
                         Method method = returnType.getDeclaredMethod(methodName, typeClass);
                         result.add(method, i);
-                        result.add(typeClass,i);
+                        result.add(typeClass, i);
                     }
-                }catch (NoSuchFieldException e){
+                } catch (NoSuchFieldException e) {
 //                    System.out.println(e.getMessage());
                     //只能是子对象中的，不然无法处理
                     Field fieldInChildren = getFieldInChildren(columnName, returnType);
-                    result.add(fieldInChildren,i);
+                    result.add(fieldInChildren, i);
                 }
 
 
@@ -58,7 +80,7 @@ public abstract class Obtain {
         }
     }
 
-    protected Field getFieldInChildren(String columnName, Class<?> returnType){
+    protected Field getFieldInChildren(String columnName, Class<?> returnType) {
         Field[] declaredFields = returnType.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             if (declaredField.isAnnotationPresent(Children.class)) {
@@ -75,6 +97,7 @@ public abstract class Obtain {
 
     /**
      * 带有类型检查，如果出现错误，经会抛出异常
+     *
      * @param executableQuery 可执行语句
      * @return 返回类型
      * @throws UnexpectedException 返回类型为整形
@@ -88,17 +111,19 @@ public abstract class Obtain {
         }
         return returnType;
     }
+
     Fields getFields(Class<?> returnType) {
-        Fields fields=new Fields();
+        Fields fields = new Fields();
         Field[] allFields = returnType.getDeclaredFields();
         for (Field field : allFields) {
             if (field.isAnnotationPresent(Column.class)) {
                 Column column = field.getAnnotation(Column.class);
-                fields.add(column.name(),field);
+                fields.add(column.name(), field);
             }
         }
         return fields;
     }
+
     /*
      * *遍历所有数据库段列，
      * 并获取对应的字段，
@@ -122,7 +147,7 @@ public abstract class Obtain {
                 }
             }
             if (j != fields.getCount()) {// 找到了字段，并且位置就是j
-                databaseTable.add(i1,j);
+                databaseTable.add(i1, j);
             }
         }
         return databaseTable;

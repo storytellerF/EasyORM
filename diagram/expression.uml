@@ -8,11 +8,11 @@
     <node x="243.0" y="617.0">query.Query</node>
     <node x="193.0" y="334.0">query.expression.TwoExpression</node>
     <node x="129.0" y="501.0">query.query.ExpressionQuery</node>
-    <node x="171.0" y="199.0">query.expression.ArithMeticalExpression</node>
     <node x="7.0" y="87.0">query.expression.GreaterThanExpression</node>
     <node x="19.0" y="593.0">query.expression.InExpression</node>
-    <node x="0.0" y="332.0">query.expression.SetExpression</node>
+    <node x="171.0" y="199.0">query.expression.ArithMeticalExpression</node>
     <node x="367.0" y="126.0">query.expression.SmallThanExpression</node>
+    <node x="0.0" y="332.0">query.expression.SetExpression</node>
   </nodes>
   <notes />
   <edges>
@@ -53,8 +53,10 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Orthogonal" zoom="1.0" x="360.0" y="334.0" />
-  <SelectedNodes />
+  <settings layout="Orthogonal" zoom="0.7937219730941704" x="283.5" y="324.5" />
+  <SelectedNodes>
+    <node>query.expression.ValueExpression</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

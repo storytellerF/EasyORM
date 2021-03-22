@@ -1,5 +1,5 @@
 rootProject.name = 'EasyORM'
-include 'easyorm-mysql'
+include 'easyorm-jdbc'
 include 'sql-query'
 include 'gui'
 include 'mybatis-generator'

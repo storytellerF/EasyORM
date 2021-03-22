@@ -14,17 +14,13 @@
     <node x="0.0" y="113.0">query.type.Change</node>
     <node x="451.0" y="399.0">test_main.TestJoin</node>
     <node x="560.0" y="166.0">query.Create</node>
-    <node x="335.0" y="0.0">query.query.AbstractExpressionList</node>
     <node x="137.0" y="148.0">query.Insert</node>
+    <node x="335.0" y="0.0">query.query.AbstractExpressionList</node>
     <node x="180.0" y="43.0">query.Update</node>
   </nodes>
   <notes />
   <edges>
     <edge source="query.Select" target="query.type.Search">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
-    <edge source="query.Update" target="query.query.ExpressionQuery">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
@@ -35,10 +31,6 @@
     <edge source="query.Select" target="query.query.ExecutableQuery">
       <point x="-4.005275482802924" y="2.9929531080285585" />
       <point x="-4.005275482802922" y="2.9929531080285585" />
-    </edge>
-    <edge source="query.Delete" target="query.query.ExpressionQuery">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
     </edge>
     <edge source="query.query.ExpressionQuery" target="query.Query">
       <point x="0.0" y="0.0" />
@@ -52,10 +44,6 @@
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.Select" target="query.Executor">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
     <edge source="query.Insert" target="query.type.Change">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
@@ -64,23 +52,7 @@
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="query.query.ExecutableQuery" target="query.query.ExpressionQuery">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
     <edge source="query.Create" target="query.Query">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
-    <edge source="query.Select" target="query.query.ExpressionQuery">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
-    <edge source="query.Insert" target="query.query.ExpressionQuery">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
-    <edge source="test_main.TestJoin" target="test_model.User">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
@@ -88,21 +60,9 @@
       <point x="4.657286747398103" y="-1.8192526357023837" />
       <point x="4.657286747398096" y="-1.819252635702382" />
     </edge>
-    <edge source="query.Delete" target="query.Executor">
-      <point x="0.0" y="0.0" />
-      <point x="0.0" y="0.0" />
-    </edge>
-    <edge source="query.query.AbstractExpressionList" target="query.query.ExpressionQuery">
-      <point x="4.125757704557898" y="2.8245571977357997" />
-      <point x="4.125757704557904" y="2.8245571977357997" />
-    </edge>
     <edge source="query.Delete" target="query.query.ExecutableQuery">
       <point x="0.0" y="5.026991199105844" />
       <point x="0.0" y="5.026991199105844" />
-    </edge>
-    <edge source="test_main.TestJoin" target="query.Select">
-      <point x="-2.3647019516298258" y="4.40547212906381" />
-      <point x="-2.36470195162984" y="4.40547212906381" />
     </edge>
     <edge source="query.Delete" target="query.type.Change">
       <point x="0.0" y="0.0" />
@@ -113,8 +73,10 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Orthogonal" zoom="1.0" x="400.5" y="286.0" />
-  <SelectedNodes />
+  <settings layout="Orthogonal" zoom="1.0" x="329.5" y="255.5" />
+  <SelectedNodes>
+    <node>query.query.ExpressionQuery</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

@@ -14,8 +14,8 @@
     <node x="500.0" y="339.0">query.type.Change</node>
     <node x="0.0" y="485.0">test_main.TestJoin</node>
     <node x="130.0" y="163.0">query.Create</node>
-    <node x="0.0" y="327.0">query.query.AbstractExpressionList</node>
     <node x="411.0" y="266.0">query.Insert</node>
+    <node x="0.0" y="327.0">query.query.AbstractExpressionList</node>
     <node x="480.0" y="190.0">query.Update</node>
   </nodes>
   <notes />
@@ -73,8 +73,10 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Orthogonal" zoom="1.0" x="400.5" y="286.0" />
-  <SelectedNodes />
+  <settings layout="Orthogonal" zoom="1.0" x="298.0" y="258.5" />
+  <SelectedNodes>
+    <node>query.query.ExpressionQuery</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

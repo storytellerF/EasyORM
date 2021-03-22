@@ -8,3 +8,6 @@
 /mybatis-generator/out/
 /sql-query/build/
 /sql-query/out/
+/.gradle/
+/easyorm-jdbc/build/
+/easyorm-jdbc/out/
