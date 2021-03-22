@@ -1,6 +1,6 @@
 rootProject.name = 'EasyORM'
 include 'easyorm-jdbc'
-include 'sql-com.storyteller_f.sql_query.query'
+include 'sql-query'
 include 'gui'
 include 'mybatis-generator'
 include 'config-editor'
