@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../../easyorm-jdbc/out/production/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../easyorm-jdbc/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../easyorm-jdbc/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../easyorm-jdbc/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:8.0.22" level="project" />
+    <orderEntry type="library" name="Gradle: org.projectlombok:lombok:1.18.18" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-text:1.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.11" level="project" />
+    <orderEntry type="module" module-name="EasyORM.sql-query.main" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:3.11.4" level="project" />
+  </component>
+</module>

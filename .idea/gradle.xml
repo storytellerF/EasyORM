@@ -12,7 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/config-editor" />
-            <option value="$PROJECT_DIR$/easyorm-mysql" />
+            <option value="$PROJECT_DIR$/easyorm-jdbc" />
             <option value="$PROJECT_DIR$/gui" />
             <option value="$PROJECT_DIR$/mybatis-generator" />
             <option value="$PROJECT_DIR$/sql-query" />
