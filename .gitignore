@@ -11,3 +11,4 @@
 /.gradle/
 /easyorm-jdbc/build/
 /easyorm-jdbc/out/
+/sql-query/build/

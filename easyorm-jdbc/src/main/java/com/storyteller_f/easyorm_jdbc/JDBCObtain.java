@@ -41,10 +41,10 @@ public class JDBCObtain extends Obtain {
             ResultSet resultSet = getResultSet(executableQuery);
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             int columnCount = resultSetMetaData.getColumnCount();
-            Fields fields = getFields(returnType);
-            DatabaseTable databaseTable = getDatabaseTable(getColumns(resultSetMetaData), columnCount, fields);
+            Fields fields = getFields(returnType,columnCount);
+            DatabaseTable databaseTable = getDatabaseTable(getColumns(resultSetMetaData));
             Result result = getResult(resultSet, columnCount, databaseTable);
-            provide(returnType, fields, databaseTable, result);
+            provideAccessPoint(returnType, fields, databaseTable, result);
             connection.close();
             return result;
         } catch (Exception e) {
@@ -78,11 +78,17 @@ public class JDBCObtain extends Obtain {
         Result result = new Result();
         result.setCount(columnCount);
         Method[] methods = new Method[columnCount];
+        /*
+         * 获取方法
+         */
         for (int i1 = 0; i1 < columnCount; i1++) {
             String type1 = databaseTable.getType(i1);
             Class<?> typeClass1 = ORMUtil.getClassByType(type1);
             methods[i1] = getMethod(resultSet, i1, type1, typeClass1);
         }
+        /*
+         * 获取全部的值
+         */
         ArrayList<Object[]> arrayList = result.getData();
         while (resultSet.next()) {
             Object[] objects = new Object[columnCount];
@@ -95,9 +101,6 @@ public class JDBCObtain extends Obtain {
             }
             arrayList.add(objects);
         }
-        /*
-         * *通过反射获取resultSet的方法，调用，并存储返回值
-         */
         if (!resultSet.isClosed()) {
             resultSet.close();
         }

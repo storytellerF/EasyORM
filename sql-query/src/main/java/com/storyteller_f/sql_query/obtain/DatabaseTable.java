@@ -8,16 +8,22 @@ public class DatabaseTable {
      * *存储数据库所有的列类型
      */
     String[] columnType;
-    /*
-     * *记录列是否含有注解，这个个数不是有模型类决定，而是由数据库端决定， *意味着模型类中可以存储其他用不到的字段而不会出现 *任何错误
-     */
-    int[] hasAnnotations;
 
     public DatabaseTable(int columnCount) {
         columnNames = new String[columnCount];
         columnType = new String[columnCount];
-        hasAnnotations = new int[columnCount];
-        Arrays.fill(hasAnnotations,-1);
+    }
+
+    public DatabaseTable(Columns columns) {
+        int columnCount=columns.getCount();
+        for (int i1 = 0; i1 < columnCount; i1++) {
+            /*
+             * 获取到列类型和列名
+             */
+            String columnLabel = columns.getName(i1);
+            String columnTypeName = columns.getType(i1);
+            add(i1, columnLabel, columnTypeName);
+        }
     }
 
     /**
@@ -37,11 +43,4 @@ public class DatabaseTable {
         columnType[index]=type;
     }
 
-    public void add(int index, int annotation) {
-        hasAnnotations[index]=annotation;
-    }
-
-    public int getAnnotation(int index) {
-        return hasAnnotations[index];
-    }
 }

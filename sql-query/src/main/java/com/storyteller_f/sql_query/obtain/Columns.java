@@ -29,4 +29,8 @@ public class Columns {
     public String getType(int index) {
         return type[index];
     }
+
+    public int getCount() {
+        return name.length;
+    }
 }
