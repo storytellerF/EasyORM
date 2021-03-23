@@ -7,10 +7,10 @@ public class TestDelete {
     public static void main(String[] args) {
         User user=new User();
         user.setName("yonghu");
-        Delete<User> delete=new Delete<User>(null);
-        delete.delete(user);
+        Delete<User> delete= new Delete<>(null);
         try {
-            System.out.println(delete.parse(true));
+            delete.delete(user);
+            System.out.println(delete.parse(false));
         } catch (Exception e) {
             e.printStackTrace();
         }

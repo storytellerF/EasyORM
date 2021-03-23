@@ -1,6 +1,7 @@
 package com.storyteller_f.sql_query.query.expression;
 
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
+import com.storyteller_f.sql_query.util.ORMUtil;
 
 public class TwoExpression<T> extends ExpressionQuery {
 
@@ -19,9 +20,20 @@ public class TwoExpression<T> extends ExpressionQuery {
         this.fieldName = fieldName;
         this.value = value;
     }
+    public String getName() {
+        String name;
+        String trueTableName = ORMUtil.getTrueTableName(tableClass);
+        try {
+            name = String.format("`%s`.`%s`", trueTableName,ORMUtil.getColumn(tableClass.getDeclaredField(fieldName)));
+        } catch (NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
+            name= String.format("`%s`.`%s`",trueTableName, this.fieldName);
+        }
+        return name;
+    }
 
     @Override
-	public Object clone() throws CloneNotSupportedException {
+	public Object clone() {
     	return new TwoExpression<T>(tableClass, fieldName, value);
     }
     @Override
@@ -52,9 +64,6 @@ public class TwoExpression<T> extends ExpressionQuery {
 
     public void setTableClass(Class<?> tableClass) {
         this.tableClass = tableClass;
-    }
-    interface GetColumn<T>{
-        String g(T t);
     }
 
 }

@@ -10,7 +10,6 @@ import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 
 @Table(name = "User")
 public class User {
-
 	@EnumColumn({"admin","user"})
 	@EnumRemark({"管理员","普通用户"})
 	private String level;
@@ -79,9 +78,9 @@ public class User {
 	public String toString() {
 		return "User [name=" + name + ", age=" + age + ", registeTime=" + registerTime + "]";
 	}
-	public static String static_name="name";
-	public static String static_age="age";
-	public static String static_registeTime="registeTime";
-	public static String static_remark="remark";
+	public static String s_name ="name";
+	public static String s_age ="age";
+	public static String s_registerTime ="registeTime";
+	public static String s_remark="remark";
 	
 }

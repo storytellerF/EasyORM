@@ -27,4 +27,9 @@ public class Admin {
     @Nullable
     @RealName(name = "权限")
     private int qx;
+    public static String s_id="id";
+    public static String s_username="username";
+    public static String s_password="password";
+    public static String s_name="name";
+    public static String s_qx="qx";
 }

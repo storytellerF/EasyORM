@@ -10,7 +10,7 @@ public class Test {
 		user.setRemark("发生了修改");
 		Update<User> userUpdate=new Update<>(null);
 		try {
-			System.out.println(userUpdate.setObject(user).parse(true));
+			System.out.println(userUpdate.setObject(user).parse(false));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

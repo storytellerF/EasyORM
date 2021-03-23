@@ -20,6 +20,7 @@ dependencies {
 
     implementation(project(":sql-query"))
     implementation(project(":easyorm-jdbc"))
+    implementation(project(":config-editor"))
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 

@@ -12,6 +12,7 @@ public abstract class ExpressionQuery extends Value implements Query{
 //    public void and(ExpressionQuery expressionQuery) {
 //        next=expressionQuery;
 //    }
+
     public abstract String parse(boolean safe) throws Exception;
     @Override
 	public Object clone() throws CloneNotSupportedException {

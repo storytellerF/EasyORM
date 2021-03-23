@@ -10,9 +10,9 @@ import test_model.Cart;
 public class Main {
 
 	public static void main(String[] args) {
-		Create name = new Create(Cart.class);
+		Create name = new Create(null,Cart.class);
 		try {
-			System.out.println(name.parse(true));
+			System.out.println(name.parse(false));
 		} catch (UnexpectedException e) {
 			e.printStackTrace();
 		}

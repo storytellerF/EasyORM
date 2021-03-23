@@ -56,8 +56,8 @@ public class Cart {
 	public static String sum() {
 		return "sum";
 	}
-	public static String static_id="id";
-	public static String static_user="user";
-	public static String static_sum="sum";
-	public static String static_level="level";
+	public static String s_id ="id";
+	public static String s_user ="user";
+	public static String s_sum ="sum";
+	public static String s_level ="level";
 }

@@ -50,14 +50,13 @@ public class ExcelReadConfig extends Config {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        super.clone();
+    public Object clone() {
         ExcelReadConfig excelReadConfig = new ExcelReadConfig();
         excelReadConfig.setPath(path);
         excelReadConfig.setColumnCount(columnCount);
         excelReadConfig.setRowCount(rowCount);
         excelReadConfig.setTableHeaderRow(tableHeaderRow);
         excelReadConfig.setSheetName(sheetName);
-        return super.clone();
+        return excelReadConfig;
     }
 }

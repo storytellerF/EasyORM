@@ -26,7 +26,6 @@ public abstract class Changer<T> extends ExecutableQuery<Insert<T>> implements C
 			if (Modifier.isStatic(field.getModifiers())) continue;
 			String fieldName=field.getName();
 			Object value =ORMUtil.getValue(t, classOfParam, field);
-
 			if (pass(field,fieldName,value)) {
 				continue;
 			}

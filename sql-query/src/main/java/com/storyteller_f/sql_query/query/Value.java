@@ -6,7 +6,7 @@ import java.util.Date;
 public class Value {
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
     public String objectToString(Object value) {
-        if (value==null) return "";
+        if (value==null) return null;
         if (value instanceof String) {
             return "'" + value + "'";
         } else if (value instanceof Integer) {

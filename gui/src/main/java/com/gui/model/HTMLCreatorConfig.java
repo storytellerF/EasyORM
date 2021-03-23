@@ -22,8 +22,7 @@ public class HTMLCreatorConfig extends Config {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        super.clone();
+    public Object clone() {
         HTMLCreatorConfig HTMLCreatorConfig = new HTMLCreatorConfig();
         HTMLCreatorConfig.setName(getName());
         HTMLCreatorConfig.setPath(path);

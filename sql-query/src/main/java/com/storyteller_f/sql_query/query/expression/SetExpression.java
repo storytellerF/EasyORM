@@ -8,25 +8,26 @@ public class SetExpression<T> extends TwoExpression<T>{
     }
     @Override
     public String parse(boolean safe) throws Exception {
-        String name;
-        try {
-            name ="`"+ ORMUtil.getColumn(tableClass.getDeclaredField(fieldName))+"`";
-        } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-            name="`"+this.fieldName +"`";
-        }
-        String string = parse(name, objectToString(value));
+        String name = getName();
+        String string = parse(name, objectToString(value),safe);
         if (next != null) {
-            string += " , " + next.parse(safe);
+            string += String.format(" , %s", next.parse(safe));
         }
         return string;
     }
+
     @Override
 	public Object clone() {
         return new SetExpression<T>(tableClass, fieldName, value);
     }
-    protected String parse(String name, String right) {
-        return ""+name+" = ?";
+
+    protected String parse(String name, String right,boolean safe) {
+        if (safe) {
+            return "" + name + " = ?";
+        } else {
+            return "" + name + " = "+(right==null?"null":right);
+
+        }
     }
     public SetExpression<T> comma(SetExpression<?> setQuery) {
         next=setQuery;
