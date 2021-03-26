@@ -1,6 +1,7 @@
 package com.storyteller_f.sql_query.query;
 
 import com.storyteller_f.sql_query.annotation.Convert;
+import com.storyteller_f.sql_query.function.Function;
 import com.storyteller_f.sql_query.obtain.Obtain;
 import org.apache.commons.text.CaseUtils;
 import com.storyteller_f.sql_query.query.expression.TwoExpression;
@@ -33,15 +34,20 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
     }
 
     /**
-     * @param tableClass 需要查询的表
+     * @param columnClass 需要查询的表
      * @return 返回当前对象
      */
-    public Select<E> select(Class<?> tableClass) {
-        selectQuery.select(tableClass);
-        setReturnType(tableClass);
+    public Select<E> select(Class<?> columnClass) {
+        selectQuery.select(columnClass);
+        setReturnType(columnClass);
         return this;
     }
 
+    public Select<E> function(Class<? extends Function> columnClass,Class<?> tableClass) {
+        select(columnClass);
+        table(tableClass);
+        return this;
+    }
     /**
      * @param tableClass 查询的表，查询到的数据需要生成对象
      * @param trueTable  数据库中真实存在的表，被查的表
@@ -68,7 +74,12 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
     public Select<E> limit(int count) {
         return limit(0, count);
     }
-
+    public Select<E> and(ExpressionQuery[] expressionQueries){
+        for (ExpressionQuery expressionQuery : expressionQueries) {
+            and(expressionQuery);
+        }
+        return this;
+    }
     public Select<E> and(ExpressionQuery expressionQuery) {
         if (expressionQuery instanceof TwoExpression){
             TwoExpression<?> expressionQuery1 = (TwoExpression<?>) expressionQuery;
@@ -135,9 +146,13 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
                     method.invoke(instance, datum);
                 } else {
                     Field field = result.getField(i);
-                    if (!field.getDeclaringClass().equals(getReturnType())) {
+                    if (!field.getDeclaringClass().equals(getReturnType())) {//属于子字段中的
                         //检查响应对象是否实例化
-                        Object o = checkInstance(getChildField(field.getDeclaringClass()), instance);
+                        Field childField = getChildField(field.getDeclaringClass());
+                        if (childField==null){
+                            throw new Exception(field.getName()+"在子字段在查找不到");
+                        }
+                        Object o = checkInstance(childField, instance);
                         boolean c = field.isAccessible();
                         field.setAccessible(true);
                         if (datum.getClass().equals(Date.class)) {
@@ -181,9 +196,9 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
     }
 
     public E one() throws Exception {
-        List<E> execute = execute();
-        if (execute.size() > 0) {
-            return execute.get(0);
+        List<E> result = execute();
+        if (result.size() > 0) {
+            return result.get(0);
         } else {
             return null;
         }

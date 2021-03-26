@@ -17,5 +17,4 @@ public class LimitQuery implements Query{
         this.count=count;
         this.offset=offset;
     }
-
 }

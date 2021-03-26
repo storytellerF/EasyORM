@@ -1,6 +1,6 @@
 package com.storyteller_f.sql_query.query.expression;
 
-public class GreaterThanExpression<T> extends ArithMeticalExpression<T>{
+public class GreaterThanExpression<T> extends ThreeExpression<T>{
 
     public GreaterThanExpression( Class<?> tableClass,String fieldName, T value) {
         super(tableClass,fieldName, value);
@@ -11,11 +11,7 @@ public class GreaterThanExpression<T> extends ArithMeticalExpression<T>{
     }
 
     @Override
-    protected String parse(String name, String right,boolean safe) {
-        if (!safe) {
-            return name+" > "+right;
-        }
-        return name+" > ?";
+    public String getOperator() {
+        return ">";
     }
-
 }

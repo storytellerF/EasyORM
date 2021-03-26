@@ -112,7 +112,7 @@ public class ORMUtil {
 //		case "SET":
 
             case "INT":
-            case "BINGINT":
+            case "BIGINT":
             case "SMALLINT":
             case "MEDIUMINT":
             case "TINYINT":

@@ -1,18 +1,23 @@
 package com.storyteller_f.sql_query.query.expression;
 
-public class ArithMeticalExpression<T> extends TwoExpression<T> {
+public abstract class ArithMeticalExpression<T> extends TwoExpression<T> {
 
     public ArithMeticalExpression(Class<?> tableClass, String fieldName, T value) {
         super(tableClass, fieldName, value);
     }
-
+    public ArithMeticalExpression(Class<?> tableClass, GetName<String> fieldName, T value) {
+        super(tableClass, fieldName.get(), value);
+    }
     public ArithMeticalExpression(String fieldName, T value) {
         super(fieldName, value);
+    }
+    public ArithMeticalExpression(GetName<String> fieldName, T value) {
+        super(fieldName.get(), value);
     }
 
     @Override
     public String parse(boolean safe) throws Exception {
-        String name=getName();
+        String name = getName();
         String string = parse(name, this.objectToString(value), safe);
         if (next != null) {
             string += " and " + next.parse(safe);
@@ -20,8 +25,10 @@ public class ArithMeticalExpression<T> extends TwoExpression<T> {
         return string;
     }
 
-    protected String parse(String name, String right, boolean safe) {
-        return "";
-    }
+    protected abstract String parse(String name, String right, boolean safe);
 
+    @FunctionalInterface
+    public interface GetName<R> {
+        R get();
+    }
 }

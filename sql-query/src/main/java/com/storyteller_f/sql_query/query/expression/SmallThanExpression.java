@@ -1,6 +1,6 @@
 package com.storyteller_f.sql_query.query.expression;
 
-public class SmallThanExpression<T> extends ArithMeticalExpression<T>{
+public class SmallThanExpression<T> extends ThreeExpression<T>{
     public SmallThanExpression(String fieldName, T value) {
         super(fieldName, value);
     }
@@ -8,12 +8,9 @@ public class SmallThanExpression<T> extends ArithMeticalExpression<T>{
     public SmallThanExpression(Class<?> tableClass, String fieldName, T value) {
         super(tableClass,fieldName, value);
     }
-    @Override
-    protected String parse(String name, String right,boolean safe) {
-        if (!safe) {
-            return name+" < "+right;
-        }
-        return name+" < ?";
-    }
 
+    @Override
+    public String getOperator() {
+        return "<";
+    }
 }

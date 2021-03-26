@@ -22,6 +22,7 @@ public class JDBCObtain extends Obtain {
     public static final String MYSQL_INFORMATION_SCHEMA = "INFORMATION_SCHEMA";
     private Connection connection;
     private DataSource dataSource;
+    private boolean transaction = false;
 
     public JDBCObtain(Connection connection) {
         super();
@@ -30,7 +31,16 @@ public class JDBCObtain extends Obtain {
 
     public JDBCObtain(DataSource dataSource) {
         super();
-        this.dataSource=dataSource;
+        this.dataSource = dataSource;
+    }
+
+    public void enableTransaction() {
+        transaction = true;
+    }
+
+    public void disableTransaction() throws SQLException {
+        transaction = false;
+        closeConnection();
     }
 
     @Override
@@ -41,15 +51,15 @@ public class JDBCObtain extends Obtain {
             ResultSet resultSet = getResultSet(executableQuery);
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             int columnCount = resultSetMetaData.getColumnCount();
-            Fields fields = getFields(returnType,columnCount);
+            Fields fields = getFields(returnType, columnCount);
             DatabaseTable databaseTable = getDatabaseTable(getColumns(resultSetMetaData));
-            Result result = getResult(resultSet, columnCount, databaseTable);
+            Result result = getResultObject(resultSet, columnCount, databaseTable);
             provideAccessPoint(returnType, fields, databaseTable, result);
-            connection.close();
+            closeConnection();
             return result;
         } catch (Exception e) {
             System.out.println(executableQuery.parse(true));
-            throw  e;
+            throw e;
         }
 
     }
@@ -74,7 +84,7 @@ public class JDBCObtain extends Obtain {
         return columns;
     }
 
-    private Result getResult(ResultSet resultSet, int columnCount, DatabaseTable databaseTable) throws NoSuchMethodException, SQLException, IllegalAccessException, InvocationTargetException {
+    private Result getResultObject(ResultSet resultSet, int columnCount, DatabaseTable databaseTable) throws NoSuchMethodException, SQLException, IllegalAccessException, InvocationTargetException {
         Result result = new Result();
         result.setCount(columnCount);
         Method[] methods = new Method[columnCount];
@@ -117,9 +127,9 @@ public class JDBCObtain extends Obtain {
             throws Exception {
         PreparedStatement preparedStatement;
         if (dataSource != null) {//如果使用了连接池，从连接池获取一个连接
-            connection=dataSource.getConnection();
+            connection = dataSource.getConnection();
         }
-        preparedStatement=connection.prepareStatement(executableQuery.parse(true));
+        preparedStatement = connection.prepareStatement(executableQuery.parse(true));
         int index = 1;
         while (temp != null) {
             if (temp instanceof TwoExpression<?>) {
@@ -151,12 +161,17 @@ public class JDBCObtain extends Obtain {
             PreparedStatement preparedStatement = getPreparedStatement(executableQuery,
                     executableQuery.getExpressionQuery());
             int i = preparedStatement.executeUpdate();
-            connection.close();
+            closeConnection();
             return i;
         } catch (Exception e) {
             System.out.println(executableQuery.parse(true));
-            throw  e;
+            throw e;
         }
+    }
+
+    private void closeConnection() throws SQLException {
+        if (!transaction)
+            connection.close();
     }
 
 }

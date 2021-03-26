@@ -1,7 +1,5 @@
 package com.storyteller_f.sql_query.obtain;
 
-import java.util.Arrays;
-
 public class DatabaseTable {
     String[] columnNames;
     /*
@@ -10,12 +8,17 @@ public class DatabaseTable {
     String[] columnType;
 
     public DatabaseTable(int columnCount) {
+        init(columnCount);
+    }
+
+    private void init(int columnCount) {
         columnNames = new String[columnCount];
         columnType = new String[columnCount];
     }
 
     public DatabaseTable(Columns columns) {
         int columnCount=columns.getCount();
+        init(columnCount);
         for (int i1 = 0; i1 < columnCount; i1++) {
             /*
              * 获取到列类型和列名
