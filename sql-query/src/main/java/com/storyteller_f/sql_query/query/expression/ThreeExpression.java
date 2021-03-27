@@ -1,5 +1,7 @@
 package com.storyteller_f.sql_query.query.expression;
 
+import com.storyteller_f.sql_query.query.GetName;
+
 public abstract class ThreeExpression <T> extends ArithMeticalExpression<T>{
     public ThreeExpression(Class<?> tableClass, String fieldName, T value) {
         super(tableClass, fieldName, value);

@@ -1,5 +1,7 @@
 package com.storyteller_f.sql_query.query.expression;
 
+import com.storyteller_f.sql_query.query.GetName;
+
 import java.util.Date;
 
 public class LikeExpression<T> extends ThreeExpression<T>{

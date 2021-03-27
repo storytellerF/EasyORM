@@ -1,5 +1,6 @@
 package com.gui.view;
 
+import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.config_editor.model.Config;
 import com.config_editor.view.ConfigEditor;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
+    protected String modelPathFieldString;
     private JButton reflectToDatabase;
     private JButton reflectToCode;
     private JButton produceComponent;
@@ -55,124 +57,9 @@ public class Main {
     private JPanel inputComponent;
     private ConfigEditor configEditor;
     private JButton saveButton;
+    private JCheckBox enableLombok;
     private Connection connection;
     private String staticModelPathField;
-    protected String modelPathFieldString;
-
-    public String getModelPath(String path) {
-        String src = "src\\";
-        int index = path.lastIndexOf(src);
-        String replace = path.substring(index + src.length()).replace("\\", ".");
-        if (replace.startsWith("test.java")) {
-            return replace.substring("test.java".length() + 1);
-        }
-        return replace;
-    }
-
-    class TextChange implements DocumentListener {
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            getaVoid();
-        }
-
-        private void getaVoid() {
-            urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
-            dnib();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            getaVoid();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-        }
-    }
-
-    private void loopComponent(TextChange textChange) {
-        Component[] components = inputComponent.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField) {
-                JTextField jTextField = (JTextField) component;
-                String name = jTextField.getName();
-                if (name != null && name.equals("database")) {
-                    ((JTextField) component).getDocument().addDocumentListener(textChange);
-                }
-            }
-        }
-    }
-
-    public void bind(MainViewDatabaseConnectionConfig config) {
-        linkInput.setText(config.getLink());
-        urlInput.setText(config.getUrl());
-        portInput.setText(config.getPort());
-        modelPathInput.setText(config.getModelPath());
-        packageNameInput.setText(config.getModelPathPackageName());
-        databaseInput.setText(config.getDatabase());
-        extraParamInput.setText(config.getExtraParams());
-        nameInput.setText(config.getUserName());
-        passwordInput.setText(config.getPassword());
-        staticModelPathPackageNameInput.setText(config.getStaticModelPathPackageName());
-        staticModelPathInput.setText(config.getStaticModelPath());
-        modelPathFieldString = config.getModelPath();
-        staticModelPathField = config.getStaticModelPath();
-    }
-
-    public void dnib() {
-        Config current = configEditor.getCurrent();
-        if (current instanceof MainViewDatabaseConnectionConfig) {
-            MainViewDatabaseConnectionConfig current1 = (MainViewDatabaseConnectionConfig) current;
-            current1.setLink(linkInput.getText());
-            current1.setUrl(urlInput.getText());
-            current1.setDatabase(databaseInput.getText());
-            current1.setExtraParams(extraParamInput.getText());
-            current1.setUserName(nameInput.getText());
-            current1.setPassword(String.valueOf(passwordInput.getPassword()));
-            current1.setPort(portInput.getText());
-        }
-    }
-
-    public void initEditor() {
-        configEditor.setListener(new ConfigEditor.Listener() {
-            @Override
-            public void onInit(Config config) {
-                if (config instanceof MainViewDatabaseConnectionConfig) {
-                    MainViewDatabaseConnectionConfig config1 =
-                            (MainViewDatabaseConnectionConfig) config;
-                    bind(config1);
-                }
-            }
-
-            @Override
-            public Config onNew() {
-                MainViewDatabaseConnectionConfig loginConfig =
-                        new MainViewDatabaseConnectionConfig();
-                loginConfig.setName("未命名" + System.currentTimeMillis());
-                return loginConfig;
-            }
-        });
-        RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)
-                .registerSubtype(MainViewDatabaseConnectionConfig.class);
-        try {
-            configEditor.init("com.gui.main", runtimeTypeAdapterFactory);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void bindPath() {
-        Config current = configEditor.getCurrent();
-        if (current instanceof MainViewDatabaseConnectionConfig) {
-            MainViewDatabaseConnectionConfig current1 = (MainViewDatabaseConnectionConfig) current;
-            current1.setStaticModelPath(staticModelPathInput.getText());
-            current1.setModelPathPackageName(packageNameInput.getText());
-            current1.setStaticModelPathPackageName(staticModelPathPackageNameInput.getText());
-            current1.setModelPath(modelPathInput.getText());
-        }
-    }
 
     public Main() {
         initEditor();
@@ -220,7 +107,7 @@ public class Main {
             } else {
                 testConnection.setBackground(Color.red);
             }
-            JOptionPane.showMessageDialog(contentPanel,"连接结果"+b);
+            JOptionPane.showMessageDialog(contentPanel, "连接结果" + b);
         });
         linkInput.addActionListener(e -> urlInput.setText("jdbc:mysql://" + linkInput.getText() + ":" + portInput.getText() + "/" + databaseInput.getText()
                 + "?serverTimezone=UTC"));
@@ -244,7 +131,7 @@ public class Main {
                         constraints, urlInput.getText(), nameInput.getText(),
                         String.valueOf(passwordInput.getPassword()));
                 ParseDatabase create = new ParseDatabase(config);
-                create.parseDatabase();
+                create.parseDatabase(enableLombok.isSelected());
             } catch (Exception e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -291,7 +178,7 @@ public class Main {
                     }
                     String className = child.getName().substring(0, child.getName().indexOf('.'));
                     Class<?> clazz = Class.forName(packageNameInput.getText() + "." + className);
-                    Create create = new Create(clazz);
+                    Create create = new Create(new JDBCObtain(connection), clazz);
                     String parse = create.parse(true);
                     System.out.println(parse);
                     //com.storyteller_f.easyorm_jdbc.connection.createStatement().execute(parse);
@@ -349,11 +236,12 @@ public class Main {
                                 continue;
                             }
                             String name = field.getName();
-                            try {
-                                clazz.getDeclaredField("column_" + name);
-                            } catch (NoSuchFieldException noSuchFieldException) {
-                                staticContent.append("\t@NoQuery\n").append("\tpublic static String column_").append(name).append("=\"").append(name).append("\";\n");
-                            }
+//                            try {
+//                                clazz.getDeclaredField("column_" + name);
+//                            } catch (NoSuchFieldException noSuchFieldException) {
+//                                staticContent.append("\t@NoQuery\n").append("\tpublic static String s_c_").append(name).append("=\"").append(name).append("\";\n");
+//                            }
+                            staticContent.append("\tpublic static String ").append(name).append("(){\n").append("\t\treturn ").append(name).append("\n\t}\n");
                         }
                         System.out.println(i + " length:" + fileContent.length());
                         fileContent.insert(i, staticContent);
@@ -371,6 +259,142 @@ public class Main {
             }
         });
         //endregion
+    }
+
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(new WindowsLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        Main main = new Main();
+        JFrame jFrame = new JFrame("ORM tool");
+        ImageIcon imageIcon = new ImageIcon(new File("gui/src/com.gui.main/resources/项目.png").getAbsolutePath());
+        jFrame.setIconImage(imageIcon.getImage());
+        jFrame.setContentPane(main.contentPanel);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.pack();
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                try {
+                    if (main.connection != null && !main.connection.isClosed()) {
+                        main.connection.close();
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        jFrame.setVisible(true);
+    }
+
+    public String getModelPath(String path) {
+        String src = "src\\";
+        int index = path.lastIndexOf(src);
+        String replace = path.substring(index + src.length()).replace("\\", ".");
+        if (replace.startsWith("test.java")) {
+            return replace.substring("test.java".length() + 1);
+        }
+        return replace;
+    }
+
+    private void loopComponent(TextChange textChange) {
+        Component[] components = inputComponent.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField) {
+                JTextField jTextField = (JTextField) component;
+                String name = jTextField.getName();
+                if (name != null && name.equals("database")) {
+                    ((JTextField) component).getDocument().addDocumentListener(textChange);
+                }
+            }
+        }
+    }
+
+    /**
+     * 将对象中的数据填充到控件上
+     *
+     * @param config
+     */
+    public void bind(MainViewDatabaseConnectionConfig config) {
+        linkInput.setText(config.getLink());
+        urlInput.setText(config.getUrl());
+        portInput.setText(config.getPort());
+        modelPathInput.setText(config.getModelPath());
+        packageNameInput.setText(config.getModelPathPackageName());
+        databaseInput.setText(config.getDatabase());
+        extraParamInput.setText(config.getExtraParams());
+        nameInput.setText(config.getUserName());
+        passwordInput.setText(config.getPassword());
+        staticModelPathPackageNameInput.setText(config.getStaticModelPathPackageName());
+        staticModelPathInput.setText(config.getStaticModelPath());
+        modelPathFieldString = config.getModelPath();
+        staticModelPathField = config.getStaticModelPath();
+        enableLombok.setSelected(config.isEnableLombok());
+    }
+
+    /**
+     * 将数据保存到对象中
+     */
+    public void dnib() {
+        Config configEditorCurrent = configEditor.getCurrent();
+        if (configEditorCurrent instanceof MainViewDatabaseConnectionConfig) {
+            MainViewDatabaseConnectionConfig current = (MainViewDatabaseConnectionConfig) configEditorCurrent;
+            current.setLink(linkInput.getText());
+            current.setUrl(urlInput.getText());
+            current.setDatabase(databaseInput.getText());
+            current.setExtraParams(extraParamInput.getText());
+            current.setUserName(nameInput.getText());
+            current.setPassword(String.valueOf(passwordInput.getPassword()));
+            current.setPort(portInput.getText());
+            current.setEnableLombok(enableLombok.isSelected());
+        }
+    }
+
+    public void initEditor() {
+        configEditor.setListener(new ConfigEditor.Listener() {
+            @Override
+            public void onInit(Config config) {
+                if (config instanceof MainViewDatabaseConnectionConfig) {
+                    MainViewDatabaseConnectionConfig config1 = (MainViewDatabaseConnectionConfig) config;
+                    bind(config1);
+                }
+            }
+
+            @Override
+            public Config onNew() {
+                MainViewDatabaseConnectionConfig loginConfig =
+                        new MainViewDatabaseConnectionConfig();
+                loginConfig.setName("未命名" + System.currentTimeMillis());
+                return loginConfig;
+            }
+        });
+        RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)
+                .registerSubtype(MainViewDatabaseConnectionConfig.class);
+        try {
+            configEditor.init("com.gui.main", runtimeTypeAdapterFactory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void bindPath() {
+        Config current = configEditor.getCurrent();
+        if (current instanceof MainViewDatabaseConnectionConfig) {
+            MainViewDatabaseConnectionConfig current1 = (MainViewDatabaseConnectionConfig) current;
+            current1.setStaticModelPath(staticModelPathInput.getText());
+            current1.setModelPathPackageName(packageNameInput.getText());
+            current1.setStaticModelPathPackageName(staticModelPathPackageNameInput.getText());
+            current1.setModelPath(modelPathInput.getText());
+        }
     }
 
     private boolean notEmpty(String trim) {
@@ -412,37 +436,25 @@ public class Main {
         fileWriter.close();
     }
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(new WindowsLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        Main main = new Main();
-        JFrame jFrame = new JFrame("ORM tool");
-        ImageIcon imageIcon = new ImageIcon(new File("gui/src/com.gui.main/resources/项目.png").getAbsolutePath());
-        jFrame.setIconImage(imageIcon.getImage());
-        jFrame.setContentPane(main.contentPanel);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.pack();
-        jFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                super.windowOpened(e);
-            }
+    class TextChange implements DocumentListener {
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                try {
-                    if (main.connection != null && !main.connection.isClosed()) {
-                        main.connection.close();
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-        jFrame.setVisible(true);
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            getaVoid();
+        }
+
+        private void getaVoid() {
+            urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
+            dnib();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            getaVoid();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+        }
     }
 }

@@ -12,6 +12,15 @@ public class MainViewDatabaseConnectionConfig extends com.config_editor.model.Co
     private String modelPathPackageName;
     private String staticModelPath;
     private String staticModelPathPackageName;
+    private boolean enableLombok;
+
+    public boolean isEnableLombok() {
+        return enableLombok;
+    }
+
+    public void setEnableLombok(boolean enableLombok) {
+        this.enableLombok = enableLombok;
+    }
 
     public String getLink() {
         return link;

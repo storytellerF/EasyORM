@@ -1,5 +1,7 @@
 package com.storyteller_f.sql_query.query.expression;
 
+import com.storyteller_f.sql_query.query.GetName;
+
 public abstract class ArithMeticalExpression<T> extends TwoExpression<T> {
 
     public ArithMeticalExpression(Class<?> tableClass, String fieldName, T value) {
@@ -26,9 +28,4 @@ public abstract class ArithMeticalExpression<T> extends TwoExpression<T> {
     }
 
     protected abstract String parse(String name, String right, boolean safe);
-
-    @FunctionalInterface
-    public interface GetName<R> {
-        R get();
-    }
 }

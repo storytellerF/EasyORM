@@ -46,7 +46,7 @@ public class ColumnsToField {
 			String name = customField.getName();
 			classContent.append("\tprivate ").append(customField.getType()).append(" ")
 					.append(name).append(";\n");
-			classContent.append("\t@NoQuery\n").append("\tpublic static String column_").append(name).append("=\"").append(name).append("\";\n");
+//			classContent.append("\t@NoQuery\n").append("\tpublic static String column_").append(name).append("=\"").append(name).append("\";\n");
 		}
 		//生成导入类数据
 		for (Class<?> class1 : ed) {

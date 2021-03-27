@@ -50,7 +50,7 @@ public class Update<T> extends Changer<T> {
 	public String parse(boolean safe) throws Exception {
 		super.parse(safe);
 		if (whereQuery.getHeaderPointer()==null) System.out.println("警告，未设定条件");
-		return "update " + tableQuery.parse(safe) + " " + setQuery.parse(safe) + " " + whereQuery.parse(safe) + ";";
+		return String.format("update %s %s %s;", tableQuery.parse(safe), setQuery.parse(safe), whereQuery.parse(safe));
 	}
 
 	@Override

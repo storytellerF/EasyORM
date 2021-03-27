@@ -62,8 +62,8 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
     @Override
     public String parse(boolean safe) throws Exception {
         super.parse(safe);
-        return String.format("%s %s %s %s %s %s;", selectQuery.parse(safe), tableQuery.parse(safe), whereQuery.parse(safe),
-                joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim();
+        return String.format("%s %s %s %s %s %s", selectQuery.parse(safe), tableQuery.parse(safe), whereQuery.parse(safe),
+                joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim()+";";
     }
 
     public Select<E> limit(int offset, int count) {

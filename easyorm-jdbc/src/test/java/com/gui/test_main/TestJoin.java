@@ -17,10 +17,10 @@ public class TestJoin {
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=Asia/Shanghai", "root", "");
-			JDBCObtain JDBCObtain =new JDBCObtain(connection);
-			Select<User> select=new Select<>(JDBCObtain);
+			JDBCObtain jdbcObtain =new JDBCObtain(connection);
+			Select<User> select=new Select<>(jdbcObtain);
 			select.table(User.class).select(User.class).leftJoin(Cart.class,
-					new EqualColumn(User.class,User.name(),Cart.class,Cart.user())
+					new EqualColumn(User.class,User::name,Cart.class,Cart::user)
 			);
 			try {
 				System.out.println(select.parse(true));

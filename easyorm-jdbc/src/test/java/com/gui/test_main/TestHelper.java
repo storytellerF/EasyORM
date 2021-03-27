@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 
 public class TestHelper {
     public static void main(String[] args) {
-        JDBCObtain plice=new JDBCObtain(new Connection() {
+        JDBCObtain jdbcObtain=new JDBCObtain(new Connection() {
             @Override
             public Statement createStatement() throws SQLException {
                 return null;
@@ -283,7 +283,7 @@ public class TestHelper {
             }
         });
         try {
-            List<User> execute = plice.getSelect(User.class).execute();
+            List<User> execute = jdbcObtain.getSelect(User.class).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

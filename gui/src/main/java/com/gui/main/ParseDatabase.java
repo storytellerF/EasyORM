@@ -17,6 +17,7 @@ import com.storyteller_f.sql_query.annotation.constraint.Unique;
 import com.gui.model.validate.CustomField;
 
 public class ParseDatabase {
+    private final static String tag = "ParseDatabase";
     private final String packageStr;
     private final String path;
     private final HashMap<String, Table> tables;
@@ -28,14 +29,14 @@ public class ParseDatabase {
         this.tables = config.getTables();
     }
 
-    public String getModelClass(String packageStr, String className, ArrayList<Column> columns) throws Exception {
-        System.out.println("getModelClass method called");
-        System.out.println(packageStr + ";" + className);
+    public String getModelClass(String packageStr, String className, ArrayList<Column> columns, boolean enableLombok) throws Exception {
+        System.out.println(tag + "getModelClass method called");
+        System.out.println(tag + packageStr + ";" + className);
         ColumnsToField columnsToField = new ColumnsToField(packageStr, className);
         for (Column column : columns) {
             String nameValue = column.getName();
             String typeValue = column.getType();
-            System.out.println("name:" + nameValue + " type:" + typeValue + "key:" + column.getKey());
+            System.out.println(tag + "name:" + nameValue + " type:" + typeValue + "key:" + column.getKey());
             CustomField customField = new CustomField();
             customField.nameAndType(nameValue, typeValue);
             if (column.isNullable()) {
@@ -50,36 +51,24 @@ public class ParseDatabase {
                 customField.add("@Unique");
                 customField.add(Unique.class);
             }
-            //todo 添加Lombok
-            columnsToField.addMethod("\tpublic void set" + CaseUtils.toCamelCase(nameValue, true) + "(" +
-                    customField.getType() + " " + nameValue + "){\n" +
-                    "\t\tthis." + nameValue + "=" + nameValue + ";\n" +
-                    "\t}\n" +
-                    "\tpublic " + customField.getType() + " get" + CaseUtils.toCamelCase(nameValue, true) + "(){\n" +
-                    "\t\treturn " + nameValue + ";\n" +
-                    "\t}"
-            );
+            StringBuilder append = new StringBuilder();
+            if (enableLombok)
+                append.append("\tpublic void set").append(CaseUtils.toCamelCase(nameValue, true)).append("(").append(customField.getType()).append(" ").append(nameValue).append("){\n")
+                        .append("\t\tthis.").append(nameValue).append("=").append(nameValue).append(";\n")
+                        .append("\t}\n")
+                        .append("\tpublic ").append(customField.getType()).append(" get").append(CaseUtils.toCamelCase(nameValue, true)).append("(){\n")
+                        .append("\t\treturn ").append(nameValue).append(";\n")
+                        .append("\t}\n");
+
+            append.append("\tpublic static String ").append(nameValue).append("(){\n").append("\t\treturn ").append(nameValue).append("\n\t}\n");
+            columnsToField.addMethod(append.toString());
 //			customField.add("@RealName( name =\"" + real.getStringCellValue() + "\")");
             columnsToField.add(customField);
         }
         return columnsToField.content();
     }
 
-    public String needImportClass(String type) {
-        if (type.contains("int")) {
-            return null;
-        } else if (type.contains("varchar")) {
-            return null;
-        } else if (type.contains("datetime")) {
-            return "import java.com.gui.com.storyteller_f.sql_query.util.Date;";
-        } else if (type.contains("ArrayList")) {
-            return "import java.com.gui.com.storyteller_f.sql_query.util.ArrayList;";
-        } else {
-            return null;
-        }
-    }
-
-    public void parseDatabase() throws Exception {
+    public void parseDatabase(boolean enableLombok) throws Exception {
         for (Entry<String, Table> iterable : tables.entrySet()) {
             String key = iterable.getKey();
             Table value = iterable.getValue();
@@ -87,7 +76,7 @@ public class ParseDatabase {
 //			System.out.println("name:"+key+" to:"+CaseUtils.toCamelCase(key,true));
             String path = Paths.get(this.path, CaseUtils.toCamelCase(key, true) + ".java").toString();
 //			writeFile(path, getModelClass(packageStr, key, columns));
-            System.out.println(getModelClass(packageStr, key, columns));
+            System.out.println(getModelClass(packageStr, key, columns, enableLombok));
         }
     }
 

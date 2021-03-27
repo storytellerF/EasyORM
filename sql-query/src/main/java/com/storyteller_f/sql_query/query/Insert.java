@@ -28,7 +28,7 @@ public class Insert<T> extends Changer<T> {
     @Override
     public String parse(boolean safe) throws Exception {
     	super.parse(safe);
-        return "insert into "+tableQuery.parse(safe)+" "+valueQuery.parse(safe)+";";
+        return String.format("insert into %s %s;", tableQuery.parse(safe), valueQuery.parse(safe));
     }
 
     @Override
