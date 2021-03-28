@@ -16,7 +16,7 @@ public class TestConfigEditor {
 
     public TestConfigEditor() {
         try {
-            configEditor.setListener(new ConfigEditor.Listener() {
+            configEditor.setListener(new ConfigEditor.ConfigEditorListener() {
                 @Override
                 public void onInit(Config config) {
                     if (config instanceof LoginConfig) {

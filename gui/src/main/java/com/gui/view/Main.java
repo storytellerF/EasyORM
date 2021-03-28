@@ -359,7 +359,7 @@ public class Main {
     }
 
     public void initEditor() {
-        configEditor.setListener(new ConfigEditor.Listener() {
+        configEditor.setListener(new ConfigEditor.ConfigEditorListener() {
             @Override
             public void onInit(Config config) {
                 if (config instanceof MainViewDatabaseConnectionConfig) {

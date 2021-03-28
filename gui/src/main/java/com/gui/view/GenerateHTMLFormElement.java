@@ -235,7 +235,7 @@ public class GenerateHTMLFormElement {
     }
 
     public void initEditor() {
-        htmlConfigEditor.setListener(new ConfigEditor.Listener() {
+        htmlConfigEditor.setListener(new ConfigEditor.ConfigEditorListener() {
             @Override
             public void onInit(Config config) {
                 if (config instanceof HTMLCreatorConfig) {

@@ -1,145 +1,101 @@
 package com.config_editor.view;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.config_editor.model.Config;
-import com.config_editor.model.Configs;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.io.*;
 import java.util.Iterator;
-import java.util.Objects;
 
 public class ConfigEditor {
-    private JComboBox<String> config_editor_comboBox1;
+    private JComboBox<String> config_editor_comboBox;
     private JPanel panel1;
-    private JComboBox<String> config_editor_menu_comboBox1;
-    private String path;
-    private Gson gson;
-    private Configs configs;
+    private JComboBox<String> config_editor_menu_comboBox;
+    private final ConfigEditorCore core;
 
     public ConfigEditor() {
+        core=new ConfigEditorCore();
     }
 
     public void init(String suffix, RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory) throws IOException {
-        gson=new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
-        path = "config-editor-" + suffix + ".json";
-        File file = new File(path);
-        System.out.println(file.getAbsolutePath());
-        if (!file.exists()) {
-            if (!file.createNewFile()) {
-                System.out.println("文件创建失败" + file.getAbsolutePath());
-                return;
+        core.setCoreListener(new ConfigEditorCore.CoreListener() {
+            @Override
+            public void updateList(int config) {
+                update(config);
             }
-        }
-        InputStream resourceAsStream = new FileInputStream(path);
-        configs = gson.fromJson(new InputStreamReader(resourceAsStream), Configs.class);
 
-        resourceAsStream.close();
-        config_editor_comboBox1.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                int selectedIndex = config_editor_comboBox1.getSelectedIndex();
-                Config configAt = configs.getConfigAt(selectedIndex);
-                configs.choose(configAt.getId());
-                if (listener != null) {
-                    listener.onInit(configAt);
-                }
+            @Override
+            public Config onNew() {
+                return configEditorListener.onNew();
+            }
+
+            @Override
+            public void onInit(Config configAt) {
+                configEditorListener.onInit(configAt);
+            }
+
+            @Override
+            public void bindEvent() {
+                bindEvent1();
             }
         });
-        config_editor_menu_comboBox1.addActionListener(e -> {
+        core.init(suffix, runtimeTypeAdapterFactory);
+    }
+
+    private void bindEvent1() {
+        config_editor_comboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                int selectedIndex = config_editor_comboBox.getSelectedIndex();
+                core.selected(selectedIndex);
+            }
+        });
+        config_editor_menu_comboBox.addActionListener(e -> {
             Object source = e.getSource();
             if (source instanceof JComboBox) {
-                int selectedIndex = config_editor_menu_comboBox1.getSelectedIndex();
-                String itemAt = config_editor_menu_comboBox1.getItemAt(selectedIndex);
-                System.out.println(itemAt);
-                if (itemAt.equals("new")) {
-                    if (listener != null) {
-                        configs.addConfig(listener.onNew());
-                        int index = configs.size() - 1;
-                        configs.choose(configs.getConfigAt(index).getId());
-                        updateList(index);
-                        return;
+                int menuIndex = config_editor_menu_comboBox.getSelectedIndex();
+                String menuCommand = config_editor_menu_comboBox.getItemAt(menuIndex);
+                int selectedListItem = config_editor_comboBox.getSelectedIndex();
+                System.out.println(menuCommand);
+                if ("rename".equals(menuCommand)) {
+                    Config configAt = core.getConfigAt(selectedListItem);
+                    String s = JOptionPane.showInputDialog(panel1, "不得与原名称相同" + configAt.getName()
+                            , configAt.getName());
+                    if (s != null) {
+                        configAt.setName(s);
+                        update(selectedListItem);
                     }
-                }
-                int selectedIndex1 = config_editor_comboBox1.getSelectedIndex();
-                if (selectedIndex1 == -1) return;
-                Config configAt = configs.getConfigAt(selectedIndex1);
-                switch (itemAt) {
-                    case "clone":
-                        try {
-                            Config clone = (Config) configAt.clone();
-                            clone.setName(clone.getName() + "克隆");
-                            configs.choose(configs.addConfig(clone));
-                            updateList(configs.getLastIndex());
-                        } catch (CloneNotSupportedException cloneNotSupportedException) {
-                            cloneNotSupportedException.printStackTrace();
-                        }
-                        break;
-                    case "delete":
-                        configs.removeAt(selectedIndex1);
-                        configs.choose(configs.getConfigAt(0).getId());
-                        updateList(0);
-                        break;
-                    case "rename":
-                        String s = JOptionPane.showInputDialog(panel1, "不得与原名称相同" + configAt.getName()
-                                , configAt.getName());
-                        if (s != null) {
-                            configAt.setName(s);
-                            updateList(selectedIndex1);
-                        }
-                        break;
+                }else {
+                    core.sendCommand(menuCommand, selectedListItem);
                 }
             }
         });
-        if (configs == null) {
-            System.out.println("configs is null");
-            configs = new Configs();
-        } else {
-            updateList(configs.getLastIndex());
-        }
     }
 
     public void save() {
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(path);
-            fileWriter.write(gson.toJson(configs));
-            fileWriter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        core.save();
     }
 
-    public void updateList(int index) {
-        config_editor_comboBox1.removeAllItems();
-        for (Iterator<Config> it = configs.getIterator(); it.hasNext(); ) {
+    public void update(int index) {
+        config_editor_comboBox.removeAllItems();
+        for (Iterator<Config> it = core.getIterator(); it.hasNext(); ) {
             Config config = it.next();
-            config_editor_comboBox1.addItem(config.getName());
+            config_editor_comboBox.addItem(config.getName());
         }
-        config_editor_comboBox1.setSelectedIndex(index);
+        config_editor_comboBox.setSelectedIndex(index);
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
+    public void setListener(ConfigEditorListener configEditorListener) {
+        this.configEditorListener = configEditorListener;
     }
 
-    private Listener listener;
+    private ConfigEditorListener configEditorListener;
 
     public Config getCurrent() {
-        return configs.getLastConfig();
+        return core.getLastConfig();
     }
 
-    public interface Listener {
+    public interface ConfigEditorListener {
         void onInit(Config configs);
 
         Config onNew();

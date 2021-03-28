@@ -101,7 +101,7 @@ public class ReadExcelGetModel {
     }
 
     public void initEditor() {
-        excelConfig.setListener(new ConfigEditor.Listener() {
+        excelConfig.setListener(new ConfigEditor.ConfigEditorListener() {
             @Override
             public void onInit(Config config) {
                 if (config instanceof ExcelReadConfig) {

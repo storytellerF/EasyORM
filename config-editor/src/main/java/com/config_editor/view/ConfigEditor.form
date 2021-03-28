@@ -7,11 +7,11 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="f43d8" class="javax.swing.JComboBox" binding="config_editor_comboBox1">
+      <component id="f43d8" class="javax.swing.JComboBox" binding="config_editor_comboBox">
         <constraints border-constraint="Center"/>
         <properties/>
       </component>
-      <component id="944e1" class="javax.swing.JComboBox" binding="config_editor_menu_comboBox1">
+      <component id="944e1" class="javax.swing.JComboBox" binding="config_editor_menu_comboBox">
         <constraints border-constraint="East"/>
         <properties>
           <model>
