@@ -4,6 +4,7 @@ import com.storyteller_f.sql_query.obtain.Columns;
 import com.storyteller_f.sql_query.obtain.DatabaseTable;
 import com.storyteller_f.sql_query.obtain.Fields;
 import com.storyteller_f.sql_query.obtain.Obtain;
+import com.storyteller_f.sql_query.query.Select;
 import org.apache.commons.text.WordUtils;
 import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
@@ -44,7 +45,7 @@ public class JDBCObtain extends Obtain {
     }
 
     @Override
-    public Result getResult(ExecutableQuery<?> executableQuery)
+    public Result getResult(Select<?> executableQuery)
             throws Exception {
         try {
             Class<?> returnType = getReturnType(executableQuery);

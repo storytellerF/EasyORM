@@ -7,7 +7,7 @@ import com.storyteller_f.sql_query.util.ORMUtil;
 
 public abstract class ExecutableQuery<CHILD_TYPE extends ExecutableQuery<CHILD_TYPE>> extends Executor implements Query {
     protected TableQuery tableQuery;
-    private Class<?> returnType;
+
 
     public ExecutableQuery(Obtain obtain) {
         super(obtain);
@@ -19,19 +19,9 @@ public abstract class ExecutableQuery<CHILD_TYPE extends ExecutableQuery<CHILD_T
      */
     @Override
     public String parse(boolean safe) throws Exception {
-        if (tableQuery.count() == 0) {
-            table(getReturnType());
-        }
         return null;
     }
 
-    public Class<?> getReturnType() {
-        return returnType;
-    }
-
-    protected void setReturnType(Class<?> returnType) {
-        this.returnType = returnType;
-    }
 
     public abstract ExpressionQuery getExpressionQuery();
 

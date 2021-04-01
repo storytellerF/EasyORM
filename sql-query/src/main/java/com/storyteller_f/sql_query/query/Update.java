@@ -11,6 +11,10 @@ import com.storyteller_f.sql_query.query.query.SetQuery;
 import com.storyteller_f.sql_query.query.query.WhereQuery;
 import com.storyteller_f.sql_query.query.type.Changer;
 
+/**
+ * 除非使用update 方法，必须指定表名
+ * @param <OBJECT_TYPE>
+ */
 @SuppressWarnings("unused")
 public class Update<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
 	private final SetQuery setQuery;
@@ -20,7 +24,6 @@ public class Update<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
 		super(obtain);
 		setQuery = new SetQuery();
 		whereQuery = new WhereQuery();
-		setReturnType(Integer.class);
 	}
 
 	public Update<OBJECT_TYPE> set(SetExpression<?> setExpression) {

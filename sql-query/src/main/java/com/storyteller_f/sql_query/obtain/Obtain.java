@@ -35,7 +35,7 @@ public abstract class Obtain {
         return new Delete<>(this);
     }
 
-    public abstract Result getResult(ExecutableQuery<?> executableQuery) throws Exception;
+    public abstract Result getResult(Select<?> executableQuery) throws Exception;
 
     public abstract int getInt(ExecutableQuery<?> executableQuery) throws Exception;
 
@@ -127,7 +127,7 @@ public abstract class Obtain {
      * @return 返回类型
      * @throws UnexpectedException 返回类型为整形
      */
-    protected Class<?> getReturnType(ExecutableQuery<?> executableQuery) throws UnexpectedException {
+    protected Class<?> getReturnType(Select<?> executableQuery) throws UnexpectedException {
         Class<?> returnType = executableQuery.getReturnType();
 //        System.out.println("return:" + returnType.getName());
         if (returnType == Integer.class) {

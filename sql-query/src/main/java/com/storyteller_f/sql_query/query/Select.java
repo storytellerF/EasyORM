@@ -24,6 +24,15 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
     private final WhereQuery whereQuery;
     private JoinQuery joinQuery;
     private final GroupQuery groupQuery;
+    private Class<RETURN_TYPE> returnType;
+    public Class<RETURN_TYPE> getReturnType() {
+        return returnType;
+    }
+
+    protected void setReturnType(Class<RETURN_TYPE> returnType) {
+        this.returnType = returnType;
+    }
+
 
     public Select(Obtain obtain) {
         super(obtain);
@@ -38,7 +47,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
      * @param columnClass 需要查询的表
      * @return 返回当前对象
      */
-    public Select<RETURN_TYPE> select(Class<?> columnClass) {
+    public Select<RETURN_TYPE> select(Class<RETURN_TYPE> columnClass) {
         selectQuery.select(columnClass);
         setReturnType(columnClass);
         return this;
@@ -53,7 +62,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
      * @param trueTable  数据库中真实存在的表，被查的表
      * @return 返回当前对象
      */
-    public Select<RETURN_TYPE> select(Class<?> tableClass, Class<?> trueTable) {
+    public Select<RETURN_TYPE> select(Class<RETURN_TYPE> tableClass, Class<?> trueTable) {
         selectQuery.select(tableClass, trueTable);
         setReturnType(tableClass);
         return this;
@@ -62,6 +71,9 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
     @Override
     public String parse(boolean safe) throws Exception {
         super.parse(safe);
+        if (tableQuery.count() == 0) {
+            table(getReturnType());
+        }
         return String.format("%s %s %s %s %s %s", selectQuery.parse(safe), tableQuery.parse(safe), whereQuery.parse(safe),
                 joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim()+";";
     }
@@ -141,8 +153,8 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
                 list.add((RETURN_TYPE) data[0]);// 默认只有第一个参数有效
                 continue;
             }
-            Constructor<?> constructor = getReturnType().getConstructor();
-            RETURN_TYPE instance = (RETURN_TYPE) constructor.newInstance();// 利用放射实例化到对象
+            Constructor<RETURN_TYPE> constructor = getReturnType().getConstructor();
+            RETURN_TYPE instance = constructor.newInstance();// 利用放射实例化到对象
             for (int i = 0; i < result.getColumnCount(); i++) {// 进行赋值
                 Method method = result.getMethod(i);
                 Object datum = data[i];
@@ -193,7 +205,6 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
                 }
             }
             list.add(instance);
-
         }
         return list;
 

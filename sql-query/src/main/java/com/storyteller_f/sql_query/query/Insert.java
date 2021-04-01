@@ -6,12 +6,15 @@ import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 import com.storyteller_f.sql_query.query.query.ValueQuery;
 import com.storyteller_f.sql_query.query.type.Changer;
 
+/**
+ * 除非使用insert 方法，必须指定表名
+ * @param <OBJECT_TYPE>
+ */
 public class Insert<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
     private final ValueQuery valueQuery;
     public Insert(Obtain obtain) {
         super(obtain);
         valueQuery=new ValueQuery();
-        setReturnType(Integer.class);
     }
     @Override
 	public void add(Class<?> claxx, String fieldName, Object value) {

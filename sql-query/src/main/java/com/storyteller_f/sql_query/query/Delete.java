@@ -9,13 +9,16 @@ import com.storyteller_f.sql_query.query.type.Changer;
 
 import java.lang.reflect.Field;
 
+/**
+ * 除非使用delete 方法，必须指定表名
+ * @param <OBJECT_TYPE>
+ */
 public class Delete<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
     private final WhereQuery whereQuery;
 
     public Delete(Obtain ob) {
         super(ob);
         whereQuery = new WhereQuery();
-        setReturnType(Integer.class);
     }
 
     @Override
