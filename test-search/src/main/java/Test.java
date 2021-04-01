@@ -1,8 +1,6 @@
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.easyorm_search.Pager;
-import com.storyteller_f.easyorm_search.SearchPattern;
 import com.storyteller_f.sql_query.query.Select;
-import com.storyteller_f.sql_query.query.column.EqualColumn;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 
 import java.sql.Connection;

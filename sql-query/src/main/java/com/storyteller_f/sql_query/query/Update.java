@@ -12,7 +12,7 @@ import com.storyteller_f.sql_query.query.query.WhereQuery;
 import com.storyteller_f.sql_query.query.type.Changer;
 
 @SuppressWarnings("unused")
-public class Update<T> extends Changer<T> {
+public class Update<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
 	private final SetQuery setQuery;
 	private final WhereQuery whereQuery;
 
@@ -23,11 +23,11 @@ public class Update<T> extends Changer<T> {
 		setReturnType(Integer.class);
 	}
 
-	public Update<T> set(SetExpression<?> setExpression) {
+	public Update<OBJECT_TYPE> set(SetExpression<?> setExpression) {
 		setQuery.set(setExpression);
 		return this;
 	}
-	public Update<T> update(T t) throws Exception {
+	public Update<OBJECT_TYPE> update(OBJECT_TYPE t) throws Exception {
 		setObject(t);
 		return this;
 	}
@@ -85,7 +85,7 @@ public class Update<T> extends Changer<T> {
 		return null;
 	}
 
-	public Update<T> and(ExpressionQuery expressionQuery) {
+	public Update<OBJECT_TYPE> and(ExpressionQuery expressionQuery) {
 		whereQuery.and(expressionQuery, tableQuery.getTableMap());
 		return this;
 	}

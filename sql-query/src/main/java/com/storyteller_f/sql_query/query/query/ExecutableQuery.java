@@ -5,7 +5,7 @@ import com.storyteller_f.sql_query.query.Query;
 import com.storyteller_f.sql_query.obtain.Obtain;
 import com.storyteller_f.sql_query.util.ORMUtil;
 
-public abstract class ExecutableQuery<T extends ExecutableQuery<T>> extends Executor implements Query {
+public abstract class ExecutableQuery<CHILD_TYPE extends ExecutableQuery<CHILD_TYPE>> extends Executor implements Query {
     protected TableQuery tableQuery;
     private Class<?> returnType;
 
@@ -36,23 +36,23 @@ public abstract class ExecutableQuery<T extends ExecutableQuery<T>> extends Exec
     public abstract ExpressionQuery getExpressionQuery();
 
     @SuppressWarnings("unchecked")
-    public T table(String name) {
+    public CHILD_TYPE table(String name) {
         tableQuery.table(name);
-        return (T) this;
+        return (CHILD_TYPE) this;
     }
 
-    public T table(Class<?> tableClass) {
+    public CHILD_TYPE table(Class<?> tableClass) {
         String name = ORMUtil.getTrueTableName(tableClass);
         return table(name);
     }
 
     @SuppressWarnings("unchecked")
-    public T table(String name, String alias) {
+    public CHILD_TYPE table(String name, String alias) {
         tableQuery.table(name, alias);
-        return (T) this;
+        return (CHILD_TYPE) this;
     }
 
-    public T table(Class<?> tableClass, String alias) {
+    public CHILD_TYPE table(Class<?> tableClass, String alias) {
         String name;
         name = ORMUtil.getTrueTableName(tableClass);
         return table(name, alias);

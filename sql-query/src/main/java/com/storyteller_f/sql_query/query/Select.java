@@ -8,6 +8,7 @@ import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.*;
 import com.storyteller_f.sql_query.query.result.Result;
 import com.storyteller_f.sql_query.query.type.Search;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
+public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> implements Search {
     private final SelectQuery selectQuery;
     private final LimitQuery limitQuery;
     private final WhereQuery whereQuery;
@@ -37,13 +38,13 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
      * @param columnClass 需要查询的表
      * @return 返回当前对象
      */
-    public Select<E> select(Class<?> columnClass) {
+    public Select<RETURN_TYPE> select(Class<?> columnClass) {
         selectQuery.select(columnClass);
         setReturnType(columnClass);
         return this;
     }
 
-    public Select<E> function(Class<? extends Function> columnClass,Class<?> tableClass) {
+    public Select<RETURN_TYPE> function(Class<? extends Function> columnClass, Class<?> tableClass) {
         select(columnClass);
         table(tableClass);
         return this;
@@ -53,7 +54,7 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
      * @param trueTable  数据库中真实存在的表，被查的表
      * @return 返回当前对象
      */
-    public Select<E> select(Class<?> tableClass, Class<?> trueTable) {
+    public Select<RETURN_TYPE> select(Class<?> tableClass, Class<?> trueTable) {
         selectQuery.select(tableClass, trueTable);
         setReturnType(tableClass);
         return this;
@@ -66,21 +67,21 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
                 joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim()+";";
     }
 
-    public Select<E> limit(int offset, int count) {
+    public Select<RETURN_TYPE> limit(int offset, int count) {
         limitQuery.limit(offset, count);
         return this;
     }
 
-    public Select<E> limit(int count) {
+    public Select<RETURN_TYPE> limit(int count) {
         return limit(0, count);
     }
-    public Select<E> and(ExpressionQuery[] expressionQueries){
+    public Select<RETURN_TYPE> and(ExpressionQuery[] expressionQueries){
         for (ExpressionQuery expressionQuery : expressionQueries) {
             and(expressionQuery);
         }
         return this;
     }
-    public Select<E> and(ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> and(ExpressionQuery expressionQuery) {
         if (expressionQuery instanceof TwoExpression){
             TwoExpression<?> expressionQuery1 = (TwoExpression<?>) expressionQuery;
             if (expressionQuery1.getTableClass()==null) {
@@ -91,29 +92,33 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
         return this;
     }
 
-    public Select<E> leftJoin(Class<?> tableClass, ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> where(ExpressionQuery... executableQueries){
+        return  and(executableQueries);
+    }
+
+    public Select<RETURN_TYPE> leftJoin(Class<?> tableClass, ExpressionQuery expressionQuery) {
         joinQuery = new LeftJoinQuery(tableClass);
         joinQuery.on(expressionQuery, tableQuery.getTableMap());
         return this;
     }
 
-    public Select<E> joinOn(ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> joinOn(ExpressionQuery expressionQuery) {
         joinQuery.and(expressionQuery, tableQuery.getTableMap());
         return this;
     }
 
-    public Select<E> rightJoin(Class<?> tableClass, ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> rightJoin(Class<?> tableClass, ExpressionQuery expressionQuery) {
         joinQuery = new RightJoinQuery(tableClass);
         joinQuery.on(expressionQuery, tableQuery.getTableMap());
         return this;
     }
 
-    public Select<E> groupBy(Class<?> tableClass, String column, ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> groupBy(Class<?> tableClass, String column, ExpressionQuery expressionQuery) {
         groupQuery.groudBy(tableClass, expressionQuery, tableQuery.getTableMap());
         return this;
     }
 
-    public Select<E> having(ExpressionQuery expressionQuery) {
+    public Select<RETURN_TYPE> having(ExpressionQuery expressionQuery) {
         groupQuery.havingAnd(expressionQuery, tableQuery.getTableMap());
         return this;
     }
@@ -128,17 +133,17 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
     }
 
     @SuppressWarnings("unchecked")
-    public List<E> execute() throws Exception {
+    public List<RETURN_TYPE> execute() throws Exception {
         Result result = obtain.getResult(this);
-        List<E> list = new ArrayList<>();
+        List<RETURN_TYPE> list = new ArrayList<>();
         while (result.hasNext()) {
             Object[] data = result.next();
             if (getReturnType().equals(String.class) || getReturnType().equals(Integer.class)) {// 返回类型是基本类型
-                list.add((E) data[0]);// 默认只有第一个参数有效
+                list.add((RETURN_TYPE) data[0]);// 默认只有第一个参数有效
                 continue;
             }
             Constructor<?> constructor = getReturnType().getConstructor();
-            E instance = (E) constructor.newInstance();// 利用放射实例化到对象
+            RETURN_TYPE instance = (RETURN_TYPE) constructor.newInstance();// 利用放射实例化到对象
             for (int i = 0; i < result.getColumnCount(); i++) {// 进行赋值
                 Method method = result.getMethod(i);
                 Object datum = data[i];
@@ -195,8 +200,8 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
 
     }
 
-    public E one() throws Exception {
-        List<E> result = execute();
+    public RETURN_TYPE one() throws Exception {
+        List<RETURN_TYPE> result = execute();
         if (result.size() > 0) {
             return result.get(0);
         } else {
@@ -204,7 +209,7 @@ public class Select<E> extends ExecutableQuery<Select<E>> implements Search {
         }
     }
 
-    private Object checkInstance(Field field, E instance) throws Exception {
+    private Object checkInstance(Field field, RETURN_TYPE instance) throws Exception {
         Method getMethod = getGetMethod(field.getName());
         if (getMethod != null) {
             Object invoke = getMethod.invoke(instance);

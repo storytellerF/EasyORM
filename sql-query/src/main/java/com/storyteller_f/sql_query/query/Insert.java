@@ -6,7 +6,7 @@ import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 import com.storyteller_f.sql_query.query.query.ValueQuery;
 import com.storyteller_f.sql_query.query.type.Changer;
 
-public class Insert<T> extends Changer<T> {
+public class Insert<OBJECT_TYPE> extends Changer<OBJECT_TYPE> {
     private final ValueQuery valueQuery;
     public Insert(Obtain obtain) {
         super(obtain);
@@ -17,11 +17,11 @@ public class Insert<T> extends Changer<T> {
 	public void add(Class<?> claxx, String fieldName, Object value) {
 		value(new ValueExpression<>(claxx, fieldName, value));
 	}
-    public Insert<T> value(ValueExpression<?> valueExpression) {
+    public Insert<OBJECT_TYPE> value(ValueExpression<?> valueExpression) {
         valueQuery.value(valueExpression);
         return this;
     }
-    public Insert<T> insert(T t) throws Exception {
+    public Insert<OBJECT_TYPE> insert(OBJECT_TYPE t) throws Exception {
         setObject(t);
         return this;
     }

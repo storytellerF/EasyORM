@@ -1,23 +1,22 @@
 package com.storyteller_f.sql_query.query.type;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.storyteller_f.sql_query.obtain.Obtain;
-import com.storyteller_f.sql_query.query.Insert;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 import com.storyteller_f.sql_query.util.ORMUtil;
 
-public abstract class Changer<T> extends ExecutableQuery<Insert<T>> implements Change {
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+public abstract class Changer<OBJECT_TYPE> extends ExecutableQuery<Changer<OBJECT_TYPE>> implements Change {
 
 	public Changer(Obtain obtain) {
 		super(obtain);
 	}
-	public Changer<T> setObject(T t) throws Exception {
-		table(t.getClass());
-		Class<?> classOfParam=t.getClass();
+	public Changer<OBJECT_TYPE> setObject(OBJECT_TYPE object_type) throws Exception {
+		table(object_type.getClass());
+		Class<?> classOfParam= object_type.getClass();
 		Field[] fields=classOfParam.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(NoQuery.class)) {
@@ -25,7 +24,7 @@ public abstract class Changer<T> extends ExecutableQuery<Insert<T>> implements C
 			}
 			if (Modifier.isStatic(field.getModifiers())) continue;
 			String fieldName=field.getName();
-			Object value =ORMUtil.getValue(t, classOfParam, field);
+			Object value =ORMUtil.getValue(object_type, classOfParam, field);
 			if (pass(field,fieldName,value)) {
 				continue;
 			}
