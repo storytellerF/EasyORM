@@ -12,7 +12,6 @@ public class Result implements Iterator<Object[]> {
     private Object[] objects;
     private Class<?>[] typeClasses;
     private int index = -1;
-    private HashMap<Class<?>,Result> childMap=new HashMap<>();
     private final ArrayList<Object[]> data = new ArrayList<>();
 
     public int getCount() {

@@ -44,9 +44,8 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
         return this;
     }
 
-    public Select<RETURN_TYPE> function(Class<? extends Function> columnClass, Class<?> tableClass) {
+    public Select<RETURN_TYPE> function(Class<RETURN_TYPE> columnClass, Class<?> tableClass) {
         select(columnClass);
-        table(tableClass);
         return this;
     }
     /**
