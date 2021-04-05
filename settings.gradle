@@ -6,4 +6,5 @@ include 'mybatis-generator'
 include 'config-editor'
 include 'easyorm-search'
 include 'test-search'
+include 'projector-ui'
 
