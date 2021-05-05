@@ -1,20 +1,23 @@
 package com.gui.model;
 
+import com.storyteller_f.sql_query.annotation.Column;
 import com.storyteller_f.sql_query.annotation.Convert;
 import com.storyteller_f.sql_query.annotation.NoQuery;
+import com.storyteller_f.sql_query.annotation.Table;
 
-public class Column {
-	@com.storyteller_f.sql_query.annotation.Column(name = "column_comment")
+@Table(name = "Column")
+public class InformationSchemaColumn {
+	@Column(name = "column_comment")
 	private String comment;
 	@NoQuery
 	private Object data;
-	@com.storyteller_f.sql_query.annotation.Column(name = "column_key")
+	@Column(name = "column_key")
 	private String key;
-	@com.storyteller_f.sql_query.annotation.Column(name = "column_name")
+	@Column(name = "column_name")
 	private String name;
-	@com.storyteller_f.sql_query.annotation.Column(name = "column_type")
+	@Column(name = "column_type")
 	private String type;
-	@com.storyteller_f.sql_query.annotation.Column(name = "is_nullable")
+	@Column(name = "is_nullable")
 	@Convert(name = "nullable")
 	private boolean nullable;
 	public boolean nullable(String param) {
@@ -28,9 +31,9 @@ public class Column {
 	public void setNullable(boolean nullable) {
 		this.nullable = nullable;
 	}
-	public Column() {
+	public InformationSchemaColumn() {
 	}
-	public Column(String name, String type, Object data, String comment, String key,boolean isNullable) {
+	public InformationSchemaColumn(String name, String type, Object data, String comment, String key, boolean isNullable) {
 		super();
 		this.nullable=isNullable;
 		this.setName(name);

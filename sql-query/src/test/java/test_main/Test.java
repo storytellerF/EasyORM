@@ -4,6 +4,7 @@ import com.storyteller_f.sql_query.query.Update;
 import test_model.User;
 
 public class Test {
+	@org.junit.Test
 	public static void main(String[] args) {
 		User user=new User();
 		user.setName("yonghu");

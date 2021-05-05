@@ -2,63 +2,43 @@ package com.gui.main;
 
 import com.gui.model.Constraint;
 import com.gui.model.Table;
+import com.storyteller_f.sql_query.util.Util;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CreateConfig {
-	private final String packageStr;
-	private final String path;
-	private final String database;
-	private final HashMap<String, Table> tables;
-	private final ArrayList<Constraint> constraints;
-	private final String url;
-	private final String user;
-	private final String password;
+    private final ConnectionConfig config;
+    private final HashMap<String, Table> tables;
+    private final ArrayList<Constraint> constraints;
 
-	public CreateConfig(String packageStr, String path, String database, HashMap<String, Table> tables,
-			ArrayList<Constraint> constraints, String url, String user, String password) {
-		super();
-		this.packageStr = packageStr;
-		this.path = path;
-		this.database = database;
-		this.tables = tables;
-		this.constraints = constraints;
-		this.url = url;
-		this.user = user;
-		this.password = password;
-	}
+    public CreateConfig(ConnectionConfig config, HashMap<String, Table> tables_hashMap, ArrayList<Constraint> constraints) {
+        super();
+        this.config = config;
+        this.tables = tables_hashMap;
+        this.constraints = constraints;
+    }
 
-	public String getPackageStr() {
-		return packageStr;
-	}
+    public static CreateConfig build(Statement statement, ConnectionConfig config, Connection connection) throws Exception {
+        HashMap<String, Table> tables_hashMap = Util.getTables(statement, config.getDatabase(), connection);
+        ArrayList<Constraint> constraints = Util.getConstraint(config.getDatabase(), statement);
+        Util.addConstraintColumn(tables_hashMap, constraints);
+        return new CreateConfig(config, tables_hashMap,constraints);
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public ConnectionConfig getConfig() {
+        return config;
+    }
 
-	public String getDatabase() {
-		return database;
-	}
+    public HashMap<String, Table> getTables() {
+        return tables;
+    }
 
-	public HashMap<String, Table> getTables() {
-		return tables;
-	}
+    public ArrayList<Constraint> getConstraints() {
+        return constraints;
+    }
 
-	public ArrayList<Constraint> getConstraints() {
-		return constraints;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public String getPassword() {
-		return password;
-	}
 
 }

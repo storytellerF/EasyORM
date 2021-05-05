@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-	private ArrayList<Column> columns;
+	private ArrayList<InformationSchemaColumn> informationSchemaColumns;
 	private String tableName;
 
 	public Table(String tableName) {
 		super();
 		this.tableName = tableName;
-		columns = new ArrayList<>();
+		informationSchemaColumns = new ArrayList<>();
 	}
 
-	public void add(Column column) {
-		columns.add(column);
+	public void add(InformationSchemaColumn informationSchemaColumn) {
+		informationSchemaColumns.add(informationSchemaColumn);
 	}
-	public void addAll(List<Column> columns) {
-		this.columns.addAll(columns);
+	public void addAll(List<InformationSchemaColumn> informationSchemaColumns) {
+		this.informationSchemaColumns.addAll(informationSchemaColumns);
 	}
-	public ArrayList<Column> getColumns() {
-		return columns;
+	public ArrayList<InformationSchemaColumn> getColumns() {
+		return informationSchemaColumns;
 	}
 
 	public String getTableName() {
 		return tableName;
 	}
 
-	public void setColumns(ArrayList<Column> columns) {
-		this.columns = columns;
+	public void setColumns(ArrayList<InformationSchemaColumn> informationSchemaColumns) {
+		this.informationSchemaColumns = informationSchemaColumns;
 	}
 
 	public void setTableName(String tableName) {

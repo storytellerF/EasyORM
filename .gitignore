@@ -17,3 +17,5 @@
 /test-search/out/production/classes/
 /config-editor-test-config-editor.json
 /easyorm-search/out/test/classes/
+/config-editor-com.gui.main.DatabaseConnectionInput.json
+/projector-ui/out/production/classes/

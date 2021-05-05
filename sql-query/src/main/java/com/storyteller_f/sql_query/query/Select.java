@@ -153,11 +153,12 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
             if (isString || isInteger) {// 返回类型是基本类型
                 Object datum = data[0];
                 if (getReturnType().isInstance(datum)) {
-                    list.add((RETURN_TYPE) datum);// 默认只有第一个参数有效
+                    throw new Exception("需要修复");
+//                    list.add((RETURN_TYPE) datum);// 默认只有第一个参数有效
                 } else {
                     throw new Exception("获得的数据，不符合要求");
                 }
-                continue;
+//                continue;
             }
             Constructor<RETURN_TYPE> constructor = getReturnType().getConstructor();
             RETURN_TYPE instance = constructor.newInstance();// 利用放射实例化到对象

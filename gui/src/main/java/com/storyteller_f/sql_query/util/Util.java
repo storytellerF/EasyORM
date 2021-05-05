@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.gui.model.Column;
+import com.gui.model.InformationSchemaColumn;
 import com.gui.model.Constraint;
 import com.gui.model.Table;
 import com.storyteller_f.sql_query.query.Select;
 import com.storyteller_f.sql_query.query.expression.EqualExpression;
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
+import com.storyteller_f.sql_query.query.expression.alias.EE;
 
 public class Util {
     /**
@@ -93,12 +94,12 @@ public class Util {
         Table table;
         table = new Table(tableName);
         JDBCObtain JDBCObtain = new JDBCObtain(connection);
-        Select<Column> select = new Select<>(JDBCObtain);
-        select.select(Column.class).table(JDBCObtain.MYSQL_INFORMATION_SCHEMA + "`.Columns`")
-                .and(new EqualExpression<>(null, "table_name", tableName).next(new EqualExpression<>(null, "table_schema", database)));
+        Select<InformationSchemaColumn> select = new Select<>(JDBCObtain);
+        select.select(InformationSchemaColumn.class).table(com.storyteller_f.easyorm_jdbc.JDBCObtain.MYSQL_INFORMATION_SCHEMA + "`.Columns`")
+                .and(new EE<>(InformationSchemaColumn.class, "table_name", tableName).next(new EE<>(InformationSchemaColumn.class, "table_schema", database)));
         System.out.println(select.parse(true));
-        List<Column> columns = select.execute();
-        table.addAll(columns);
+        List<InformationSchemaColumn> informationSchemaColumns = select.execute();
+        table.addAll(informationSchemaColumns);
 
         return table;
 
@@ -177,7 +178,7 @@ public class Util {
             Table temp = tables_hashMap.get(constraint.getReferencename());
             if (temp != null) {
                 //todo constraint.getName 应该找到合适的类
-                temp.add(new Column(constraint.getName(), "ArrayList<" + constraint.getName() + ">", null,
+                temp.add(new InformationSchemaColumn(constraint.getName(), "ArrayList<" + constraint.getName() + ">", null,
                         constraint.getComment(), null, false));
             }
 

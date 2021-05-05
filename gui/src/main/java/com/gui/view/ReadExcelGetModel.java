@@ -37,14 +37,14 @@ public class ReadExcelGetModel {
     private JTextField filePath;
     private JButton selectFile;
     private JTextField sheet1TextField;
-    private JTextField columnCount;
+    private JTextField columnCount22;
     private JButton startButton;
     private JPanel cells;
     private JTextField rowCount;
     private JButton parseButton;
     private JTextPane textPane1;
     private ConfigEditor excelConfig;
-    private JButton save配置Button;
+    private JButton saveButton;
     private String path;
     private XSSFSheet sheet;
     private final HashMap<String, Integer> selectedHashMap = new HashMap<>();
@@ -67,7 +67,7 @@ public class ReadExcelGetModel {
             isInitial = true;
         }
         rowCount.setText(excelReadConfig.getRowCount() + "");
-        columnCount.setText(excelReadConfig.getColumnCount() + "");
+        columnCount22.setText(excelReadConfig.getColumnCount() + "");
         filePath.setText(excelReadConfig.getPath());
         path = excelReadConfig.getPath();
         headerNamePosition.setText(excelReadConfig.getTableHeaderRow() + "");
@@ -92,10 +92,10 @@ public class ReadExcelGetModel {
             try {
 
                 creatorConfig.setRowCount(Integer.parseInt(rowCount.getText()));
-                creatorConfig.setColumnCount(Integer.parseInt(columnCount.getText()));
+                creatorConfig.setColumnCount(Integer.parseInt(columnCount22.getText()));
                 creatorConfig.setTableHeaderRow(Integer.parseInt(headerNamePosition.getText()));
             } catch (Exception e) {
-//                e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -217,17 +217,13 @@ public class ReadExcelGetModel {
                 filePath.setText(path);
             }
         });
-        startButton.addActionListener(e -> {
-            preStart(comboShow, comboSelected);
-        });
-        parseButton.addActionListener(e -> {
-            parse();
-        });
-        save配置Button.addActionListener(e -> excelConfig.save());
+        startButton.addActionListener(e -> preStart(comboShow, comboSelected));
+        parseButton.addActionListener(e -> parse());
+        saveButton.addActionListener(e -> excelConfig.save());
         initEditor();
         JTextField[] jTextField = new JTextField[]{
                 rowCount,
-                columnCount,
+                columnCount22,
                 headerNamePosition,
                 filePath,
                 sheet1TextField
@@ -253,7 +249,7 @@ public class ReadExcelGetModel {
     }
 
     private void preStart(ComboShow comboShow, ComboSelected comboSelected) {
-        if (path != null && notEmpty(headerNamePosition) && notEmpty(columnCount)) {
+        if (path != null && notEmpty(headerNamePosition) && notEmpty(columnCount22)) {
             FileInputStream fileInputStream;
             XSSFWorkbook sheets = null;
 
@@ -263,7 +259,7 @@ public class ReadExcelGetModel {
                 // 获取sheet
                 sheet = sheets.getSheet(sheet1TextField.getText());
                 XSSFRow xssfRow = sheet.getRow(Integer.parseInt(headerNamePosition.getText()));
-                int count = Integer.parseInt(columnCount.getText());
+                int count = Integer.parseInt(columnCount22.getText());
                 cells.removeAll();
                 for (int j = 0; j < count; j++) {
                     XSSFCell text = xssfRow.getCell(j);
@@ -317,7 +313,7 @@ public class ReadExcelGetModel {
     }
 
     private void parse() {
-        if (path != null && notEmpty(headerNamePosition) && notEmpty(columnCount)
+        if (path != null && notEmpty(headerNamePosition) && notEmpty(columnCount22)
                 && notEmpty(rowCount)) {
             FileInputStream fileInputStream = null;
             XSSFWorkbook sheets = null;

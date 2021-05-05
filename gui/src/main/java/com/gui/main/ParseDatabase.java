@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.gui.model.Column;
+import com.gui.model.InformationSchemaColumn;
 import com.gui.model.Table;
 import org.apache.commons.text.CaseUtils;
 
@@ -24,30 +24,30 @@ public class ParseDatabase {
 
     public ParseDatabase(CreateConfig config) {
         super();
-        this.path = config.getPath();
-        this.packageStr = config.getPackageStr();
+        this.path = config.getConfig().getPath();
+        this.packageStr = config.getConfig().getPackageStr();
         this.tables = config.getTables();
     }
 
-    public String getModelClass(String packageStr, String className, ArrayList<Column> columns, boolean enableLombok) throws Exception {
+    public String getModelClass(String packageStr, String className, ArrayList<InformationSchemaColumn> informationSchemaColumns, boolean enableLombok) throws Exception {
         System.out.println(tag + "getModelClass method called");
         System.out.println(tag + packageStr + ";" + className);
         ColumnsToField columnsToField = new ColumnsToField(packageStr, className);
-        for (Column column : columns) {
-            String nameValue = column.getName();
-            String typeValue = column.getType();
-            System.out.println(tag + "name:" + nameValue + " type:" + typeValue + "key:" + column.getKey());
+        for (InformationSchemaColumn informationSchemaColumn : informationSchemaColumns) {
+            String nameValue = informationSchemaColumn.getName();
+            String typeValue = informationSchemaColumn.getType();
+            System.out.println(tag + "name:" + nameValue + " type:" + typeValue + "key:" + informationSchemaColumn.getKey());
             CustomField customField = new CustomField();
             customField.nameAndType(nameValue, typeValue);
-            if (column.isNullable()) {
+            if (informationSchemaColumn.isNullable()) {
                 customField.add("@Nullable");
             }
-            if (column.getKey() == null) {
+            if (informationSchemaColumn.getKey() == null) {
                 //todo 依赖问题
-            } else if (column.getKey().equals("PRI")) {
+            } else if (informationSchemaColumn.getKey().equals("PRI")) {
                 customField.add("@PrimaryKey");
                 customField.add(PrimaryKey.class);
-            } else if (column.getKey().equals("UNI")) {
+            } else if (informationSchemaColumn.getKey().equals("UNI")) {
                 customField.add("@Unique");
                 customField.add(Unique.class);
             }
@@ -72,11 +72,11 @@ public class ParseDatabase {
         for (Entry<String, Table> iterable : tables.entrySet()) {
             String key = iterable.getKey();
             Table value = iterable.getValue();
-            ArrayList<Column> columns = value.getColumns();
+            ArrayList<InformationSchemaColumn> informationSchemaColumns = value.getColumns();
 //			System.out.println("name:"+key+" to:"+CaseUtils.toCamelCase(key,true));
             String path = Paths.get(this.path, CaseUtils.toCamelCase(key, true) + ".java").toString();
 //			writeFile(path, getModelClass(packageStr, key, columns));
-            System.out.println(getModelClass(packageStr, key, columns, enableLombok));
+            System.out.println(getModelClass(packageStr, key, informationSchemaColumns, enableLombok));
         }
     }
 

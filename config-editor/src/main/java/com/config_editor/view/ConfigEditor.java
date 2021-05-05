@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class ConfigEditor {
     private JComboBox<String> config_editor_comboBox;
-    private JPanel panel1;
+    private JPanel contentPanel;
     private JComboBox<String> config_editor_menu_comboBox;
     private final ConfigEditorCore core;
 
@@ -59,7 +59,7 @@ public class ConfigEditor {
                 System.out.println(menuCommand);
                 if ("rename".equals(menuCommand)) {
                     Config configAt = core.getConfigAt(selectedListItem);
-                    String s = JOptionPane.showInputDialog(panel1, "不得与原名称相同" + configAt.getName()
+                    String s = JOptionPane.showInputDialog(contentPanel, "不得与原名称相同" + configAt.getName()
                             , configAt.getName());
                     if (s != null) {
                         configAt.setName(s);
@@ -99,5 +99,12 @@ public class ConfigEditor {
         void onInit(Config configs);
 
         Config onNew();
+    }
+
+    public static void main(String[] args) {
+        JFrame jFrame=new JFrame();
+        ConfigEditor configEditor=new ConfigEditor();
+        jFrame.setContentPane(configEditor.contentPanel);
+        jFrame.setVisible(true);
     }
 }

@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-library'
     id('application')
 }
 group 'org.example'
@@ -18,17 +19,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
-    implementation(project(":sql-query"))
     implementation(project(":easyorm-jdbc"))
-    implementation(project(":config-editor"))
+    api(project(":config-editor"))
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 
     // https://mvnrepository.com/artifact/com.intellij/javac2
 //    compile group: 'com.intellij', name: 'javac2', version: '7.0.3'
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-    implementation files('E:\\Projects\\OpenSource\\java类库\\gson-extras-2.8.5.jar')
 }
 task runnbaleJar(type: Jar) {
     from files(sourceSets.main.output.classesDirs)

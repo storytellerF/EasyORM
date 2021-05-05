@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-library'
 }
 group 'org.example'
 version '2.2.1'
@@ -17,7 +18,6 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-
-    implementation(project(":sql-query"))
+    api (project(":sql-query"))
     annotationProcessor 'org.projectlombok:lombok:1.18.18'
 }
