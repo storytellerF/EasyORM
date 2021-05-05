@@ -21,15 +21,7 @@ public class TwoExpression<T> extends ExpressionQuery {
         this.value = value;
     }
     public String getName() {
-        String name;
-        String trueTableName = ORMUtil.getTrueTableName(tableClass);
-        try {
-            name = String.format("`%s`.`%s`", trueTableName,ORMUtil.getColumn(tableClass.getDeclaredField(fieldName)));
-        } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-            name= String.format("`%s`.`%s`",trueTableName, this.fieldName);
-        }
-        return name;
+        return ORMUtil.getTrueSqlColumn(tableClass,fieldName,tableMap);
     }
 
     @Override

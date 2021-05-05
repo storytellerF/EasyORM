@@ -14,7 +14,7 @@ public class Test {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=Asia/Shanghai", "root", "");
             JDBCObtain obtain =new JDBCObtain(connection);
-            obtain.enableTransaction();
+//            obtain.setAutoCloseConnection();
             Pager pager=new Pager(5,1,obtain);
             List<User> execute = pager.execute(User.class);
             for (User user : execute) {
@@ -25,7 +25,7 @@ public class Test {
             searchPattern.setName("u");
             ExpressionQuery[] parse = searchPattern.parse();
             Select<User> and = obtain.getSelect(User.class).and(parse);
-            obtain.disableTransaction();
+//            obtain.disableTransaction();
             System.out.println(and.parse(false));
         } catch (Exception e) {
             e.printStackTrace();

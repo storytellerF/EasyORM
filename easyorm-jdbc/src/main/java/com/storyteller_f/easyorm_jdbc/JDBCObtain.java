@@ -23,7 +23,7 @@ public class JDBCObtain extends Obtain {
     public static final String MYSQL_INFORMATION_SCHEMA = "INFORMATION_SCHEMA";
     private Connection connection;
     private DataSource dataSource;
-    private boolean transaction = false;
+    private boolean autoCloseConnection = false;
 
     public JDBCObtain(Connection connection) {
         super();
@@ -35,13 +35,8 @@ public class JDBCObtain extends Obtain {
         this.dataSource = dataSource;
     }
 
-    public void enableTransaction() {
-        transaction = true;
-    }
-
-    public void disableTransaction() throws SQLException {
-        transaction = false;
-        closeConnection();
+    public void setAutoCloseConnection(boolean close) {
+        autoCloseConnection = close;
     }
 
     @Override
@@ -171,7 +166,7 @@ public class JDBCObtain extends Obtain {
     }
 
     private void closeConnection() throws SQLException {
-        if (!transaction)
+        if (autoCloseConnection)
             connection.close();
     }
 

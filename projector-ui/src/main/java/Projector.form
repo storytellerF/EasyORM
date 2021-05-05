@@ -56,13 +56,17 @@
                 <constraints>
                   <splitpane position="left"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font size="14"/>
+                </properties>
               </component>
               <component id="e1b7c" class="javax.swing.JList" binding="listColumnDetailInDatabase">
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font size="16"/>
+                </properties>
               </component>
             </children>
           </splitpane>

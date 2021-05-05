@@ -187,20 +187,23 @@ public class ORMUtil {
         try {
             trueColumn = ORMUtil.getColumn(tableClass.getDeclaredField(column));
         } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.err.println(e.getMessage()+"找不到");
             trueColumn = column;
         }
 
         String simpleName = getTrueTableName(tableClass);
-        if (tableMap.containsKey(simpleName)) {
+        if (tableMap != null && tableMap.containsKey(simpleName)) {
             String alias = tableMap.get(simpleName);
             if (alias != null && !alias.equals(simpleName)) {
                 name = "`" + tableMap.get(simpleName) + "`.`" + trueColumn + "`";
-            } else {
-                name = "`" + simpleName + "`.`" + trueColumn + "`";
+                return name;
             }
-        } else {
+        }
+        if (tableMap != null && tableMap.size() > 1) {
             name = "`" + simpleName + "`.`" + trueColumn + "`";
+        } else {
+            name = "`" + trueColumn + "`";
         }
         return name;
     }

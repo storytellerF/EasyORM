@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-	private ArrayList<InformationSchemaColumn> informationSchemaColumns;
 	private String tableName;
+	/**
+	 * 表的所有列
+	 */
+	private ArrayList<InformationSchemaColumn> informationSchemaColumns;
 
 	public Table(String tableName) {
 		super();

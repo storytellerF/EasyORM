@@ -15,7 +15,6 @@ import com.gui.model.InformationSchemaColumn;
 import com.gui.model.Constraint;
 import com.gui.model.Table;
 import com.storyteller_f.sql_query.query.Select;
-import com.storyteller_f.sql_query.query.expression.EqualExpression;
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.sql_query.query.expression.alias.EE;
 
@@ -89,7 +88,7 @@ public class Util {
      * @return table 返回table对象
      * @throws Exception sql-com.storyteller_f.sql_query.query 执行异常
      */
-    public static Table geTable(String tableName, String database, Connection connection) throws Exception {
+    public static Table geTableDetail(String tableName, String database, Connection connection) throws Exception {
         System.out.println("name:" + tableName + ";database:" + database);
         Table table;
         table = new Table(tableName);
@@ -100,9 +99,7 @@ public class Util {
         System.out.println(select.parse(true));
         List<InformationSchemaColumn> informationSchemaColumns = select.execute();
         table.addAll(informationSchemaColumns);
-
         return table;
-
     }
 
     /**
@@ -123,7 +120,7 @@ public class Util {
                 tables.add(tableName);
             }
             for (String tableName : tables) {
-                tables_hashMap.put(tableName, Util.geTable(tableName, database, connection));
+                tables_hashMap.put(tableName, Util.geTableDetail(tableName, database, connection));
             }
             return tables_hashMap;
         } finally {
@@ -141,17 +138,14 @@ public class Util {
      * @throws SQLException 数据库执行异常
      */
     public static ArrayList<Constraint> getConstraint(String database, Statement statement) throws SQLException {
-        String constraint = "SELECT C.TABLE_SCHEMA, C.REFERENCED_TABLE_NAME,"
-                + "C.REFERENCED_COLUMN_NAME,C.TABLE_NAME,"
-                + "C.COLUMN_NAME,C.CONSTRAINT_NAME,"
-                + "T.TABLE_COMMENT,R.UPDATE_RULE,"
-                + "R.DELETE_RULE FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE C" + // c
-                " JOIN INFORMATION_SCHEMA.TABLES T" + // t
-                " ON T.TABLE_NAME = C.TABLE_NAME" + "" +
-                " JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS R" + // r
-                " ON R.TABLE_NAME = C.TABLE_NAME" + " AND R.CONSTRAINT_NAME = C.CONSTRAINT_NAME "
-                + "AND R.REFERENCED_TABLE_NAME = C.REFERENCED_TABLE_NAME and R.CONSTRAINT_SCHEMA=" + "'" + database + "' "
-                + "WHERE C.REFERENCED_TABLE_NAME IS NOT NULL;";
+        // c
+        // t
+        // r
+        String constraint = String.format("SELECT C.TABLE_SCHEMA, C.REFERENCED_TABLE_NAME,C.REFERENCED_COLUMN_NAME,C.TABLE_NAME,C.COLUMN_NAME,C.CONSTRAINT_NAME,T.TABLE_COMMENT,R.UPDATE_RULE,R.DELETE_RULE " +
+                "FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE C " +
+                "JOIN INFORMATION_SCHEMA.TABLES T ON T.TABLE_NAME = C.TABLE_NAME " +
+                "JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS R ON R.TABLE_NAME = C.TABLE_NAME AND R.CONSTRAINT_NAME = C.CONSTRAINT_NAME AND R.REFERENCED_TABLE_NAME = C.REFERENCED_TABLE_NAME and R.CONSTRAINT_SCHEMA='%s' " +
+                "WHERE C.REFERENCED_TABLE_NAME IS NOT NULL;", database);
         ResultSet set = statement.executeQuery(constraint);
         ArrayList<Constraint> constraints = new ArrayList<>();
         while (set.next()) {
@@ -175,7 +169,7 @@ public class Util {
      */
     public static void addConstraintColumn(HashMap<String, Table> tables_hashMap, ArrayList<Constraint> constraints) {
         for (Constraint constraint : constraints) {
-            Table temp = tables_hashMap.get(constraint.getReferencename());
+            Table temp = tables_hashMap.get(constraint.getReferenceName());
             if (temp != null) {
                 //todo constraint.getName 应该找到合适的类
                 temp.add(new InformationSchemaColumn(constraint.getName(), "ArrayList<" + constraint.getName() + ">", null,

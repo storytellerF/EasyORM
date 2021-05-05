@@ -38,7 +38,7 @@ public class ClassLoaderManager {
 					return false;
 				}
 			}
-			String absolutePath = getClass().getResource("../../../sql-com.storyteller_f.sql_query.query-2.0.jar").getPath();
+			String absolutePath = getClass().getResource("../../../sql-query-2.0.jar").getPath();
 			System.out.println("sql com.storyteller_f.sql_query.query 库位置："+absolutePath);
 			ProcessBuilder javac = new ProcessBuilder().command("javac", "-classpath",
 					absolutePath, classPath + "\\*.java", "-d",

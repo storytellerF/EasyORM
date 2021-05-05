@@ -4,13 +4,13 @@ public class Constraint {
 	private String column;
 	private String comment;
 	private String name;
-	private String referencecolumn;
-	private String referencename;
+	private String referenceColumn;
+	private String referenceName;
 
-	public Constraint(String referencename, String referencecolumn, String name, String column, String comment) {
+	public Constraint(String referenceName, String referenceColumn, String name, String column, String comment) {
 		super();
-		this.referencename = referencename;
-		this.referencecolumn = referencecolumn;
+		this.referenceName = referenceName;
+		this.referenceColumn = referenceColumn;
 		this.name = name;
 		this.column = column;
 		this.setComment(comment);
@@ -28,12 +28,12 @@ public class Constraint {
 		return name;
 	}
 
-	public String getReferencecolumn() {
-		return referencecolumn;
+	public String getReferenceColumn() {
+		return referenceColumn;
 	}
 
-	public String getReferencename() {
-		return referencename;
+	public String getReferenceName() {
+		return referenceName;
 	}
 
 	public void setColumn(String column) {
@@ -48,12 +48,12 @@ public class Constraint {
 		this.name = name;
 	}
 
-	public void setReferencecolumn(String referencecolumn) {
-		this.referencecolumn = referencecolumn;
+	public void setReferenceColumn(String referenceColumn) {
+		this.referenceColumn = referenceColumn;
 	}
 
-	public void setReferencename(String referencename) {
-		this.referencename = referencename;
+	public void setReferenceName(String referenceName) {
+		this.referenceName = referenceName;
 	}
 
 }

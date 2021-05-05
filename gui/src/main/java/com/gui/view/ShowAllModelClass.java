@@ -104,7 +104,6 @@ public class ShowAllModelClass {
                 defaultMutableTreeNode.add(newChild);
                 addToTree(child, newChild,packageName);
             }
-
         }
     }
 
