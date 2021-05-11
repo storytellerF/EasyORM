@@ -3,6 +3,7 @@ package com.storyteller_f.sql_query.query;
 import com.storyteller_f.sql_query.annotation.Convert;
 import com.storyteller_f.sql_query.function.Function;
 import com.storyteller_f.sql_query.obtain.Obtain;
+import com.storyteller_f.sql_query.util.EasyCache;
 import org.apache.commons.text.CaseUtils;
 import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.*;
@@ -22,17 +23,9 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
     private final SelectQuery selectQuery;
     private final LimitQuery limitQuery;
     private final WhereQuery whereQuery;
-    private JoinQuery joinQuery;
     private final GroupQuery groupQuery;
+    private JoinQuery joinQuery;
     private Class<RETURN_TYPE> returnType;
-    public Class<RETURN_TYPE> getReturnType() {
-        return returnType;
-    }
-
-    protected void setReturnType(Class<RETURN_TYPE> returnType) {
-        this.returnType = returnType;
-    }
-
 
     public Select(Obtain obtain) {
         super(obtain);
@@ -41,6 +34,14 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
         limitQuery = new LimitQuery();
         whereQuery = new WhereQuery();
         groupQuery = new GroupQuery();
+    }
+
+    public Class<RETURN_TYPE> getReturnType() {
+        return returnType;
+    }
+
+    protected void setReturnType(Class<RETURN_TYPE> returnType) {
+        this.returnType = returnType;
     }
 
     /**
@@ -57,6 +58,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
         select(columnClass);
         return this;
     }
+
     /**
      * @param tableClass 查询的表，查询到的数据需要生成对象
      * @param trueTable  数据库中真实存在的表，被查的表
@@ -75,7 +77,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
             table(getReturnType());
         }
         return String.format("%s %s %s %s %s %s", selectQuery.parse(safe), tableQuery.parse(safe), whereQuery.parse(safe),
-                joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim()+";";
+                joinQuery != null ? joinQuery.parse(safe) : "", groupQuery.parse(safe), limitQuery.parse(safe)).trim() + ";";
     }
 
     public Select<RETURN_TYPE> limit(int offset, int count) {
@@ -86,16 +88,18 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
     public Select<RETURN_TYPE> limit(int count) {
         return limit(0, count);
     }
-    public Select<RETURN_TYPE> and(ExpressionQuery[] expressionQueries){
+
+    public Select<RETURN_TYPE> and(ExpressionQuery[] expressionQueries) {
         for (ExpressionQuery expressionQuery : expressionQueries) {
             and(expressionQuery);
         }
         return this;
     }
+
     public Select<RETURN_TYPE> and(ExpressionQuery expressionQuery) {
-        if (expressionQuery instanceof TwoExpression){
+        if (expressionQuery instanceof TwoExpression) {
             TwoExpression<?> expressionQuery1 = (TwoExpression<?>) expressionQuery;
-            if (expressionQuery1.getTableClass()==null) {
+            if (expressionQuery1.getTableClass() == null) {
                 expressionQuery1.setTableClass(getReturnType());
             }
         }
@@ -103,8 +107,8 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
         return this;
     }
 
-    public Select<RETURN_TYPE> where(ExpressionQuery... executableQueries){
-        return  and(executableQueries);
+    public Select<RETURN_TYPE> where(ExpressionQuery... executableQueries) {
+        return and(executableQueries);
     }
 
     public Select<RETURN_TYPE> leftJoin(Class<?> tableClass, ExpressionQuery expressionQuery) {
@@ -144,6 +148,12 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
     }
 
     public List<RETURN_TYPE> execute() throws Exception {
+        String parse = parse(true);
+        List<?> request = EasyCache.getEasyCache().request(parse);
+        if (request != null) {
+            return (List<RETURN_TYPE>) request;
+        }
+        EasyCache.getEasyCache().tellWork(parse);
         Result result = obtain.getResult(this);
         List<RETURN_TYPE> list = new ArrayList<>();
         while (result.hasNext()) {
@@ -153,12 +163,12 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
             if (isString || isInteger) {// 返回类型是基本类型
                 Object datum = data[0];
                 if (getReturnType().isInstance(datum)) {
-                    throw new Exception("需要修复");
-//                    list.add((RETURN_TYPE) datum);// 默认只有第一个参数有效
+//                    throw new Exception("需要修复");
+                    list.add((RETURN_TYPE) datum);// 默认只有第一个参数有效
                 } else {
                     throw new Exception("获得的数据，不符合要求");
                 }
-//                continue;
+                continue;
             }
             Constructor<RETURN_TYPE> constructor = getReturnType().getConstructor();
             RETURN_TYPE instance = constructor.newInstance();// 利用放射实例化到对象
@@ -172,8 +182,8 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
                     if (!field.getDeclaringClass().equals(getReturnType())) {//属于子字段中的
                         //检查响应对象是否实例化
                         Field childField = getChildField(field.getDeclaringClass());
-                        if (childField==null){
-                            throw new Exception(field.getName()+"在子字段在查找不到");
+                        if (childField == null) {
+                            throw new Exception(field.getName() + "在子字段在查找不到");
                         }
                         Object o = checkInstance(childField, instance);
                         boolean c = field.isAccessible();
@@ -213,6 +223,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
             }
             list.add(instance);
         }
+        EasyCache.getEasyCache().workDone(parse,list);
         return list;
 
     }

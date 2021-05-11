@@ -9,13 +9,17 @@ import test_model.Cart;
 
 public class Main {
 	@Test
-	public static void main(String[] args) {
+	public void main() {
 		Create name = new Create(null,Cart.class);
 		try {
 			System.out.println(name.parse(false));
 		} catch (UnexpectedException e) {
 			e.printStackTrace();
 		}
+	}
+	@Test
+	public void testCache() {
+
 	}
 
 }
