@@ -2,7 +2,7 @@ package com.storyteller_f.sql_query.query.column;
 
 import com.storyteller_f.sql_query.query.GetName;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 public class EqualColumn extends ExpressionQuery {
     private final Class<?> tableLeftClass;

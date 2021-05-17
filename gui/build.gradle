@@ -5,7 +5,7 @@ plugins {
 }
 group 'org.example'
 version '1.1'
-mainClassName="com.gui.view.Main"
+mainClassName="com.storyteller.gui.view.Main"
 
 repositories {
     mavenCentral()
@@ -26,6 +26,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.intellij/javac2
 //    compile group: 'com.intellij', name: 'javac2', version: '7.0.3'
+    // https://mvnrepository.com/artifact/net.java.dev.jna/jna
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.8.0'
+
 }
 task runnbaleJar(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
@@ -37,10 +40,10 @@ task runnbaleJar(type: Jar) {
 //compileJava {
 //    doLast() {
 //        project.ant.taskdef name: 'javac2', classname: 'com.intellij.javac2', classpath: project.configurations.intellij.asPath
-//        project.ant.javac2 srcdir: project.sourceSets.com.gui.main.java.srcDirs.join(':'),
+//        project.ant.javac2 srcdir: project.sourceSets.com.storyteller.gui.main.java.srcDirs.join(':'),
 //                includes: 'yourpackage/**/*.form',
-//                classpath: project.sourceSets.com.gui.main.runtimeClasspath.asPath,
-//                destdir: project.sourceSets.com.gui.main.output.classesDir,
+//                classpath: project.sourceSets.com.storyteller.gui.main.runtimeClasspath.asPath,
+//                destdir: project.sourceSets.com.storyteller.gui.main.output.classesDir,
 //                source: project.sourceCompatibility,
 //                target: project.targetCompatibility,
 //                includeAntRuntime: false,

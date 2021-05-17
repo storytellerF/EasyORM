@@ -1,7 +1,7 @@
 package com.storyteller_f.sql_query.query.expression;
 
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 public class TwoExpression<T> extends ExpressionQuery {
 

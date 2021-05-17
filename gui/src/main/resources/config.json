@@ -1,14 +1,3 @@
 {
-  "last": "1",
-  "max": 1,
-  "configs": [
-    {
-      "id": 1,
-      "name": "测试",
-      "path": "E:\\测试\\index.html",
-      "charset": "utf-8",
-      "verify": 2,
-      "type": "bootstrap"
-    }
-  ]
+  "jarName": "sql-query-2.2.2.jar"
 }

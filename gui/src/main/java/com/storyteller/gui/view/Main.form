@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.storyteller.gui.view.Main">
+  <grid id="27dc6" binding="contentPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="18" width="870" height="413"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <toolbar id="dc925">
+        <constraints border-constraint="North"/>
+        <properties>
+          <borderPainted value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="aa7fb" class="javax.swing.JButton" binding="start">
+            <constraints/>
+            <properties>
+              <text value="连接数据库"/>
+            </properties>
+          </component>
+          <component id="3c6ee" class="javax.swing.JButton" binding="saveButton">
+            <constraints/>
+            <properties>
+              <text value="Save"/>
+            </properties>
+          </component>
+          <component id="d747b" class="javax.swing.JButton" binding="reviewAllModel">
+            <constraints/>
+            <properties>
+              <background color="-8195434"/>
+              <font size="14"/>
+              <text value="预览所有的模型类"/>
+            </properties>
+          </component>
+          <component id="656da" class="javax.swing.JButton" binding="reflectToDatabase">
+            <constraints/>
+            <properties>
+              <background color="-4918542"/>
+              <font size="14"/>
+              <text value="映射到数据库"/>
+            </properties>
+          </component>
+          <component id="d3a80" class="javax.swing.JButton" binding="reflectToCode">
+            <constraints/>
+            <properties>
+              <background color="-96132"/>
+              <font size="14"/>
+              <text value="映射为模型"/>
+            </properties>
+          </component>
+          <component id="76b6a" class="javax.swing.JButton" binding="produceStaticFieldModel">
+            <constraints/>
+            <properties>
+              <background color="-860778"/>
+              <font size="14"/>
+              <text value="生成静态字段模型"/>
+            </properties>
+          </component>
+          <component id="f170c" class="javax.swing.JButton" binding="readExcel">
+            <constraints/>
+            <properties>
+              <background color="-3018093"/>
+              <text value=" 读取excel文件"/>
+            </properties>
+          </component>
+          <component id="bc87a" class="javax.swing.JButton" binding="produceComponent">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <font size="14"/>
+              <text value=""/>
+              <toolTipText value="用于图形化界面设计绑定控件"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <nested-form id="3f095" form-file="com/storyteller/gui/view/DatabaseConnectionInput.form" binding="databaseConnectionInput">
+        <constraints border-constraint="Center"/>
+      </nested-form>
+    </children>
+  </grid>
+</form>

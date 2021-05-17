@@ -23,3 +23,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.*'
 }
+task pub(type:Copy){
+    from("$buildDir\\libs\\${project.name}-${version}.jar")
+    into("${project.rootDir}\\gui\\src\\main\\resources\\")
+    into("${project.rootDir}\\projector-ui\\src\\main\\resources\\")
+
+}

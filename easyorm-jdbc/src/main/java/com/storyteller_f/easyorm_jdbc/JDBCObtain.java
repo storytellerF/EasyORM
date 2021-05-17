@@ -10,7 +10,7 @@ import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 import com.storyteller_f.sql_query.query.result.Result;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;

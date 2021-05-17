@@ -1,0 +1,1 @@
+javac -h dll_produce/DPIDLL/DPIDLL gui/src/main/java/com/storyteller/util/JDPILibrary.java

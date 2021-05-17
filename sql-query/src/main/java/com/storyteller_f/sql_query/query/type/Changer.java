@@ -4,7 +4,7 @@ import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.storyteller_f.sql_query.obtain.Obtain;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

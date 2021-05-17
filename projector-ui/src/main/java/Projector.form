@@ -36,6 +36,12 @@
               <text value="Button"/>
             </properties>
           </component>
+          <component id="f3779" class="javax.swing.JButton" binding="queryButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Query"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
       <splitpane id="9e2">

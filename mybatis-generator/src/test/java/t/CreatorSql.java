@@ -1,6 +1,6 @@
 package t;
 
-import com.gui.main.MybatisEqualExpression;
+import com.storyteller.gui.main.MybatisEqualExpression;
 import com.storyteller_f.sql_query.query.Select;
 
 public class CreatorSql {

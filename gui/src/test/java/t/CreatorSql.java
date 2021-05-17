@@ -1,6 +1,6 @@
 package t;
 
-import com.gui.model.Users;
+import com.storyteller.gui.model.Users;
 import com.storyteller_f.sql_query.query.Select;
 import com.storyteller_f.sql_query.query.expression.EqualExpression;
 

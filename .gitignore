@@ -17,6 +17,11 @@
 /test-search/out/production/classes/
 /config-editor-test-config-editor.json
 /easyorm-search/out/test/classes/
-/config-editor-com.gui.main.DatabaseConnectionInput.json
+/config-editor-com.storyteller.gui.main.DatabaseConnectionInput.json
 /projector-ui/out/production/classes/
 /projector-ui/out/production/resources/
+/projector-ui/src/main/resources/sql-query-2.2.2.jar
+/gui/src/main/resources/sql-query-2.2.2.jar
+/DPIDLL.dll
+/dll_produce/DPIDLL/x64/
+/dll_produce/DPIDLL/.vs/

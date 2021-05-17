@@ -18,7 +18,7 @@ import com.storyteller_f.sql_query.annotation.constraint.Nullable;
 import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
 import com.storyteller_f.sql_query.obtain.Obtain;
 import com.storyteller_f.sql_query.query.type.Change;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 public class Create extends Executor implements Query, Change {
     private final Class<?> tableClass;

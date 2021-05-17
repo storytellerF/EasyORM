@@ -2,7 +2,7 @@ package com.storyteller_f.sql_query.query.query;
 
 import java.util.HashMap;
 
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 public class GroupQuery extends AbstractExpressionList {
     private Class<?> tableClass;

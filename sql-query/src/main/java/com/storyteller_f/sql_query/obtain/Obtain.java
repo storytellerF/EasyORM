@@ -7,7 +7,7 @@ import com.storyteller_f.sql_query.query.*;
 import org.apache.commons.text.WordUtils;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.result.Result;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

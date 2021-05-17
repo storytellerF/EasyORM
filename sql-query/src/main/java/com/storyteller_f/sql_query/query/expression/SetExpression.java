@@ -1,7 +1,5 @@
 package com.storyteller_f.sql_query.query.expression;
 
-import com.storyteller_f.sql_query.util.ORMUtil;
-
 public class SetExpression<T> extends TwoExpression<T>{
     public SetExpression(Class<?> tableClass,String fieldName, T value) {
         super(tableClass,fieldName, value);

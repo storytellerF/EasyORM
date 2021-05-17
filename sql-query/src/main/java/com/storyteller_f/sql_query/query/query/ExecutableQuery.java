@@ -3,7 +3,7 @@ package com.storyteller_f.sql_query.query.query;
 import com.storyteller_f.sql_query.query.Executor;
 import com.storyteller_f.sql_query.query.Query;
 import com.storyteller_f.sql_query.obtain.Obtain;
-import com.storyteller_f.sql_query.util.ORMUtil;
+import com.storyteller.util.ORMUtil;
 
 public abstract class ExecutableQuery<CHILD_TYPE extends ExecutableQuery<CHILD_TYPE>> extends Executor implements Query {
     protected TableQuery tableQuery;
