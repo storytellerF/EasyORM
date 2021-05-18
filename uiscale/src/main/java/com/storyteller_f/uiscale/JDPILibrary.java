@@ -1,8 +1,8 @@
-package com.storyteller.util;
+package com.storyteller_f.uiscale;
 
 import java.io.File;
 
-public class JDPILibrary  {
+public class JDPILibrary {
     public native static int getDPI();
     static {
         System.load(new File("DPIDLL.dll").getAbsolutePath());

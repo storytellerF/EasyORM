@@ -1,4 +1,5 @@
 import com.storyteller.gui.main.ConnectionConfig;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import java.sql.*;
@@ -17,7 +18,7 @@ public class QueryWindow {
     private ConnectionConfig config;
     private DatabaseQueryResultModel resultModel=new DatabaseQueryResultModel();
     public QueryWindow(ConnectionConfig config) {
-
+        DataZone.setFont(runButton,textArea1,textPane1,tabbedPane1);
         this.config=config;
         table1.setModel(resultModel);
         runButton.addActionListener(e -> {

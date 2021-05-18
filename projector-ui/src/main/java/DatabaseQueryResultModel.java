@@ -22,25 +22,21 @@ public class DatabaseQueryResultModel extends AbstractTableModel {
     }
     @Override
     public int getRowCount() {
-        System.out.println("getRowCount"+columnValueList.size());
         return columnValueList.size();
     }
 
     @Override
     public String getColumnName(int column) {
-        System.out.println("getColumnName"+column);
         return columnNameList.get(column);
     }
 
     @Override
     public int getColumnCount() {
-        System.out.println("getColumnCount"+columnNameList.size());
         return columnNameList.size();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        System.out.println("getValueAt"+rowIndex+" "+columnIndex);
         return columnValueList.get(rowIndex).get(columnIndex);
     }
 }

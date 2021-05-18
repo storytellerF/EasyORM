@@ -25,3 +25,6 @@
 /DPIDLL.dll
 /dll_produce/DPIDLL/x64/
 /dll_produce/DPIDLL/.vs/
+/uiscale/out/
+/dll_produce/DPIDLL/DPIDLL/x64/
+/sql-query/gui/src/main/resources/sql-query-2.2.2.jar

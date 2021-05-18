@@ -12,28 +12,28 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="569d1" class="javax.swing.JButton" binding="新建一个连接Button" default-binding="true">
+          <component id="569d1" class="javax.swing.JButton" binding="newConnectionButton">
             <constraints/>
             <properties>
               <text value="新建一个连接"/>
             </properties>
           </component>
-          <component id="741b0" class="javax.swing.JButton" binding="退出Button" default-binding="true">
+          <component id="741b0" class="javax.swing.JButton" binding="exitButton">
             <constraints/>
             <properties>
               <text value="退出"/>
             </properties>
           </component>
-          <component id="cdd09" class="javax.swing.JLabel">
+          <component id="cdd09" class="javax.swing.JLabel" binding="databaseStatusLabel">
             <constraints/>
             <properties>
               <text value="database statu:"/>
             </properties>
           </component>
-          <component id="a4aa5" class="javax.swing.JButton" binding="state">
+          <component id="a4aa5" class="javax.swing.JButton" binding="stateButton">
             <constraints/>
             <properties>
-              <text value="Button"/>
+              <text value="重连"/>
             </properties>
           </component>
           <component id="f3779" class="javax.swing.JButton" binding="queryButton" default-binding="true">
@@ -44,14 +44,14 @@
           </component>
         </children>
       </toolbar>
-      <splitpane id="9e2">
+      <splitpane id="9e2" binding="databaseAndModel">
         <constraints border-constraint="Center"/>
         <properties>
           <resizeWeight value="0.5"/>
         </properties>
         <border type="none"/>
         <children>
-          <splitpane id="c95ff">
+          <splitpane id="c95ff" binding="databaseSplitPanel">
             <constraints>
               <splitpane position="left"/>
             </constraints>
@@ -63,7 +63,7 @@
                   <splitpane position="left"/>
                 </constraints>
                 <properties>
-                  <font size="14"/>
+                  <font/>
                 </properties>
               </component>
               <component id="e1b7c" class="javax.swing.JList" binding="listColumnDetailInDatabase">
@@ -71,12 +71,12 @@
                   <splitpane position="right"/>
                 </constraints>
                 <properties>
-                  <font size="16"/>
+                  <font/>
                 </properties>
               </component>
             </children>
           </splitpane>
-          <splitpane id="37789">
+          <splitpane id="37789" binding="modelSpliePanel">
             <constraints>
               <splitpane position="right"/>
             </constraints>

@@ -6,6 +6,7 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ConnectionConfig;
 import com.storyteller.gui.model.MainViewDatabaseConnectionConfig;
 import com.storyteller.util.Util;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -31,9 +32,9 @@ public class DatabaseConnectionInput {
     private JCheckBox enableLombok;
     @SuppressWarnings({"unused"})
     private JPanel inputGroup;
-    private JPanel testConnectionContainer;
 
     public DatabaseConnectionInput() {
+        ui();
         initEditor();
         TextChange textChange = new TextChange();
         loopComponent(textChange);
@@ -61,14 +62,16 @@ public class DatabaseConnectionInput {
         testConnection.addActionListener(e -> {
             boolean b = Util.testConnection(urlInput.getText(), nameInput.getText(), String.valueOf(passwordInput.getPassword()));
             if (b) {
-                testConnectionContainer.setBackground(Color.green);
                 testConnection.setBackground(Color.green);
             } else {
                 testConnection.setBackground(Color.red);
-                testConnectionContainer.setBackground(Color.red);
             }
             JOptionPane.showMessageDialog(linkInput.getParent(), "连接结果" + b);
         });
+    }
+
+    private void ui() {
+//        DataZone.setFont();
     }
 
     public void initEditor() {

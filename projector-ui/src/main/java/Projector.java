@@ -4,6 +4,7 @@ import com.storyteller.gui.main.CreateConfig;
 import com.storyteller.gui.model.InformationSchemaColumn;
 import com.storyteller.gui.model.Table;
 import com.storyteller.gui.view.DatabaseConnectionInput;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,27 +14,43 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class Projector {
     private JPanel panel1;
-    private JButton 新建一个连接Button;
-    private JButton 退出Button;
+    private JButton newConnectionButton;
+    private JButton exitButton;
     private JList<String> listInDatabase;
     private JList<String> listInModel;
     private JList<String> listColumnDetailInDatabase;
     private JList<String> listColumnDetailInModel;
-    private JButton state;
+    private JButton stateButton;
     private JButton queryButton;
+    private JSplitPane databaseAndModel;
+    private JSplitPane databaseSplitPanel;
+    private JSplitPane modelSpliePanel;
+    private JLabel databaseStatusLabel;
     private DatabaseConnectionInput databaseConnectionInput;
     private Connection connection;
     private CreateConfig createConfig;
     private ConnectionConfig config;
+    private final List<JComponent> buttonList=new ArrayList<>();
     public Projector() {
-
+        buttonList.add(queryButton);
+        buttonList.add(exitButton);
+        buttonList.add(newConnectionButton);
+        buttonList.add(stateButton);
+        buttonList.add(databaseStatusLabel);
+        buttonList.add(listInDatabase);
+        buttonList.add(listColumnDetailInDatabase);
+        buttonList.add(listInModel);
+        buttonList.add(listColumnDetailInModel);
+        ui();
 //        System.out.println(file.getAbsolutePath());
-        新建一个连接Button.addActionListener(e -> {
+        newConnectionButton.addActionListener(e -> {
             GetConnectionDialog dialog = new GetConnectionDialog();
             dialog.pack();
             dialog.setVisible(true);
@@ -44,11 +61,11 @@ public class Projector {
             try {
                 config = databaseConnectionInput.getCreateConfig();
                 connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
-                state.setText("连接成功");
+                stateButton.setText("连接成功");
             } catch (SQLException exception) {
                 exception.printStackTrace();
                 JOptionPane.showMessageDialog(panel1, exception.getMessage());
-                state.setText("连接失败");
+                stateButton.setText("连接失败");
                 panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 return;
@@ -142,6 +159,14 @@ public class Projector {
             jFrame.setSize(400,400);
             queryWindow.splitPanel.setDividerLocation(200);
         });
+        databaseSplitPanel.setDividerLocation(100);
+        modelSpliePanel.setDividerLocation(100);
+    }
+
+    private void ui() {
+        for (JComponent jComponent : buttonList) {
+            jComponent.setFont(DataZone.getFont(jComponent.getFont()));
+        }
     }
 
     public static void main(String[] args) {

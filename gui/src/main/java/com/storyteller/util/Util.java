@@ -18,6 +18,7 @@ public class Util {
 
     /**
      * 获取第一个结尾是Column的注解，根据设定，结尾是Column的注解是数据库中的字段类型
+     *
      * @param field 相应的字段
      * @return 返回注解
      */
@@ -36,7 +37,7 @@ public class Util {
             DriverManager.getConnection(url, user, password).close();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return false;
         }
     }
@@ -79,8 +80,8 @@ public class Util {
     }
 
     /**
-     * @param tableName 查询的表名
-     * @param database 查询的数据库名
+     * @param tableName  查询的表名
+     * @param database   查询的数据库名
      * @param connection 用来进行查询的connection 对象
      * @return table 返回table对象
      * @throws Exception sql-com.storyteller_f.sql_query.query 执行异常
@@ -100,8 +101,8 @@ public class Util {
     }
 
     /**
-     * @param statement statement 对象
-     * @param database 数据库名
+     * @param statement  statement 对象
+     * @param database   数据库名
      * @param connection com.storyteller_f.easyorm_jdbc.connection 对象
      * @return 返回table的散列表
      * @throws Exception 数据库执行异常，sql-com.storyteller_f.sql_query.query 执行异常
@@ -161,8 +162,9 @@ public class Util {
 
     /**
      * 添加constraint 到相应表
+     *
      * @param tables_hashMap table的散列表
-     * @param constraints 需要添加的constraint
+     * @param constraints    需要添加的constraint
      */
     public static void addConstraintColumn(HashMap<String, Table> tables_hashMap, ArrayList<Constraint> constraints) {
         for (Constraint constraint : constraints) {

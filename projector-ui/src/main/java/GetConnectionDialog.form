@@ -57,7 +57,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <nested-form id="3e4be" form-file="com/gui/view/DatabaseConnectionInput.form" binding="input">
+          <nested-form id="3e4be" form-file="com/storyteller/gui/view/DatabaseConnectionInput.form" binding="input">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

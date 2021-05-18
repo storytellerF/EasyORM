@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/projector-ui" />
             <option value="$PROJECT_DIR$/sql-query" />
             <option value="$PROJECT_DIR$/test-search" />
+            <option value="$PROJECT_DIR$/uiscale" />
           </set>
         </option>
       </GradleProjectSettings>

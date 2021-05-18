@@ -1,4 +1,5 @@
 import com.storyteller.gui.view.DatabaseConnectionInput;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -11,6 +12,8 @@ public class GetConnectionDialog extends JDialog {
     public boolean isOk;
 
     public GetConnectionDialog() {
+        DataZone.setFont(buttonCancel);
+        DataZone.setFont(buttonOK);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

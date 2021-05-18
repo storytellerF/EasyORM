@@ -20,7 +20,7 @@
               <splitpane position="left"/>
             </constraints>
             <properties>
-              <font name="Consolas" size="18"/>
+              <font name="Consolas"/>
             </properties>
           </component>
           <tabbedpane id="2ff0d" binding="tabbedPane1" default-binding="true">

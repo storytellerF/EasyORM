@@ -2,6 +2,7 @@ package com.config_editor.view;
 
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.config_editor.model.Config;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
@@ -15,6 +16,7 @@ public class ConfigEditor {
     private final ConfigEditorCore core;
 
     public ConfigEditor() {
+        DataZone.setFont(config_editor_comboBox,config_editor_menu_comboBox);
         core=new ConfigEditorCore();
     }
 

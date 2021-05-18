@@ -4,10 +4,10 @@ import com.storyteller.gui.main.ClassLoaderManager;
 import com.storyteller.gui.main.ConnectionConfig;
 import com.storyteller.gui.main.CreateConfig;
 import com.storyteller.gui.main.ParseDatabase;
-import com.storyteller.util.JDPILibrary;
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.storyteller_f.sql_query.query.Create;
+import com.storyteller_f.uiscale.DataZone;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    private final List<JButton> buttonList = new ArrayList<>();
     protected String modelPathFieldString;
     private JButton reflectToDatabase;
     private JButton reflectToCode;
@@ -38,7 +39,6 @@ public class Main {
     private JButton saveButton;
     private DatabaseConnectionInput databaseConnectionInput;
     private Connection connection;
-    private final List<JButton> buttonList = new ArrayList<>();
 
     public Main() {
         buttonList.add(start);
@@ -241,16 +241,11 @@ public class Main {
     }
 
     private void ui() {
-        int dpi = JDPILibrary.getDPI();
-        double scale = JDPILibrary.scale(dpi);
-        System.out.println(dpi);
         for (JButton jButton : buttonList) {
-            jButton.setFont(getFont(scale, jButton.getFont()));
+            jButton.setFont(DataZone. getFont( jButton.getFont()));
+            jButton.setFocusable(false);
         }
-    }
-
-    private Font getFont(double scale, Font font) {
-        return new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale));
+//        contentPanel.setFont(getFont(scale,contentPanel.getFont()));
     }
 
     private boolean checkDatabaseConnection() {
