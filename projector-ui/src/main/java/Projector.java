@@ -37,18 +37,9 @@ public class Projector {
     private Connection connection;
     private CreateConfig createConfig;
     private ConnectionConfig config;
-    private final List<JComponent> buttonList=new ArrayList<>();
     public Projector() {
-        buttonList.add(queryButton);
-        buttonList.add(exitButton);
-        buttonList.add(newConnectionButton);
-        buttonList.add(stateButton);
-        buttonList.add(databaseStatusLabel);
-        buttonList.add(listInDatabase);
-        buttonList.add(listColumnDetailInDatabase);
-        buttonList.add(listInModel);
-        buttonList.add(listColumnDetailInModel);
-        ui();
+        DataZone.setFont(queryButton,exitButton,newConnectionButton,stateButton,databaseStatusLabel,
+                listInDatabase,listColumnDetailInDatabase,listInModel,listColumnDetailInModel);
 //        System.out.println(file.getAbsolutePath());
         newConnectionButton.addActionListener(e -> {
             GetConnectionDialog dialog = new GetConnectionDialog();
@@ -161,12 +152,6 @@ public class Projector {
         });
         databaseSplitPanel.setDividerLocation(100);
         modelSpliePanel.setDividerLocation(100);
-    }
-
-    private void ui() {
-        for (JComponent jComponent : buttonList) {
-            jComponent.setFont(DataZone.getFont(jComponent.getFont()));
-        }
     }
 
     public static void main(String[] args) {

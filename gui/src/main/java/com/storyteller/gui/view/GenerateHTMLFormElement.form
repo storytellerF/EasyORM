@@ -31,7 +31,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="4dabe" class="javax.swing.JTextPane" binding="textPane1" default-binding="true">
+                  <component id="4dabe" class="javax.swing.JTextPane" binding="produceResultPanel">
                     <constraints/>
                     <properties>
                       <font name="Consolas"/>

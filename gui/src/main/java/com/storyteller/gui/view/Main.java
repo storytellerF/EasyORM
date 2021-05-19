@@ -51,9 +51,8 @@ public class Main {
         buttonList.add(produceStaticFieldModel);
         for (JButton jButton : buttonList) {
             jButton.setFont(new Font("黑体", jButton.getFont().getStyle(), jButton.getFont().getSize()));
-
         }
-        ui();
+        DataZone.setFont(start,produceComponent,readExcel,saveButton,reflectToCode,reflectToDatabase,reviewAllModel,produceStaticFieldModel);
         produceComponent.setVisible(false);
         saveButton.addActionListener(e -> databaseConnectionInput.saveConfig());
         reviewAllModel.addActionListener(e -> {
@@ -238,14 +237,6 @@ public class Main {
             }
         });
         jFrame.setVisible(true);
-    }
-
-    private void ui() {
-        for (JButton jButton : buttonList) {
-            jButton.setFont(DataZone. getFont( jButton.getFont()));
-            jButton.setFocusable(false);
-        }
-//        contentPanel.setFont(getFont(scale,contentPanel.getFont()));
     }
 
     private boolean checkDatabaseConnection() {

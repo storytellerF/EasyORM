@@ -10,6 +10,7 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ColumnsToField;
 import com.storyteller.gui.model.ExcelReadConfig;
 import com.storyteller.gui.model.validate.CustomField;
+import com.storyteller_f.uiscale.DataZone;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -32,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReadExcelGetModel {
+    private final HashMap<String, Integer> selectedHashMap = new HashMap<>();
+    private final List<String> typeList = new ArrayList<>();
     private JPanel jPanel;
     private JTextField headerNamePosition;
     private JTextField filePath;
@@ -47,11 +50,72 @@ public class ReadExcelGetModel {
     private JButton saveButton;
     private String path;
     private XSSFSheet sheet;
-    private final HashMap<String, Integer> selectedHashMap = new HashMap<>();
-
-    private final List<String> typeList = new ArrayList<>();
     private JFrame jFrame;
     private boolean isInitial;
+
+    public ReadExcelGetModel() {
+        typeList.add("type");
+        typeList.add("name");
+        typeList.add("realName");
+        typeList.add("comment");
+        typeList.add("enum");
+        typeList.add("nullable");
+        typeList.add("restrain");
+        DataZone.setFont(headerNamePosition, filePath, selectFile, sheet1TextField, columnCount22, startButton, cells, rowCount,
+                parseButton, textPane1, saveButton);
+        ComboShow comboShow = new ComboShow();
+        ComboSelected comboSelected = new ComboSelected();
+        selectFile.addActionListener(e -> {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getName().endsWith(".xlsx");
+                }
+
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jFileChooser.setSelectedFile(new File("C:\\Users\\lava\\Desktop\\工作簿1.xlsx"));
+            int result = jFileChooser.showOpenDialog(jPanel);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                path = jFileChooser.getSelectedFile().getAbsolutePath();
+                filePath.setText(path);
+            }
+        });
+        startButton.addActionListener(e -> preStart(comboShow, comboSelected));
+        parseButton.addActionListener(e -> parse());
+        saveButton.addActionListener(e -> excelConfig.save());
+        initEditor();
+        JTextField[] jTextField = new JTextField[]{
+                rowCount,
+                columnCount22,
+                headerNamePosition,
+                filePath,
+                sheet1TextField
+        };
+        for (JTextField j : jTextField) {
+            j.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    dnib();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    dnib();
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+
+                }
+            });
+        }
+    }
 
     //    private void loopHash() {
 //        System.out.println("遍历开始");
@@ -127,125 +191,6 @@ public class ReadExcelGetModel {
             e.printStackTrace();
         }
 
-    }
-
-    class ComboShow implements PopupMenuListener {
-
-        @Override
-        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-            if (e.getSource() instanceof JComboBox<?>) {
-                //noinspection unchecked
-                JComboBox<String> jComboBox = (JComboBox<String>) e.getSource();
-                jComboBox.removeAllItems();
-                jComboBox.addItem("未选择");
-                for (String string : typeList) {
-                    if (!selectedHashMap.containsKey(string)) {
-                        jComboBox.addItem(string);
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-
-        }
-
-        @Override
-        public void popupMenuCanceled(PopupMenuEvent e) {
-
-        }
-    }
-
-    class ComboSelected implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e12) {
-            if (e12.getSource() instanceof JComboBox<?>) {
-                JComboBox<String> j1 = parseToNew((JComboBox<?>) e12.getSource(), String.class);
-                String name = j1.getName();
-                if (e12.getStateChange() == ItemEvent.SELECTED) {
-                    if (!e12.getItem().equals("未选择")) {
-                        if (selectedHashMap.containsKey(e12.getItem().toString())) {
-                            selectedHashMap.replace((String) e12.getItem(),
-                                    Integer.parseInt(name));
-                        } else {
-                            selectedHashMap.put((String) e12.getItem(),
-                                    Integer.parseInt(name));
-                        }
-                    }
-                } else {
-                    if (!e12.getItem().equals("未选择")) {
-                        selectedHashMap.remove(e12.getItem().toString());
-                    }
-
-                }
-
-            }
-
-        }
-    }
-
-    public ReadExcelGetModel() {
-        typeList.add("type");
-        typeList.add("name");
-        typeList.add("realName");
-        typeList.add("comment");
-        typeList.add("enum");
-        typeList.add("nullable");
-        typeList.add("restrain");
-        ComboShow comboShow = new ComboShow();
-        ComboSelected comboSelected = new ComboSelected();
-        selectFile.addActionListener(e -> {
-            JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.addChoosableFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.getName().endsWith(".xlsx");
-                }
-
-                @Override
-                public String getDescription() {
-                    return null;
-                }
-            });
-            jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            jFileChooser.setSelectedFile(new File("C:\\Users\\lava\\Desktop\\工作簿1.xlsx"));
-            int result = jFileChooser.showOpenDialog(jPanel);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                path = jFileChooser.getSelectedFile().getAbsolutePath();
-                filePath.setText(path);
-            }
-        });
-        startButton.addActionListener(e -> preStart(comboShow, comboSelected));
-        parseButton.addActionListener(e -> parse());
-        saveButton.addActionListener(e -> excelConfig.save());
-        initEditor();
-        JTextField[] jTextField = new JTextField[]{
-                rowCount,
-                columnCount22,
-                headerNamePosition,
-                filePath,
-                sheet1TextField
-        };
-        for (JTextField j : jTextField) {
-            j.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    dnib();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    dnib();
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-
-                }
-            });
-        }
     }
 
     private void preStart(ComboShow comboShow, ComboSelected comboSelected) {
@@ -334,7 +279,7 @@ public class ReadExcelGetModel {
                 for (int i = starter + 1; i < row; i++) {
                     XSSFRow xssfRow = sheet.getRow(i);
                     if (xssfRow == null) {
-                        JOptionPane.showMessageDialog(jPanel,"设定的行数可能不存在");
+                        JOptionPane.showMessageDialog(jPanel, "设定的行数可能不存在");
                         break;
                     }
 
@@ -445,5 +390,62 @@ public class ReadExcelGetModel {
         jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jFrame.pack();
         jFrame.setVisible(true);
+    }
+
+    class ComboShow implements PopupMenuListener {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            if (e.getSource() instanceof JComboBox<?>) {
+                //noinspection unchecked
+                JComboBox<String> jComboBox = (JComboBox<String>) e.getSource();
+                jComboBox.removeAllItems();
+                jComboBox.addItem("未选择");
+                for (String string : typeList) {
+                    if (!selectedHashMap.containsKey(string)) {
+                        jComboBox.addItem(string);
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
+        }
+    }
+
+    class ComboSelected implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e12) {
+            if (e12.getSource() instanceof JComboBox<?>) {
+                JComboBox<String> j1 = parseToNew((JComboBox<?>) e12.getSource(), String.class);
+                String name = j1.getName();
+                if (e12.getStateChange() == ItemEvent.SELECTED) {
+                    if (!e12.getItem().equals("未选择")) {
+                        if (selectedHashMap.containsKey(e12.getItem().toString())) {
+                            selectedHashMap.replace((String) e12.getItem(),
+                                    Integer.parseInt(name));
+                        } else {
+                            selectedHashMap.put((String) e12.getItem(),
+                                    Integer.parseInt(name));
+                        }
+                    }
+                } else {
+                    if (!e12.getItem().equals("未选择")) {
+                        selectedHashMap.remove(e12.getItem().toString());
+                    }
+
+                }
+
+            }
+
+        }
     }
 }

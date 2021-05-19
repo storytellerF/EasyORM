@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueryWindow {
-
     JPanel panel1;
     private JTextArea textArea1;
     private JTextPane textPane1;
@@ -16,7 +15,7 @@ public class QueryWindow {
     private JTable table1;
     JSplitPane splitPanel;
     private ConnectionConfig config;
-    private DatabaseQueryResultModel resultModel=new DatabaseQueryResultModel();
+    private final DatabaseQueryResultModel resultModel=new DatabaseQueryResultModel();
     public QueryWindow(ConnectionConfig config) {
         DataZone.setFont(runButton,textArea1,textPane1,tabbedPane1);
         this.config=config;
@@ -50,11 +49,13 @@ public class QueryWindow {
                         resultSet.close();
                         System.out.println("refresh");
                         resultModel.fireTableStructureChanged();
+                    }else{
+                        tabbedPane1.setSelectedIndex(1);
                     }
 
                     textPane1.setText(execute+"\n");
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
                 }
             }
         });

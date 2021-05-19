@@ -11,6 +11,7 @@ import com.storyteller.gui.createHtml.HTMLFormItem;
 import com.storyteller.gui.createHtml.RegularType;
 import com.storyteller.gui.main.FileState;
 import com.storyteller.gui.model.HTMLCreatorConfig;
+import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -27,8 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenerateHTMLFormElement {
+    private final List<String> charsetList;
+    FileState fileState = new FileState();
+    boolean isInitial = false;
     private JPanel contentPanel;
-    private JTextPane textPane1;
+    private JTextPane produceResultPanel;
     private JButton copyToButton;
     private HTMLFormItem htmlFormItem;
     private int verifyIndex;
@@ -47,31 +51,9 @@ public class GenerateHTMLFormElement {
     private ConfigEditor htmlConfigEditor;
     private JButton button1;
     private JFrame jFrame;
-    private final List<String> charsetList;
-
-    public void bindPath() {
-        Config current = htmlConfigEditor.getCurrent();
-        if (current instanceof HTMLCreatorConfig) {
-            HTMLCreatorConfig creatorConfig = (HTMLCreatorConfig) current;
-            creatorConfig.setPath(filePath.getText());
-        }
-    }
-    public void setTab(int w){
-        FontMetrics fm=textPane1.getFontMetrics(textPane1.getFont());
-        int charWidth=fm.charWidth(' ');
-        int tabWidth=charWidth*w;
-        TabStop[] stop=new TabStop[5];
-        for (int i = 0; i < stop.length; i++) {
-            stop[i]=new TabStop((i+1)*tabWidth);
-        }
-        TabSet tabSet=new TabSet(stop);
-        SimpleAttributeSet attributeSet=new SimpleAttributeSet();
-        StyleConstants.setTabSet(attributeSet,tabSet);
-        int length=textPane1.getDocument().getLength();
-        textPane1.getStyledDocument().setParagraphAttributes(0,length,attributeSet,false);
-    }
 
     public GenerateHTMLFormElement() {
+        DataZone.setFont(produceResultPanel,copyToButton,openFileButton,filePath,charsetComboBox,button1);
         setTab(4);
         charsetList = new ArrayList<>();
         try {
@@ -82,7 +64,7 @@ public class GenerateHTMLFormElement {
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(contentPanel,"基本不会出现的情况，快去买彩票吧");
+            JOptionPane.showMessageDialog(contentPanel, "基本不会出现的情况，快去买彩票吧");
         }
         fileState.setListener(state -> {
             if (state) {
@@ -117,7 +99,7 @@ public class GenerateHTMLFormElement {
             htmlFormItem = new RegularType(0);
             verifyIndex = 2;
         });
-        JRadioButton[] jRadioButtons=new JRadioButton[]{
+        JRadioButton[] jRadioButtons = new JRadioButton[]{
                 regularNoVerifyRadioButton,
                 regularSystemVerifyRadioButton,
                 regularDiTingVerifyRadioButton,
@@ -130,7 +112,7 @@ public class GenerateHTMLFormElement {
         }
         copyToButton.addActionListener(e -> {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            Transferable transferable = new StringSelection(textPane1.getText());
+            Transferable transferable = new StringSelection(produceResultPanel.getText());
             clipboard.setContents(transferable, null);
         });
         openFileButton.addActionListener(e -> {
@@ -149,7 +131,28 @@ public class GenerateHTMLFormElement {
         button1.addActionListener(e -> htmlConfigEditor.save());
     }
 
-    FileState fileState = new FileState();
+    public void bindPath() {
+        Config current = htmlConfigEditor.getCurrent();
+        if (current instanceof HTMLCreatorConfig) {
+            HTMLCreatorConfig creatorConfig = (HTMLCreatorConfig) current;
+            creatorConfig.setPath(filePath.getText());
+        }
+    }
+
+    public void setTab(int w) {
+        FontMetrics fm = produceResultPanel.getFontMetrics(produceResultPanel.getFont());
+        int charWidth = fm.charWidth(' ');
+        int tabWidth = charWidth * w;
+        TabStop[] stop = new TabStop[5];
+        for (int i = 0; i < stop.length; i++) {
+            stop[i] = new TabStop((i + 1) * tabWidth);
+        }
+        TabSet tabSet = new TabSet(stop);
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setTabSet(attributeSet, tabSet);
+        int length = produceResultPanel.getDocument().getLength();
+        produceResultPanel.getStyledDocument().setParagraphAttributes(0, length, attributeSet, false);
+    }
 
     private String getHtml(Field field, int index) throws Exception {
         String realNameString;
@@ -198,8 +201,6 @@ public class GenerateHTMLFormElement {
             creatorConfig.setVerify(verity);
         }
     }
-
-    boolean isInitial = false;
 
     public void bind(HTMLCreatorConfig creatorConfig) {
         synchronized (this) {
@@ -350,7 +351,7 @@ public class GenerateHTMLFormElement {
                         }
                         script.append("</script>\n");
                     }
-                    textPane1.setText(htmlForm.toString() + script.toString());
+                    produceResultPanel.setText(htmlForm.toString() + script.toString());
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(contentPanel, e1.getMessage());
