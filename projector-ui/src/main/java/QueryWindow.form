@@ -15,7 +15,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="81810" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+          <component id="81810" class="javax.swing.JTextArea" binding="queryTextPanel">
             <constraints>
               <splitpane position="left"/>
             </constraints>
@@ -23,7 +23,7 @@
               <font name="Consolas"/>
             </properties>
           </component>
-          <tabbedpane id="2ff0d" binding="tabbedPane1" default-binding="true">
+          <tabbedpane id="2ff0d" binding="resultPanel1">
             <constraints>
               <splitpane position="right"/>
             </constraints>
@@ -37,7 +37,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a086" class="javax.swing.JTextPane" binding="textPane1" default-binding="true">
+                  <component id="a086" class="javax.swing.JTextPane" binding="plainResultPanel">
                     <constraints border-constraint="Center"/>
                     <properties/>
                   </component>
@@ -55,7 +55,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="3fda6" class="javax.swing.JTable" binding="table1" default-binding="true">
+                      <component id="3fda6" class="javax.swing.JTable" binding="tableResultPanel">
                         <constraints/>
                         <properties>
                           <autoCreateRowSorter value="true"/>

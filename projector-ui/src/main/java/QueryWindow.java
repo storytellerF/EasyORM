@@ -7,28 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueryWindow {
+    private final DatabaseQueryResultModel resultModel = new DatabaseQueryResultModel();
     JPanel panel1;
-    private JTextArea textArea1;
-    private JTextPane textPane1;
-    private JButton runButton;
-    private JTabbedPane tabbedPane1;
-    private JTable table1;
     JSplitPane splitPanel;
+    private JTextArea queryTextPanel;
+    private JTextPane plainResultPanel;
+    private JButton runButton;
+    private JTabbedPane resultPanel1;
+    private JTable tableResultPanel;
     private ConnectionConfig config;
-    private final DatabaseQueryResultModel resultModel=new DatabaseQueryResultModel();
+
     public QueryWindow(ConnectionConfig config) {
-        DataZone.setFont(runButton,textArea1,textPane1,tabbedPane1);
-        this.config=config;
-        table1.setModel(resultModel);
+        DataZone.setFont(runButton, queryTextPanel, plainResultPanel, resultPanel1);
+        this.config = config;
+        tableResultPanel.setModel(resultModel);
         runButton.addActionListener(e -> {
-            String text = textArea1.getText();
+            String text = queryTextPanel.getText();
             if (text.trim().length() > 0) {
                 try {
                     Connection connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
                     Statement statement = connection.createStatement();
                     boolean execute = statement.execute(text);
                     if (execute) {
-                        tabbedPane1.setSelectedIndex(1);
+                        resultPanel1.setSelectedIndex(1);
                         ResultSet resultSet = statement.getResultSet();
                         ResultSetMetaData metaData = resultSet.getMetaData();
                         int columnCount = metaData.getColumnCount();
@@ -39,9 +40,9 @@ public class QueryWindow {
                             resultModel.addColumnName(columnName);
                         }
                         while (resultSet.next()) {
-                            List<String> values=new ArrayList<>();
+                            List<String> values = new ArrayList<>();
                             for (int i = 0; i < columnCount; i++) {
-                                String string = resultSet.getString(i+1);
+                                String string = resultSet.getString(i + 1);
                                 values.add(string);
                             }
                             resultModel.addColumnValue(values);
@@ -49,16 +50,16 @@ public class QueryWindow {
                         resultSet.close();
                         System.out.println("refresh");
                         resultModel.fireTableStructureChanged();
-                    }else{
-                        tabbedPane1.setSelectedIndex(1);
+                    } else {
+                        resultPanel1.setSelectedIndex(1);
                     }
 
-                    textPane1.setText(execute+"\n");
+                    plainResultPanel.setText(execute + "\n");
                 } catch (SQLException sqlException) {
                     sqlException.printStackTrace();
                 }
             }
         });
-        panel1.setSize(200,200);
+        panel1.setSize(200, 200);
     }
 }

@@ -84,7 +84,6 @@ public class ConfigEditorUI implements ConfigEditorReusable {
      * @param index 应该被选中的索引位置
      */
     public void updateComboBox(int index) {
-        System.out.println("updateComboBox:"+index);
         main_comboBox.removeAllItems();
         for (Iterator<Config> it = core.getIterator(); it.hasNext(); ) {
             Config config = it.next();

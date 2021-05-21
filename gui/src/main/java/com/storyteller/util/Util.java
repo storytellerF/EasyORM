@@ -4,6 +4,7 @@ import com.storyteller.gui.model.Constraint;
 import com.storyteller.gui.model.InformationSchemaColumn;
 import com.storyteller.gui.model.Table;
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
+import com.storyteller_f.relay_message.RelayMessage;
 import com.storyteller_f.sql_query.query.Select;
 import com.storyteller_f.sql_query.query.expression.alias.EE;
 
@@ -32,13 +33,13 @@ public class Util {
         return null;
     }
 
-    public static boolean testConnection(String url, String user, String password) {
+    public static RelayMessage testConnection(String url, String user, String password) {
         try {
             DriverManager.getConnection(url, user, password).close();
-            return true;
+            return new RelayMessage(true,"");
         } catch (SQLException e) {
 //            e.printStackTrace();
-            return false;
+            return new RelayMessage(false,e.getMessage());
         }
     }
 

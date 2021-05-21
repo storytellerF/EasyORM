@@ -6,6 +6,7 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ConnectionConfig;
 import com.storyteller.gui.model.MainViewDatabaseConnectionConfig;
 import com.storyteller.util.Util;
+import com.storyteller_f.relay_message.RelayMessage;
 import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;
@@ -61,13 +62,14 @@ public class DatabaseConnectionInput {
             }
         });
         testConnection.addActionListener(e -> {
-            boolean b = Util.testConnection(urlInput.getText(), nameInput.getText(), String.valueOf(passwordInput.getPassword()));
-            if (b) {
+            RelayMessage b = Util.testConnection(urlInput.getText(), nameInput.getText(), String.valueOf(passwordInput.getPassword()));
+            if (b.isSuccess) {
                 testConnection.setBackground(Color.green);
             } else {
                 testConnection.setBackground(Color.red);
+                System.out.println(b.message);
             }
-            JOptionPane.showMessageDialog(linkInput.getParent(), "连接结果" + b);
+            JOptionPane.showMessageDialog(linkInput.getParent(), "连接结果" + b.isSuccess);
         });
     }
 
@@ -75,7 +77,6 @@ public class DatabaseConnectionInput {
         configEditorUI.setListener(new ConfigEditorUI.ConfigEditorListener() {
             @Override
             public void onShow(Config config) {
-                System.out.println("onShow:"+config.getName());
                 if (config instanceof MainViewDatabaseConnectionConfig) {
                     bind((MainViewDatabaseConnectionConfig) config);
                 }

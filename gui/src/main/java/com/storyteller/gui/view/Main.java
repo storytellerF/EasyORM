@@ -51,7 +51,7 @@ public class Main {
         for (JButton jButton : buttonList) {
             jButton.setFont(new Font("黑体", jButton.getFont().getStyle(), jButton.getFont().getSize()));
         }
-        DataZone.setFont(start,produceComponent,readExcel,saveButton,reflectToCode,reflectToDatabase,reviewAllModel,produceStaticFieldModel);
+        DataZone.setFont(start, produceComponent, readExcel, saveButton, reflectToCode, reflectToDatabase, reviewAllModel, produceStaticFieldModel);
         produceComponent.setVisible(false);
         saveButton.addActionListener(e -> databaseConnectionInput.saveConfig());
         reviewAllModel.addActionListener(e -> {
@@ -193,10 +193,7 @@ public class Main {
                     System.out.println("新的文件内容");
                     System.out.println(fileContent);
                     System.out.println("文件内容结束");
-                    //todo 替换原文件
-//                        String absolutePath = new File(staticModelPathField, className + ".java").getAbsolutePath();
-//                        System.out.println(className + " " + absolutePath);
-//                        writeFile(absolutePath, fileContent.toString());
+                    writeFile(file.getAbsolutePath(), fileContent.toString());
                 } catch (ClassNotFoundException | IOException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }

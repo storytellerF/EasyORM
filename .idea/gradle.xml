@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/gui" />
             <option value="$PROJECT_DIR$/mybatis-generator" />
             <option value="$PROJECT_DIR$/projector-ui" />
+            <option value="$PROJECT_DIR$/relay-message" />
             <option value="$PROJECT_DIR$/sql-query" />
             <option value="$PROJECT_DIR$/test-search" />
             <option value="$PROJECT_DIR$/uiscale" />
