@@ -142,7 +142,6 @@ public class DatabaseConnectionInput {
      * 将数据保存到对象中
      */
     public void saveToObject() {
-        System.out.println("saveToObject");
         Config configEditorCurrent = configEditorUI.getCurrent();
         if (configEditorCurrent instanceof MainViewDatabaseConnectionConfig) {
             MainViewDatabaseConnectionConfig current = (MainViewDatabaseConnectionConfig) configEditorCurrent;

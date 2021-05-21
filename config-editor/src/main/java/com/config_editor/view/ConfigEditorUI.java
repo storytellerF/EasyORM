@@ -48,10 +48,8 @@ public class ConfigEditorUI implements ConfigEditorReusable {
 
     public void comboBoxBindEvent() {
         main_comboBox.addItemListener(e -> {
-            System.out.println("event:"+e.getItem()+" "+(e.getStateChange()==ItemEvent.SELECTED));
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 int selectedIndex = main_comboBox.getSelectedIndex();
-                System.out.println("index:"+selectedIndex);
                 core.selected(selectedIndex);
             }
         });
