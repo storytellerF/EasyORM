@@ -88,7 +88,14 @@ public class Projector {
                 JOptionPane.showMessageDialog(panel1,e1.getMessage()!=null?e1.getMessage():e1, "Error", JOptionPane.ERROR_MESSAGE);
             }
             if (databaseConnectionInput.checkModel()) {
-                ClassLoaderManager.getInstance().oneStep(databaseConnectionInput.getModel(), databaseConnectionInput.packageName());
+                boolean b = ClassLoaderManager.getInstance().oneStep(databaseConnectionInput.getModel(), databaseConnectionInput.packageName());
+                if (!b) {
+                    int re = JOptionPane.showConfirmDialog(panel1, "编译失败，是否清除缓存（清楚之后可以再次进行编译）", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                    if (re == JOptionPane.YES_OPTION) {
+                        ClassLoaderManager.getInstance().init();
+                    }
+                    return;
+                }
                 File[] files = new File(databaseConnectionInput.getModel()).listFiles();
                 if (files == null) {
                     panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

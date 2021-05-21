@@ -1,9 +1,9 @@
 package com.storyteller.gui.view;
 
+import com.config_editor.view.ConfigEditorUI;
 import com.storyteller_f.sql_query.annotation.RealName;
 import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 import com.config_editor.model.Config;
-import com.config_editor.view.ConfigEditor;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.createHtml.BootstrapType;
 import com.storyteller.gui.createHtml.DiTing;
@@ -48,7 +48,7 @@ public class GenerateHTMLFormElement {
     private JButton openFileButton;
     private JComboBox<String> charsetComboBox;
     private JSplitPane splitPanel;
-    private ConfigEditor htmlConfigEditor;
+    private ConfigEditorUI htmlConfigEditorUI;
     private JButton button1;
     private JFrame jFrame;
 
@@ -128,11 +128,11 @@ public class GenerateHTMLFormElement {
             }
         });
         charsetComboBox.addItemListener(e -> dnib());
-        button1.addActionListener(e -> htmlConfigEditor.save());
+        button1.addActionListener(e -> htmlConfigEditorUI.save());
     }
 
     public void bindPath() {
-        Config current = htmlConfigEditor.getCurrent();
+        Config current = htmlConfigEditorUI.getCurrent();
         if (current instanceof HTMLCreatorConfig) {
             HTMLCreatorConfig creatorConfig = (HTMLCreatorConfig) current;
             creatorConfig.setPath(filePath.getText());
@@ -173,7 +173,7 @@ public class GenerateHTMLFormElement {
                 return;
             }
         }
-        Config current = htmlConfigEditor.getCurrent();
+        Config current = htmlConfigEditorUI.getCurrent();
         if (current instanceof HTMLCreatorConfig) {
             HTMLCreatorConfig creatorConfig = (HTMLCreatorConfig) current;
             creatorConfig.setPath(filePath.getText());
@@ -236,9 +236,9 @@ public class GenerateHTMLFormElement {
     }
 
     public void initEditor() {
-        htmlConfigEditor.setListener(new ConfigEditor.ConfigEditorListener() {
+        htmlConfigEditorUI.setListener(new ConfigEditorUI.ConfigEditorListener() {
             @Override
-            public void onInit(Config config) {
+            public void onShow(Config config) {
                 if (config instanceof HTMLCreatorConfig) {
                     HTMLCreatorConfig creatorConfig =
                             (HTMLCreatorConfig) config;
@@ -257,7 +257,7 @@ public class GenerateHTMLFormElement {
         RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)
                 .registerSubtype(HTMLCreatorConfig.class);
         try {
-            htmlConfigEditor.init("com.storyteller.gui.generate_html", runtimeTypeAdapterFactory);
+            htmlConfigEditorUI.init("com.storyteller.gui.generate_html", runtimeTypeAdapterFactory);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,8 @@
 package com.storyteller.gui.model;
 
-public class MainViewDatabaseConnectionConfig extends com.config_editor.model.Config {
+import com.config_editor.model.Config;
+
+public class MainViewDatabaseConnectionConfig extends Config {
     private String link;
     private String port;
     private String database;
@@ -10,8 +12,6 @@ public class MainViewDatabaseConnectionConfig extends com.config_editor.model.Co
     private String url;
     private String modelPath;
     private String modelPathPackageName;
-    private String staticModelPath;
-    private String staticModelPathPackageName;
     private boolean enableLombok;
 
     public boolean isEnableLombok() {
@@ -92,21 +92,5 @@ public class MainViewDatabaseConnectionConfig extends com.config_editor.model.Co
 
     public void setModelPathPackageName(String modelPathPackageName) {
         this.modelPathPackageName = modelPathPackageName;
-    }
-
-    public String getStaticModelPath() {
-        return staticModelPath;
-    }
-
-    public void setStaticModelPath(String staticModelPath) {
-        this.staticModelPath = staticModelPath;
-    }
-
-    public String getStaticModelPathPackageName() {
-        return staticModelPathPackageName;
-    }
-
-    public void setStaticModelPathPackageName(String staticModelPathPackageName) {
-        this.staticModelPathPackageName = staticModelPathPackageName;
     }
 }

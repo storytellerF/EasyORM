@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    private final List<JButton> buttonList = new ArrayList<>();
-    protected String modelPathFieldString;
     private JButton reflectToDatabase;
     private JButton reflectToCode;
     private JButton produceComponent;
@@ -41,6 +39,7 @@ public class Main {
     private Connection connection;
 
     public Main() {
+        List<JButton> buttonList = new ArrayList<>();
         buttonList.add(start);
         buttonList.add(produceComponent);
         buttonList.add(readExcel);
@@ -100,7 +99,7 @@ public class Main {
                 JOptionPane.showMessageDialog(contentPanel, "未配置路径");
                 return;
             }
-            boolean return_result = ClassLoaderManager.getInstance().oneStep(modelPathFieldString, databaseConnectionInput.packageName());
+            boolean return_result = ClassLoaderManager.getInstance().oneStep(databaseConnectionInput.getModel(), databaseConnectionInput.packageName());
             if (!return_result) {
                 int re = JOptionPane.showConfirmDialog(contentPanel, "编译失败，是否清除缓存（清楚之后可以再次进行编译）", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
                 if (re == JOptionPane.YES_OPTION) {
@@ -109,7 +108,7 @@ public class Main {
                 return;
             }
             try {
-                File file = new File(modelPathFieldString);
+                File file = new File(databaseConnectionInput.getModel());
                 File[] files = file.listFiles();
                 if (files == null) {
                     return;
@@ -123,11 +122,11 @@ public class Main {
                     Create create = new Create(new JDBCObtain(connection), clazz);
                     String parse = create.parse(true);
                     System.out.println(parse);
-                    //com.storyteller_f.easyorm_jdbc.connection.createStatement().execute(parse);
+                    connection.createStatement().execute(parse);
                 }
                 System.out.println("执行完毕");
 
-            } catch (ClassNotFoundException | UnexpectedException e1) {
+            } catch (ClassNotFoundException | UnexpectedException | SQLException e1) {
                 e1.printStackTrace();
             }
         });
@@ -136,8 +135,15 @@ public class Main {
             if (!databaseConnectionInput.checkModel()) {
                 return;
             }
-            ClassLoaderManager.getInstance().oneStep(modelPathFieldString, databaseConnectionInput.packageName());
-            File[] files = new File(modelPathFieldString).listFiles();
+            boolean b = ClassLoaderManager.getInstance().oneStep(databaseConnectionInput.getModel(), databaseConnectionInput.packageName());
+            if (!b) {
+                int re = JOptionPane.showConfirmDialog(contentPanel, "编译失败，是否清除缓存（清楚之后可以再次进行编译）", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                if (re == JOptionPane.YES_OPTION) {
+                    ClassLoaderManager.getInstance().init();
+                }
+                return;
+            }
+            File[] files = new File(databaseConnectionInput.getModel()).listFiles();
             if (files == null) {
                 return;
             }
@@ -180,12 +186,7 @@ public class Main {
                             continue;
                         }
                         String name = field.getName();
-//                            try {
-//                                clazz.getDeclaredField("column_" + name);
-//                            } catch (NoSuchFieldException noSuchFieldException) {
-//                                staticContent.append("\t@NoQuery\n").append("\tpublic static String s_c_").append(name).append("=\"").append(name).append("\";\n");
-//                            }
-                        staticContent.append("\tpublic static String ").append(name).append("(){\n").append("\t\treturn ").append(name).append("\n\t}\n");
+                        staticContent.append("\tpublic static String ").append(name).append("(){\n").append("\t\treturn \"").append(name).append("\";\n\t}\n");
                     }
                     System.out.println(i + " length:" + fileContent.length());
                     fileContent.insert(i, staticContent);

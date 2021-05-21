@@ -1,7 +1,7 @@
 package com.storyteller.gui.view;
 
 import com.config_editor.model.Config;
-import com.config_editor.view.ConfigEditor;
+import com.config_editor.view.ConfigEditorUI;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ConnectionConfig;
 import com.storyteller.gui.model.MainViewDatabaseConnectionConfig;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class DatabaseConnectionInput {
-    private ConfigEditor configEditor;
+    private ConfigEditorUI configEditorUI;
     private JPanel inputComponent;
     private JTextField modelPathInput;
     private JButton selectPath;
@@ -30,11 +30,12 @@ public class DatabaseConnectionInput {
     private JTextField packageNameInput;
     private JTextField extraParamInput;
     private JCheckBox enableLombok;
+    private boolean binding=false;
     @SuppressWarnings({"unused"})
     private JPanel inputGroup;
 
     public DatabaseConnectionInput() {
-        ui();
+        DataZone.setFont(testConnection,enableLombok);
         initEditor();
         TextChange textChange = new TextChange();
         loopComponent(textChange);
@@ -54,8 +55,8 @@ public class DatabaseConnectionInput {
                         modelPathFieldString = jFileChooser.getSelectedFile().getAbsolutePath();
                         modelPathInput.setText(modelPathFieldString);
                         packageNameInput.setText(getModelPathFromPath(modelPathFieldString));
+                        savePath();
                     }
-                    bindPath();
                     break;
             }
         });
@@ -70,32 +71,27 @@ public class DatabaseConnectionInput {
         });
     }
 
-    private void ui() {
-//        DataZone.setFont();
-    }
-
     public void initEditor() {
-        configEditor.setListener(new ConfigEditor.ConfigEditorListener() {
+        configEditorUI.setListener(new ConfigEditorUI.ConfigEditorListener() {
             @Override
-            public void onInit(Config config) {
+            public void onShow(Config config) {
+                System.out.println("onShow:"+config.getName());
                 if (config instanceof MainViewDatabaseConnectionConfig) {
-                    MainViewDatabaseConnectionConfig config1 = (MainViewDatabaseConnectionConfig) config;
-                    bind(config1);
+                    bind((MainViewDatabaseConnectionConfig) config);
                 }
             }
 
             @Override
             public Config onNew() {
-                MainViewDatabaseConnectionConfig loginConfig =
-                        new MainViewDatabaseConnectionConfig();
-                loginConfig.setName("未命名" + System.currentTimeMillis());
-                return loginConfig;
+                MainViewDatabaseConnectionConfig connectionConfig = new MainViewDatabaseConnectionConfig();
+                connectionConfig.setName("未命名" + System.currentTimeMillis());
+                return connectionConfig;
             }
         });
         RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)
                 .registerSubtype(MainViewDatabaseConnectionConfig.class);
         try {
-            configEditor.init("com.storyteller.gui.main.DatabaseConnectionInput", runtimeTypeAdapterFactory);
+            configEditorUI.init(this.getClass().getName(), runtimeTypeAdapterFactory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,6 +104,7 @@ public class DatabaseConnectionInput {
      * @param config
      */
     public void bind(MainViewDatabaseConnectionConfig config) {
+        binding=true;
         linkInput.setText(config.getLink());
         urlInput.setText(config.getUrl());
         portInput.setText(config.getPort());
@@ -117,11 +114,9 @@ public class DatabaseConnectionInput {
         extraParamInput.setText(config.getExtraParams());
         nameInput.setText(config.getUserName());
         passwordInput.setText(config.getPassword());
-//        staticModelPathPackageNameInput.setText(config.getStaticModelPathPackageName());
-//        staticModelPathInput.setText(config.getStaticModelPath());
-//        modelPathFieldString = config.getModelPath();
-//        staticModelPathField = config.getStaticModelPath();
         enableLombok.setSelected(config.isEnableLombok());
+        urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
+        binding=false;
     }
 
     public String getModelPathFromPath(String path) {
@@ -134,13 +129,11 @@ public class DatabaseConnectionInput {
         return replace;
     }
 
-    public void bindPath() {
-        Config current = configEditor.getCurrent();
+    public void savePath() {
+        Config current = configEditorUI.getCurrent();
         if (current instanceof MainViewDatabaseConnectionConfig) {
             MainViewDatabaseConnectionConfig current1 = (MainViewDatabaseConnectionConfig) current;
-//            current1.setStaticModelPath(staticModelPathInput.getText());
             current1.setModelPathPackageName(packageNameInput.getText());
-//            current1.setStaticModelPathPackageName(staticModelPathPackageNameInput.getText());
             current1.setModelPath(modelPathInput.getText());
         }
     }
@@ -148,8 +141,9 @@ public class DatabaseConnectionInput {
     /**
      * 将数据保存到对象中
      */
-    public void dnib() {
-        Config configEditorCurrent = configEditor.getCurrent();
+    public void saveToObject() {
+        System.out.println("saveToObject");
+        Config configEditorCurrent = configEditorUI.getCurrent();
         if (configEditorCurrent instanceof MainViewDatabaseConnectionConfig) {
             MainViewDatabaseConnectionConfig current = (MainViewDatabaseConnectionConfig) configEditorCurrent;
             current.setLink(linkInput.getText());
@@ -160,6 +154,8 @@ public class DatabaseConnectionInput {
             current.setPassword(String.valueOf(passwordInput.getPassword()));
             current.setPort(portInput.getText());
             current.setEnableLombok(enableLombok.isSelected());
+            current.setModelPath(modelPathInput.getText());
+            current.setModelPathPackageName(packageNameInput.getText());
         }
     }
 
@@ -169,7 +165,8 @@ public class DatabaseConnectionInput {
             if (component instanceof JTextField) {
                 JTextField jTextField = (JTextField) component;
                 String name = jTextField.getName();
-                if (name != null && name.equals("database")) {
+
+                if (name != null &&(name.equals("database")||name.equals("model"))) {
                     ((JTextField) component).getDocument().addDocumentListener(textChange);
                 }
             }
@@ -177,7 +174,7 @@ public class DatabaseConnectionInput {
     }
 
     public void saveConfig() {
-        configEditor.save();
+        configEditorUI.save();
     }
 
     public boolean checkModel() {
@@ -225,17 +222,19 @@ public class DatabaseConnectionInput {
 
         @Override
         public void insertUpdate(DocumentEvent e) {
-            getaVoid();
+            textChange();
         }
 
-        private void getaVoid() {
+        private void textChange() {
+            if (binding) return;
             urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
-            dnib();
+            saveToObject();
+//            bindPath();
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            getaVoid();
+            textChange();
         }
 
         @Override

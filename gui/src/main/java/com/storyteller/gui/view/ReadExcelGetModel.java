@@ -1,11 +1,11 @@
 package com.storyteller.gui.view;
 
 
+import com.config_editor.view.ConfigEditorUI;
 import com.storyteller_f.sql_query.annotation.RealName;
 import com.storyteller_f.sql_query.annotation.constraint.Nullable;
 import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
 import com.config_editor.model.Config;
-import com.config_editor.view.ConfigEditor;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ColumnsToField;
 import com.storyteller.gui.model.ExcelReadConfig;
@@ -46,7 +46,7 @@ public class ReadExcelGetModel {
     private JTextField rowCount;
     private JButton parseButton;
     private JTextPane textPane1;
-    private ConfigEditor excelConfig;
+    private ConfigEditorUI excelConfig;
     private JButton saveButton;
     private String path;
     private XSSFSheet sheet;
@@ -165,9 +165,9 @@ public class ReadExcelGetModel {
     }
 
     public void initEditor() {
-        excelConfig.setListener(new ConfigEditor.ConfigEditorListener() {
+        excelConfig.setListener(new ConfigEditorUI.ConfigEditorListener() {
             @Override
-            public void onInit(Config config) {
+            public void onShow(Config config) {
                 if (config instanceof ExcelReadConfig) {
                     ExcelReadConfig excelReadConfig =
                             (ExcelReadConfig) config;

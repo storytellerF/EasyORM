@@ -2,7 +2,6 @@ package com.config_editor.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Configs {
     private final ArrayList<Config> configs;
@@ -11,18 +10,6 @@ public class Configs {
 
     public Configs() {
         configs = new ArrayList<>();
-    }
-
-    public ArrayList<Config> getConfigs() {
-        return configs;
-    }
-
-    public int getMax() {
-        return this.max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
     }
 
     /**
@@ -34,21 +21,12 @@ public class Configs {
         return getIndex(last);
     }
 
-    public int getLast() {
-        return this.last;
-    }
-
-    public void setLast(int last) {
-        this.last = last;
-    }
-
     public Iterator<Config> getIterator() {
         return configs.iterator();
     }
 
     /**
-     * 会自动设置id
-     *
+     * 会自动设置id，id 从0开始
      * @param config 对象
      * @return 返回生成的id
      */
@@ -65,17 +43,26 @@ public class Configs {
      * @return 正在选中的项
      */
     public Config getLastConfig() {
-        return this.getConfig(this.getLast());
+        return getConfig(last);
     }
 
+    /**
+     * 获取指定索引位置的配置
+     * @param index 索引位置
+     * @return 配置
+     */
     public Config getConfigAt(int index) {
-        return this.configs.get(index);
+        return configs.get(index);
     }
 
+    /**
+     * 通过id 获取索引位置
+     * @param id 配置的id
+     * @return 如果找不到，返回-1
+     */
     public int getIndex(int id) {
         int index = 0;
-        for (int i = 0; i < configs.size(); i++) {
-            Config config = configs.get(i);
+        for (Config config : configs) {
             if (config.getId() == id) {
                 return index;
             }
@@ -85,28 +72,40 @@ public class Configs {
         return -1;
     }
 
+    /**
+     * 获取指定id 的索引
+     * @param id id
+     * @return 返回找到的配置
+     */
     public Config getConfig(int id) {
-        for (Config config : configs) {
-            if (config.getId() == id) {
-                return config;
-            }
+        int index=getIndex(id);
+        if (index != -1) {
+            return configs.get(index);
         }
         return null;
     }
 
+    /**
+     * 设定当前选择的配置的id
+     * @param id 需要被选中的配置的id
+     */
     public void choose(int id) {
         this.last = id;
     }
 
-    public void removeAt(int selectedIndex) {
-        configs.remove(selectedIndex);
+    /**
+     * 移除指定位置的配置
+     * @param index 索引位置
+     */
+    public void removeAt(int index) {
+        configs.remove(index);
     }
 
     public int size() {
         return configs.size();
     }
 
-    public void addAll(List<Config> configList) {
-        configs.addAll(configList);
-    }
+//    public void addAll(List<Config> configList) {
+//        configs.addAll(configList);
+//    }
 }

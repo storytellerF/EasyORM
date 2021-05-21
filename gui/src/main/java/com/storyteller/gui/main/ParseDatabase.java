@@ -60,7 +60,7 @@ public class ParseDatabase {
                         .append("\t\treturn ").append(nameValue).append(";\n")
                         .append("\t}\n");
 
-            append.append("\tpublic static String ").append(nameValue).append("(){\n").append("\t\treturn ").append(nameValue).append("\n\t}\n");
+            append.append("\tpublic static String ").append(nameValue).append("(){\n").append("\t\treturn \"").append(nameValue).append("\";\n\t}\n");
             columnsToField.addMethod(append.toString());
 //			customField.add("@RealName( name =\"" + real.getStringCellValue() + "\")");
             columnsToField.add(customField);
@@ -75,8 +75,9 @@ public class ParseDatabase {
             ArrayList<InformationSchemaColumn> informationSchemaColumns = value.getColumns();
 //			System.out.println("name:"+key+" to:"+CaseUtils.toCamelCase(key,true));
             String path = Paths.get(this.path, CaseUtils.toCamelCase(key, true) + ".java").toString();
-//			writeFile(path, getModelClass(packageStr, key, columns));
-            System.out.println(getModelClass(packageStr, key, informationSchemaColumns, enableLombok));
+            String modelClass = getModelClass(packageStr, key, informationSchemaColumns, enableLombok);
+            writeFile(path, modelClass);
+            System.out.println(modelClass);
         }
     }
 

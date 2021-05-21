@@ -159,7 +159,7 @@
               </component>
             </children>
           </grid>
-          <nested-form id="39c36" form-file="com/config_editor/view/ConfigEditor.form" binding="excelConfig">
+          <nested-form id="39c36" form-file="com/config_editor/view/ConfigEditorUI.form" binding="excelConfig">
             <constraints border-constraint="North"/>
           </nested-form>
         </children>

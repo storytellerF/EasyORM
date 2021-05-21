@@ -1,19 +1,21 @@
 package com.config_editor.view;
 
+import com.config_editor.ConfigReusable;
 import com.config_editor.model.Config;
 import com.config_editor.model.Configs;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.io.*;
 import java.util.Iterator;
 
-public class ConfigEditorCore {
+public class ConfigEditorCore implements ConfigReusable {
+    CoreListener coreListener;
     private String path;
     private Gson gson;
     private Configs configs;
+
     public void save() {
         FileWriter fileWriter = null;
         try {
@@ -32,12 +34,13 @@ public class ConfigEditorCore {
             }
         }
     }
+
     public void init(String suffix, TypeAdapterFactory... runtimeTypeAdapterFactory) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         for (TypeAdapterFactory configRuntimeTypeAdapterFactory : runtimeTypeAdapterFactory) {
             gsonBuilder.registerTypeAdapterFactory(configRuntimeTypeAdapterFactory);
         }
-        gson= gsonBuilder.create();
+        gson = gsonBuilder.create();
         path = "config-editor-" + suffix + ".json";
         File file = new File(path);
         System.out.println(file.getAbsolutePath());
@@ -69,14 +72,12 @@ public class ConfigEditorCore {
         this.coreListener = coreListener;
     }
 
-    CoreListener coreListener;
-
     public void choose(int id) {
         configs.choose(id);
     }
 
     public int addConfig(Config onNew) {
-       return configs.addConfig(onNew);
+        return configs.addConfig(onNew);
     }
 
     public int size() {
@@ -91,8 +92,8 @@ public class ConfigEditorCore {
         return configs.getLastIndex();
     }
 
-    public void removeAt(int selectedIndex1) {
-        configs.removeAt(selectedIndex1);
+    public void removeAt(int index) {
+        configs.removeAt(index);
     }
 
     public Iterator<Config> getIterator() {
@@ -103,23 +104,11 @@ public class ConfigEditorCore {
         return configs.getLastConfig();
     }
 
-    public void chooseAt(int selectedIndex) {
-        Config configAt = configs.getConfigAt(selectedIndex);
-        configs.choose(configAt.getId());
-    }
-
-    public void chooseTail() {
-        int index = configs.size() - 1;
-        chooseAt(index);
-    }
-
     public void sendCommand(String command, int selectedList) {
         if (command.equals("new")) {
             if (coreListener != null) {
-                addConfig(coreListener.onNew());
-                int index = size() - 1;
-                chooseAt(index);
-                coreListener.updateList(index);
+                choose(addConfig(coreListener.onNew()));
+                coreListener.updateList(size() - 1);
                 return;
             }
         }
@@ -144,24 +133,30 @@ public class ConfigEditorCore {
         }
     }
 
+    /**
+     * 选中指定位置的配置
+     * @param selectedIndex 选中的索引
+     */
     public void selected(int selectedIndex) {
-        Config configAt = getConfigAt(selectedIndex);
-        choose(configAt.getId());
+        Config config = getConfigAt(selectedIndex);
+        choose(config.getId());
         if (coreListener != null) {
-            coreListener.onInit(configAt);
+            coreListener.onShow(config);
         }
+        save();
     }
 
-    interface CoreListener{
+    interface CoreListener {
         /**
          * 更新选项，传入的参数，代表应该选中的项
-         * @param config 选中的索引
+         *
+         * @param indexOfConfig 选中的索引
          */
-        void updateList(int config);
+        void updateList(int indexOfConfig);
 
         Config onNew();
 
-        void onInit(Config configAt);
+        void onShow(Config config);
 
         void bindEvent();
     }

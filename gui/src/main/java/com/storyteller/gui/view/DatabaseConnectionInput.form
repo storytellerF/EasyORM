@@ -2,12 +2,12 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.storyteller.gui.view.DatabaseConnectionInput">
   <grid id="27dc6" binding="inputGroup" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="392" height="383"/>
+      <xy x="20" y="20" width="392" height="414"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <nested-form id="5cf05" form-file="com/config_editor/view/ConfigEditor.form" binding="configEditor">
+      <nested-form id="5cf05" form-file="com/config_editor/view/ConfigEditorUI.form" binding="configEditorUI">
         <constraints border-constraint="North"/>
       </nested-form>
       <grid id="de062" binding="inputComponent" layout-manager="GridLayoutManager" row-count="9" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -22,6 +22,7 @@
             </constraints>
             <properties>
               <font size="18"/>
+              <name value="model"/>
               <toolTipText value="比如D:\Projects\project1\src\com.test.hello.com.storyteller.gui.model"/>
             </properties>
           </component>
@@ -39,8 +40,8 @@
               <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <font size="18"/>
-              <text value="..."/>
+              <font/>
+              <text value="···"/>
               <toolTipText value="选择一个路径"/>
             </properties>
           </component>
@@ -185,6 +186,7 @@
             </constraints>
             <properties>
               <font size="18"/>
+              <name value="model"/>
               <text value=""/>
             </properties>
           </component>
@@ -209,23 +211,20 @@
               <text value="extra params"/>
             </properties>
           </component>
-          <component id="e91d6" class="javax.swing.JCheckBox" binding="enableLombok">
-            <constraints>
-              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="enable lombok"/>
-            </properties>
-          </component>
+        </children>
+      </grid>
+      <toolbar id="96b9">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
           <component id="4c14b" class="javax.swing.JButton" binding="testConnection">
-            <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
+            <constraints/>
             <properties>
-              <background color="-2624784"/>
+              <background color="-1"/>
               <borderPainted value="true"/>
               <contentAreaFilled value="true"/>
-              <font size="11"/>
+              <font/>
               <horizontalTextPosition value="11"/>
               <opaque value="true"/>
               <text value="测试连接"/>
@@ -236,8 +235,14 @@
               <html.disable class="java.lang.Boolean" value="false"/>
             </clientProperties>
           </component>
+          <component id="e91d6" class="javax.swing.JCheckBox" binding="enableLombok">
+            <constraints/>
+            <properties>
+              <text value="enable lombok"/>
+            </properties>
+          </component>
         </children>
-      </grid>
+      </toolbar>
     </children>
   </grid>
 </form>

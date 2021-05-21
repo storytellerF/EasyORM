@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <nested-form id="bf096" form-file="com/config_editor/view/ConfigEditor.form" binding="configEditor">
+      <nested-form id="bf096" form-file="com/config_editor/view/ConfigEditorUI.form" binding="configEditorUI">
         <constraints border-constraint="North"/>
       </nested-form>
       <grid id="70d2c" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
