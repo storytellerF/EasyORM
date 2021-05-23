@@ -27,7 +27,11 @@ public class QueryWindow {
                 try {
                     Connection connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
                     Statement statement = connection.createStatement();
+                    long start=System.currentTimeMillis();
                     boolean execute = statement.execute(text);
+                    long span=System.currentTimeMillis()-start;
+                    StringBuilder stringBuilder=new StringBuilder("is result set:"+execute + "\n");
+                    stringBuilder.append("耗时：").append(span).append("ms");
                     if (execute) {
                         resultPanel1.setSelectedIndex(1);
                         ResultSet resultSet = statement.getResultSet();
@@ -51,10 +55,11 @@ public class QueryWindow {
                         System.out.println("refresh");
                         resultModel.fireTableStructureChanged();
                     } else {
-                        resultPanel1.setSelectedIndex(1);
+                        resultPanel1.setSelectedIndex(0);
+                        stringBuilder.append("受影响的行数：").append(statement.getUpdateCount());
                     }
 
-                    plainResultPanel.setText(execute + "\n");
+                    plainResultPanel.setText(stringBuilder.toString());
                 } catch (SQLException sqlException) {
                     sqlException.printStackTrace();
                 }
