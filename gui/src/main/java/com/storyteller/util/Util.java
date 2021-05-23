@@ -8,6 +8,9 @@ import com.storyteller_f.relay_message.RelayMessage;
 import com.storyteller_f.sql_query.query.Select;
 import com.storyteller_f.sql_query.query.expression.alias.EE;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -33,16 +36,30 @@ public class Util {
         return null;
     }
 
+    /**
+     * 测试一个数据库连接
+     *
+     * @param url      地址
+     * @param user     登录的用户名
+     * @param password 登录的密码
+     * @return
+     */
     public static RelayMessage testConnection(String url, String user, String password) {
         try {
             DriverManager.getConnection(url, user, password).close();
-            return new RelayMessage(true,"");
+            return new RelayMessage(true, "");
         } catch (SQLException e) {
 //            e.printStackTrace();
-            return new RelayMessage(false,e.getMessage());
+            return new RelayMessage(false, e.getMessage());
         }
     }
 
+    /**
+     * 从指定内容中获取一个数字
+     *
+     * @param content
+     * @return 返回获取到的数字
+     */
     public static int getNumber(String content) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < content.length(); i++) {
@@ -54,6 +71,12 @@ public class Util {
         return Integer.parseInt(stringBuilder.toString());
     }
 
+    /**
+     * 根据顺序获取两个数字
+     *
+     * @param content
+     * @return 返回一个数组，索引为0 的是第一个数字，索引为1 的是第二个数字
+     */
     public static int[] getTwo(String content) {
         StringBuilder[] stringBuilder = new StringBuilder[2];
         for (int i = 0; i < 2; i++) {
@@ -156,7 +179,6 @@ public class Util {
             constraints.add(new Constraint(referenceName, referenceColumn, name, column, comment));
         }
         set.close();
-
         return constraints;
 
     }
@@ -177,5 +199,28 @@ public class Util {
             }
 
         }
+    }
+
+    public static void writeFile(String path, String string) throws IOException {
+        File file = new File(path);
+
+        if (!file.exists()) {
+            if (file.isFile()) {
+                if (!file.createNewFile()) {
+                    System.out.println("create new file failure");
+                }
+            } else {
+                if (file.isDirectory()) {
+                    if (!file.mkdirs()) {
+                        System.out.println("mkdirs failure");
+                    }
+                }
+            }
+
+        }
+        FileWriter fileWriter = new FileWriter(path);
+        fileWriter.write(string);
+        fileWriter.flush();
+        fileWriter.close();
     }
 }

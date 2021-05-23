@@ -1,4 +1,4 @@
-package com.storyteller.gui.main;
+package com.storyteller.gui.model;
 
 public class ConnectionConfig {
     private final String packageStr;

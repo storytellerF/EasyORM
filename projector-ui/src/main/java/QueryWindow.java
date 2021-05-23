@@ -1,4 +1,4 @@
-import com.storyteller.gui.main.ConnectionConfig;
+import com.storyteller.gui.model.ConnectionConfig;
 import com.storyteller_f.uiscale.DataZone;
 
 import javax.swing.*;

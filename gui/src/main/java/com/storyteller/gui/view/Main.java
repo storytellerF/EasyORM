@@ -1,9 +1,10 @@
 package com.storyteller.gui.view;
 
 import com.storyteller.gui.main.ClassLoaderManager;
-import com.storyteller.gui.main.ConnectionConfig;
-import com.storyteller.gui.main.CreateConfig;
+import com.storyteller.gui.model.ConnectionConfig;
+import com.storyteller.gui.main.TableConfig;
 import com.storyteller.gui.main.ParseDatabase;
+import com.storyteller.util.Util;
 import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.storyteller_f.sql_query.query.Create;
@@ -69,8 +70,8 @@ public class Main {
             try {
                 Statement statement = connection.createStatement();
                 ConnectionConfig config = databaseConnectionInput.getCreateConfig();
-                CreateConfig createConfig = CreateConfig.build(statement, config, connection);
-                ParseDatabase create = new ParseDatabase(createConfig);
+                TableConfig tableConfig = TableConfig.build(statement, config, connection);
+                ParseDatabase create = new ParseDatabase(tableConfig);
                 create.parseDatabase(databaseConnectionInput.isEnableLomok());
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -193,7 +194,7 @@ public class Main {
                     System.out.println("新的文件内容");
                     System.out.println(fileContent);
                     System.out.println("文件内容结束");
-                    writeFile(file.getAbsolutePath(), fileContent.toString());
+                    Util.writeFile(file.getAbsolutePath(), fileContent.toString());
                 } catch (ClassNotFoundException | IOException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }
@@ -201,6 +202,7 @@ public class Main {
         });
         //endregion
     }
+
 
     public static void main(String[] args) {
         try {
@@ -215,6 +217,13 @@ public class Main {
         jFrame.setIconImage(imageIcon.getImage());
         jFrame.setContentPane(main.contentPanel);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                main.destroy();
+            }
+        });
         jFrame.pack();
         jFrame.addWindowListener(new WindowAdapter() {
             @Override
@@ -237,38 +246,19 @@ public class Main {
         jFrame.setVisible(true);
     }
 
+    private void destroy() {
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     private boolean checkDatabaseConnection() {
         if (connection == null) {
             JOptionPane.showMessageDialog(contentPanel, "未连接数据库");
             return true;
         }
         return false;
-    }
-
-    private void writeFile(String path, String string) throws IOException {
-        File file = new File(path);
-
-        if (!file.exists()) {
-            if (file.isFile()) {
-                if (!file.createNewFile()) {
-                    System.out.println("createNewFile failure");
-                }
-            } else {
-                if (file.isDirectory()) {
-                    if (!file.mkdirs()) {
-                        System.out.println("mkdirs failure");
-                    }
-                } else {
-                    if (!file.createNewFile()) {
-                        System.out.println("createNewFile failure");
-                    }
-                }
-            }
-
-        }
-        FileWriter fileWriter = new FileWriter(path);
-        fileWriter.write(string);
-        fileWriter.flush();
-        fileWriter.close();
     }
 }

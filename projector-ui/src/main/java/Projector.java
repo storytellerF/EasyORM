@@ -1,6 +1,6 @@
 import com.storyteller.gui.main.ClassLoaderManager;
-import com.storyteller.gui.main.ConnectionConfig;
-import com.storyteller.gui.main.CreateConfig;
+import com.storyteller.gui.model.ConnectionConfig;
+import com.storyteller.gui.main.TableConfig;
 import com.storyteller.gui.model.InformationSchemaColumn;
 import com.storyteller.gui.model.Table;
 import com.storyteller.gui.view.DatabaseConnectionInput;
@@ -9,15 +9,15 @@ import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class Projector {
@@ -34,9 +34,11 @@ public class Projector {
     private JSplitPane databaseSplitPanel;
     private JSplitPane modelSpliePanel;
     private JLabel databaseStatusLabel;
+    private JButton reflectToModel;
+    private JButton reflectToDatabase;
     private DatabaseConnectionInput databaseConnectionInput;
     private Connection connection;
-    private CreateConfig createConfig;
+    private TableConfig tableConfig;
     private ConnectionConfig config;
 
     public Projector() {
@@ -59,11 +61,9 @@ public class Projector {
                 JOptionPane.showMessageDialog(panel1, exception.getMessage());
                 stateButton.setText("连接失败");
                 panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
                 return;
             }
             //显示数据库中的表
-//                if (checkDatabaseConnection()) return;
             if (!databaseConnectionInput.checkAll()) {
                 panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
@@ -73,8 +73,8 @@ public class Projector {
             try {
                 Statement statement = connection.createStatement();
                 ConnectionConfig config = databaseConnectionInput.getCreateConfig();
-                createConfig = CreateConfig.build(statement, config, connection);
-                Set<String> strings = createConfig.getTables().keySet();
+                tableConfig = TableConfig.build(statement, config, connection);
+                Set<String> strings = tableConfig.getTables().keySet();
                 String[] keys = new String[strings.size()];
                 int index = 0;
                 for (String key : strings) {
@@ -82,8 +82,6 @@ public class Projector {
                     keys[index++] = key;
                 }
                 listInDatabase.setListData(keys);
-//                    ParseDatabase create = new ParseDatabase(createConfig);
-//                    create.parseDatabase(databaseConnectionInput.isEnableLomok());
             } catch (Exception e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(panel1, e1.getMessage() != null ? e1.getMessage() : e1, "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +111,6 @@ public class Projector {
                 }
                 listInModel.setListData(strings);
             }
-
             panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         });
@@ -122,7 +119,7 @@ public class Projector {
                 return;
             }
             String selectedValue = listInDatabase.getSelectedValue();
-            HashMap<String, Table> tables = createConfig.getTables();
+            HashMap<String, Table> tables = tableConfig.getTables();
             Table table = tables.get(selectedValue);
             String[] c = new String[table.getColumns().size()];
             int index = 0;
@@ -173,7 +170,21 @@ public class Projector {
         jFrame.setContentPane(projector.panel1);
         jFrame.setVisible(true);
         jFrame.setSize(500, 400);
-
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                projector.destroy();
+            }
+        });
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void destroy() {
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

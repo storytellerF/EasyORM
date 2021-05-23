@@ -3,7 +3,7 @@ package com.storyteller.gui.view;
 import com.config_editor.model.Config;
 import com.config_editor.view.ConfigEditorUI;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import com.storyteller.gui.main.ConnectionConfig;
+import com.storyteller.gui.model.ConnectionConfig;
 import com.storyteller.gui.model.MainViewDatabaseConnectionConfig;
 import com.storyteller.util.Util;
 import com.storyteller_f.relay_message.RelayMessage;

@@ -51,52 +51,92 @@
         </properties>
         <border type="none"/>
         <children>
-          <splitpane id="c95ff" binding="databaseSplitPanel">
+          <grid id="5eca" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <splitpane position="left"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="99c40" class="javax.swing.JList" binding="listInDatabase">
-                <constraints>
-                  <splitpane position="left"/>
-                </constraints>
-                <properties>
-                  <font/>
-                </properties>
-              </component>
-              <component id="e1b7c" class="javax.swing.JList" binding="listColumnDetailInDatabase">
-                <constraints>
-                  <splitpane position="right"/>
-                </constraints>
-                <properties>
-                  <font/>
-                </properties>
-              </component>
+              <splitpane id="c95ff" binding="databaseSplitPanel">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="99c40" class="javax.swing.JList" binding="listInDatabase">
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties>
+                      <font/>
+                    </properties>
+                  </component>
+                  <component id="e1b7c" class="javax.swing.JList" binding="listColumnDetailInDatabase">
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties>
+                      <font/>
+                    </properties>
+                  </component>
+                </children>
+              </splitpane>
+              <toolbar id="15581">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="4c230" class="javax.swing.JButton" binding="reflectToModel">
+                    <constraints/>
+                    <properties>
+                      <text value="映射到模型"/>
+                    </properties>
+                  </component>
+                </children>
+              </toolbar>
             </children>
-          </splitpane>
-          <splitpane id="37789" binding="modelSpliePanel">
+          </grid>
+          <grid id="495a2" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <splitpane position="right"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="611cb" class="javax.swing.JList" binding="listInModel">
-                <constraints>
-                  <splitpane position="right"/>
-                </constraints>
+              <splitpane id="37789" binding="modelSpliePanel">
+                <constraints border-constraint="Center"/>
                 <properties/>
-              </component>
-              <component id="60769" class="javax.swing.JList" binding="listColumnDetailInModel">
-                <constraints>
-                  <splitpane position="left"/>
-                </constraints>
+                <border type="none"/>
+                <children>
+                  <component id="611cb" class="javax.swing.JList" binding="listInModel">
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="60769" class="javax.swing.JList" binding="listColumnDetailInModel">
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties/>
+                  </component>
+                </children>
+              </splitpane>
+              <toolbar id="ed5aa">
+                <constraints border-constraint="North"/>
                 <properties/>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="4544d" class="javax.swing.JButton" binding="reflectToDatabase">
+                    <constraints/>
+                    <properties>
+                      <text value="映射到数据库"/>
+                    </properties>
+                  </component>
+                </children>
+              </toolbar>
             </children>
-          </splitpane>
+          </grid>
         </children>
       </splitpane>
     </children>

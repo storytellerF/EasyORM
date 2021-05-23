@@ -1,8 +1,5 @@
 package com.storyteller.gui.main;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +7,7 @@ import java.util.Map.Entry;
 
 import com.storyteller.gui.model.InformationSchemaColumn;
 import com.storyteller.gui.model.Table;
+import com.storyteller.util.Util;
 import org.apache.commons.text.CaseUtils;
 
 import com.storyteller_f.sql_query.annotation.constraint.PrimaryKey;
@@ -18,14 +16,14 @@ import com.storyteller.gui.model.validate.CustomField;
 
 public class ParseDatabase {
     private final static String tag = "ParseDatabase";
-    private final String packageStr;
+    private final String packageName;
     private final String path;
     private final HashMap<String, Table> tables;
 
-    public ParseDatabase(CreateConfig config) {
+    public ParseDatabase(TableConfig config) {
         super();
         this.path = config.getConfig().getPath();
-        this.packageStr = config.getConfig().getPackageStr();
+        this.packageName = config.getConfig().getPackageStr();
         this.tables = config.getTables();
     }
 
@@ -74,33 +72,13 @@ public class ParseDatabase {
             Table value = iterable.getValue();
             ArrayList<InformationSchemaColumn> informationSchemaColumns = value.getColumns();
 //			System.out.println("name:"+key+" to:"+CaseUtils.toCamelCase(key,true));
-            String path = Paths.get(this.path, CaseUtils.toCamelCase(key, true) + ".java").toString();
-            String modelClass = getModelClass(packageStr, key, informationSchemaColumns, enableLombok);
-            writeFile(path, modelClass);
+            String javaFileName = CaseUtils.toCamelCase(key, true);
+            String path = Paths.get(this.path, javaFileName + ".java").toString();
+            String modelClass = getModelClass(packageName, key, informationSchemaColumns, enableLombok);
+            Util.writeFile(path, modelClass);
             System.out.println(modelClass);
         }
     }
 
-    private void writeFile(String path, String string) throws IOException {
-        File file = new File(path);
 
-        if (!file.exists()) {
-            if (file.isFile()) {
-                if (!file.createNewFile()) {
-                    System.out.println("create new file failure");
-                }
-            } else {
-                if (file.isDirectory()) {
-                    if (!file.mkdirs()) {
-                        System.out.println("mkdirs failure");
-                    }
-                }
-            }
-
-        }
-        FileWriter fileWriter = new FileWriter(path);
-        fileWriter.write(string);
-        fileWriter.flush();
-        fileWriter.close();
-    }
 }
