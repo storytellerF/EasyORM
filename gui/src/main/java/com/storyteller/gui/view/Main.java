@@ -68,18 +68,21 @@ public class Main {
         reflectToCode.addActionListener(e -> {
             if (checkDatabaseConnection()) return;
             if (!databaseConnectionInput.checkAll()) return;
-
+            windowWait();
             RelayMessage relayMessage = RUtil.reflectToCode(connection, databaseConnectionInput);
-            JOptionPane.showMessageDialog(contentPanel,relayMessage.message);
+            windowRelease();
+            dialogShowMessage(relayMessage);
         });
 
         start.addActionListener(e -> {
             try {
+                windowWait();
                 ConnectionConfig config = databaseConnectionInput.getCreateConfig();
                 connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
                 start.setBackground(Color.GREEN);
+                windowRelease();
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                windowRelease();
                 JOptionPane.showMessageDialog(contentPanel, exception.getMessage());
             }
         });
@@ -102,10 +105,10 @@ public class Main {
                 }
                 return;
             }
-            contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            windowWait();
             RelayMessage relayMessage = RUtil.reflectToDatabase(databaseConnectionInput, connection);
-            contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(contentPanel,relayMessage.message);
+            windowRelease();
+            dialogShowMessage(relayMessage);
 
         });
         //生成静态字段到原文件
@@ -121,12 +124,24 @@ public class Main {
                 }
                 return;
             }
-            contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            windowWait();
             RelayMessage relayMessage = RUtil.produceStaticFunction(databaseConnectionInput);
-            contentPanel.setCursor(Cursor.getDefaultCursor());
-            JOptionPane.showMessageDialog(contentPanel,relayMessage.message);
+            windowRelease();
+            dialogShowMessage(relayMessage);
         });
         //endregion
+    }
+
+    private void dialogShowMessage(RelayMessage relayMessage) {
+        JOptionPane.showMessageDialog(contentPanel,relayMessage.message);
+    }
+
+    private void windowRelease() {
+        contentPanel.setCursor(Cursor.getDefaultCursor());
+    }
+
+    private void windowWait() {
+        contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
 
 
