@@ -24,17 +24,19 @@
               <text value="退出"/>
             </properties>
           </component>
-          <component id="cdd09" class="javax.swing.JLabel" binding="databaseStatusLabel">
+          <component id="fe582" class="javax.swing.JToolBar$Separator">
             <constraints/>
-            <properties>
-              <text value="database statu:"/>
-            </properties>
+            <properties/>
           </component>
           <component id="a4aa5" class="javax.swing.JButton" binding="stateButton">
             <constraints/>
             <properties>
               <text value="重连"/>
             </properties>
+          </component>
+          <component id="6062f" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
           </component>
           <component id="f3779" class="javax.swing.JButton" binding="queryButton" default-binding="true">
             <constraints/>
@@ -71,14 +73,21 @@
                       <font/>
                     </properties>
                   </component>
-                  <component id="e1b7c" class="javax.swing.JList" binding="listColumnDetailInDatabase">
+                  <scrollpane id="a1914">
                     <constraints>
                       <splitpane position="right"/>
                     </constraints>
-                    <properties>
-                      <font/>
-                    </properties>
-                  </component>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="68042" class="javax.swing.JTable" binding="table2" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <fillsViewportHeight value="true"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
                 </children>
               </splitpane>
               <toolbar id="15581">
@@ -114,12 +123,21 @@
                     </constraints>
                     <properties/>
                   </component>
-                  <component id="60769" class="javax.swing.JList" binding="listColumnDetailInModel">
+                  <scrollpane id="e4693">
                     <constraints>
                       <splitpane position="left"/>
                     </constraints>
                     <properties/>
-                  </component>
+                    <border type="none"/>
+                    <children>
+                      <component id="2843f" class="javax.swing.JTable" binding="table1" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <fillsViewportHeight value="true"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
                 </children>
               </splitpane>
               <toolbar id="ed5aa">
@@ -139,6 +157,19 @@
           </grid>
         </children>
       </splitpane>
+      <toolbar id="4e56d">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="cdd09" class="javax.swing.JLabel" binding="databaseStatusLabel">
+            <constraints/>
+            <properties>
+              <text value="database status:未连接"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
     </children>
   </grid>
 </form>

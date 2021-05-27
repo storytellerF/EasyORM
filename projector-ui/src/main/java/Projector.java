@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Projector {
+    DatabaseTableModel databaseTableModel;
+    EntityTableModel entityTableModel;
     private JPanel panel1;
     private JButton newConnectionButton;
     private JButton exitButton;
@@ -36,6 +38,8 @@ public class Projector {
     private JLabel databaseStatusLabel;
     private JButton reflectToModel;
     private JButton reflectToDatabase;
+    private JTable table1;
+    private JTable table2;
     private DatabaseConnectionInput databaseConnectionInput;
     private Connection connection;
     private TableConfig tableConfig;
@@ -43,7 +47,11 @@ public class Projector {
 
     public Projector() {
         DataZone.setFont(queryButton, exitButton, newConnectionButton, stateButton, databaseStatusLabel,
-                listInDatabase, listColumnDetailInDatabase, listInModel, listColumnDetailInModel);
+                listInDatabase, listInModel, table1, table2);
+        databaseTableModel = new DatabaseTableModel();
+        entityTableModel = new EntityTableModel();
+        table2.setModel(databaseTableModel);
+        table1.setModel(entityTableModel);
         newConnectionButton.addActionListener(e -> {
             GetConnectionDialog dialog = new GetConnectionDialog();
             dialog.pack();
@@ -74,6 +82,7 @@ public class Projector {
                 Statement statement = connection.createStatement();
                 ConnectionConfig config = databaseConnectionInput.getCreateConfig();
                 tableConfig = TableConfig.build(statement, config, connection);
+                databaseTableModel.config = tableConfig;
                 Set<String> strings = tableConfig.getTables().keySet();
                 String[] keys = new String[strings.size()];
                 int index = 0;
@@ -86,6 +95,7 @@ public class Projector {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(panel1, e1.getMessage() != null ? e1.getMessage() : e1, "Error", JOptionPane.ERROR_MESSAGE);
             }
+            //显示模型
             if (databaseConnectionInput.checkModel()) {
                 boolean b = ClassLoaderManager.getInstance().oneStep(databaseConnectionInput.getModel(), databaseConnectionInput.packageName());
                 if (!b) {
@@ -119,14 +129,16 @@ public class Projector {
                 return;
             }
             String selectedValue = listInDatabase.getSelectedValue();
-            HashMap<String, Table> tables = tableConfig.getTables();
-            Table table = tables.get(selectedValue);
-            String[] c = new String[table.getColumns().size()];
-            int index = 0;
-            for (InformationSchemaColumn column : table.getColumns()) {
-                c[index++] = column.getName() + " " + column.getType();
-            }
-            listColumnDetailInDatabase.setListData(c);
+            databaseTableModel.setSelected(selectedValue);
+            databaseTableModel.fireTableStructureChanged();
+//            HashMap<String, Table> tables = tableConfig.getTables();
+//            Table table = tables.get(selectedValue);
+//            String[] c = new String[table.getColumns().size()];
+//            int index = 0;
+//            for (InformationSchemaColumn column : table.getColumns()) {
+//                c[index++] = column.getName() + " " + column.getType();
+//            }
+//            listColumnDetailInDatabase.setListData(c);
         });
         listInModel.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -136,12 +148,14 @@ public class Projector {
             String className = classFile.substring(0, classFile.indexOf('.'));
             try {
                 Field[] fields = Class.forName(databaseConnectionInput.packageName() + "." + className).getDeclaredFields();
-                String[] strings = new String[fields.length];
-                int index = 0;
-                for (Field field : fields) {
-                    strings[index++] = field.getName() + " " + field.getType();
-                }
-                listColumnDetailInModel.setListData(strings);
+                entityTableModel.fields = fields;
+                entityTableModel.fireTableStructureChanged();
+//                String[] strings = new String[fields.length];
+//                int index = 0;
+//                for (Field field : fields) {
+//                    strings[index++] = field.getName() + " " + field.getType();
+//                }
+//                listColumnDetailInModel.setListData(strings);
             } catch (ClassNotFoundException classNotFoundException) {
                 classNotFoundException.printStackTrace();
             }
@@ -182,7 +196,8 @@ public class Projector {
 
     private void destroy() {
         try {
-            connection.close();
+            if (connection != null)
+                connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
