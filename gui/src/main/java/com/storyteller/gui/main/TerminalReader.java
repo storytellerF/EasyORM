@@ -22,7 +22,7 @@ public class TerminalReader implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("run:tag:"+tag+" thread:" + Thread.currentThread().getId());
+		printStream.println("run:tag:"+tag+" thread:" + Thread.currentThread().getId());
 		while (true) {
 			if (reader == null) {
 				printStream.println("run:tag:"+tag+" 此时reader为空");

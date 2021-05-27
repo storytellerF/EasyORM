@@ -56,7 +56,7 @@ public class Projector {
             GetConnectionDialog dialog = new GetConnectionDialog();
             dialog.pack();
             dialog.setVisible(true);
-            System.out.println(dialog.getDatabaseInput().getDatabaseName());
+            System.out.println("database name:"+ dialog.getDatabaseInput().getDatabaseName());
             if (!dialog.isOk) return;
             panel1.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             databaseConnectionInput = dialog.getDatabaseInput();
@@ -65,8 +65,8 @@ public class Projector {
                 connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
                 stateButton.setText("连接成功");
             } catch (SQLException exception) {
-                exception.printStackTrace();
-                JOptionPane.showMessageDialog(panel1, exception.getMessage());
+                //exception.printStackTrace();
+                JOptionPane.showMessageDialog(panel1, exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
                 stateButton.setText("连接失败");
                 panel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 return;
