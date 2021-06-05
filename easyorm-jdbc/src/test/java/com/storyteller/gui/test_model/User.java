@@ -11,6 +11,10 @@ import java.util.Date;
 @Table(name = "User")
 public class User {
 
+    public static String static_name = "name";
+    public static String static_age = "age";
+    public static String static_registerTime = "registerTime";
+    public static String static_remark = "remark";
     @EnumColumn({"admin", "user"})
     @EnumRemark({"管理员", "普通用户"})
     private String level;
@@ -21,6 +25,10 @@ public class User {
     private String remark;
     @Children
     private IdCard idCard;
+
+    public static String name() {
+        return "name";
+    }
 
     public String getLevel() {
         return level;
@@ -46,11 +54,6 @@ public class User {
         this.remark = remark;
     }
 
-    public static String name() {
-        return "name";
-    }
-
-
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -74,11 +77,6 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
-
-    public static String static_name = "name";
-    public static String static_age = "age";
-    public static String static_registerTime = "registerTime";
-    public static String static_remark = "remark";
 
     @Override
     public String toString() {

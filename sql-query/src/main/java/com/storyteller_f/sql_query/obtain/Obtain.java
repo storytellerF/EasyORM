@@ -55,10 +55,10 @@ public abstract class Obtain {
         /*
          */
         for (int i = 0; i < columnCount; i++) {
-
             String type = databaseTable.getType(i);
             Class<?> typeClass = ORMUtil.getClassByType(type);
             String columnName = databaseTable.getName(i);
+            System.out.println(i+" "+columnName);
             if (fields.getField(columnName)==null) {
                 /*
                  当前列的名字没有通过@Column 注解特殊设置，一般情况下字段名和列名是相同的，如果不相同，那也不能够进行处理

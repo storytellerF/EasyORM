@@ -64,4 +64,13 @@ public class Cart {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", user='" + user + '\'' +
+                ", sum=" + sum +
+                '}';
+    }
 }

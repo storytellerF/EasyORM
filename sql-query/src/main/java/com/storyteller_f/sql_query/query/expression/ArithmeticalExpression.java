@@ -2,18 +2,18 @@ package com.storyteller_f.sql_query.query.expression;
 
 import com.storyteller_f.sql_query.query.GetName;
 
-public abstract class ArithMeticalExpression<T> extends TwoExpression<T> {
+public abstract class ArithmeticalExpression<T> extends TwoExpression<T> {
 
-    public ArithMeticalExpression(Class<?> tableClass, String fieldName, T value) {
+    public ArithmeticalExpression(Class<?> tableClass, String fieldName, T value) {
         super(tableClass, fieldName, value);
     }
-    public ArithMeticalExpression(Class<?> tableClass, GetName<String> fieldName, T value) {
+    public ArithmeticalExpression(Class<?> tableClass, GetName<String> fieldName, T value) {
         super(tableClass, fieldName.get(), value);
     }
-    public ArithMeticalExpression(String fieldName, T value) {
+    public ArithmeticalExpression(String fieldName, T value) {
         super(fieldName, value);
     }
-    public ArithMeticalExpression(GetName<String> fieldName, T value) {
+    public ArithmeticalExpression(GetName<String> fieldName, T value) {
         super(fieldName.get(), value);
     }
 
