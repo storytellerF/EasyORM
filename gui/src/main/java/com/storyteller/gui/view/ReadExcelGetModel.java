@@ -260,6 +260,7 @@ public class ReadExcelGetModel {
     private void parse() {
         if (path != null && notEmpty(headerNamePosition) && notEmpty(columnCount22)
                 && notEmpty(rowCount)) {
+            File file=new File(path);
             FileInputStream fileInputStream = null;
             XSSFWorkbook sheets = null;
             try {
@@ -270,12 +271,19 @@ public class ReadExcelGetModel {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+            String fileName = file.getName();
+            int endIndex = fileName.indexOf('.');
+            if (endIndex<0) {
+                JOptionPane.showMessageDialog(jPanel,"指定的文件可能不是一个Excel 文件");
+                return;
+            }
+            String className= fileName.substring(0, endIndex);
             try {
                 int starter = Integer.parseInt(headerNamePosition.getText());
                 int row = Integer.parseInt(rowCount.getText());
                 CustomField last = null;
                 boolean add = true;
-                ColumnsToField cusColumnsToField = new ColumnsToField("", "");
+                ColumnsToField cusColumnsToField = new ColumnsToField("", className);
                 for (int i = starter + 1; i < row; i++) {
                     XSSFRow xssfRow = sheet.getRow(i);
                     if (xssfRow == null) {
@@ -385,7 +393,7 @@ public class ReadExcelGetModel {
     }
 
     public void show() {
-        jFrame = new JFrame("生成html 表单");
+        jFrame = new JFrame("读取Excel 文件");
         jFrame.setContentPane(jPanel);
         jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jFrame.pack();
