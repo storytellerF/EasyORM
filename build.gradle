@@ -1,16 +1,20 @@
-plugins {
-    id 'java'
-}
-group 'org.example'
-version '1.0-SNAPSHOT'
+allprojects {
+    apply plugin : 'java'
+    group 'com.storyteller_f'
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
-
+subprojects {
+    repositories {
+        maven {
+            credentials {
+                username '$n_u'
+                password '$n_p'
+            }
+            url "http://192.168.43.170:8081/repository/maven-central/"
+        }
+        mavenCentral()
+    }
+}
 
 

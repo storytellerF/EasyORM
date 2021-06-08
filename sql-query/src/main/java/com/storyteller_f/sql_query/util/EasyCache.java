@@ -1,4 +1,4 @@
-package com.storyteller.util;
+package com.storyteller_f.sql_query.util;
 
 import java.util.*;
 

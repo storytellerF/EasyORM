@@ -1,13 +1,7 @@
 plugins {
-    id 'java'
     id 'java-library'
 }
-group 'org.example'
 version '2.2.1'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.18'

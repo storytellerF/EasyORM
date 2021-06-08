@@ -1,12 +1,8 @@
 plugins {
-    id 'java'
+    id 'maven-publish'
 }
-group 'org.example'
 version '2.2.2'
 
-repositories {
-    mavenCentral()
-}
 javadoc {
     options {
         encoding "UTF-8"
@@ -29,3 +25,27 @@ task pub(type:Copy){
     into("${project.rootDir}\\projector-ui\\src\\main\\resources\\")
 
 }
+
+
+publishing {
+    publications {
+        sqlquery(MavenPublication) {
+            groupId = 'com.storyteller_f'
+            artifactId = 'sql-query'
+            version = '2.2.2'
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url 'http://192.168.43.170:8081/repository/maven-releases/'
+            credentials {
+                // 这里就是之前在issues.sonatype.org注册的账号
+                username 'admin'
+                password "842474"
+            }
+        }
+    }
+}
+
