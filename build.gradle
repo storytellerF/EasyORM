@@ -1,8 +1,6 @@
 allprojects {
     apply plugin : 'java'
     group 'com.storyteller_f'
-
-
 }
 subprojects {
     repositories {

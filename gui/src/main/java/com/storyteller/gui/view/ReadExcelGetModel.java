@@ -10,7 +10,7 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.storyteller.gui.main.ColumnsToField;
 import com.storyteller.gui.model.ExcelReadConfig;
 import com.storyteller.gui.model.validate.CustomField;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -61,7 +61,7 @@ public class ReadExcelGetModel {
         typeList.add("enum");
         typeList.add("nullable");
         typeList.add("restrain");
-        DataZone.setFont(headerNamePosition, filePath, selectFile, sheet1TextField, columnCount22, startButton, cells, rowCount,
+        UIUtil.setFont(headerNamePosition, filePath, selectFile, sheet1TextField, columnCount22, startButton, cells, rowCount,
                 parseButton, textPane1, saveButton);
         ComboShow comboShow = new ComboShow();
         ComboSelected comboSelected = new ComboSelected();

@@ -5,13 +5,13 @@ import com.storyteller_f.sql_query.annotation.RealName;
 import com.storyteller_f.sql_query.annotation.type.string.EnumColumn;
 import com.config_editor.model.Config;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import com.storyteller.gui.createHtml.BootstrapType;
-import com.storyteller.gui.createHtml.DiTing;
-import com.storyteller.gui.createHtml.HTMLFormItem;
-import com.storyteller.gui.createHtml.RegularType;
+import com.storyteller.gui.create_html.BootstrapType;
+import com.storyteller.gui.create_html.DiTing;
+import com.storyteller.gui.create_html.HTMLFormItem;
+import com.storyteller.gui.create_html.RegularType;
 import com.storyteller.gui.main.FileState;
 import com.storyteller.gui.model.HTMLCreatorConfig;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -53,7 +53,7 @@ public class GenerateHTMLFormElement {
     private JFrame jFrame;
 
     public GenerateHTMLFormElement() {
-        DataZone.setFont(produceResultPanel,copyToButton,openFileButton,filePath,charsetComboBox,button1);
+        UIUtil.setFont(produceResultPanel,copyToButton,openFileButton,filePath,charsetComboBox,button1);
         setTab(4);
         charsetList = new ArrayList<>();
         try {

@@ -2,29 +2,18 @@ package com.storyteller.gui.view;
 
 import com.storyteller.gui.main.ClassLoaderManager;
 import com.storyteller.gui.model.ConnectionConfig;
-import com.storyteller.gui.main.TableConfig;
-import com.storyteller.gui.main.ParseDatabase;
 import com.storyteller.util.RUtil;
-import com.storyteller.util.Util;
-import com.storyteller_f.easyorm_jdbc.JDBCObtain;
 import com.storyteller_f.relay_message.RelayMessage;
-import com.storyteller_f.sql_query.annotation.NoQuery;
-import com.storyteller_f.sql_query.query.Create;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.rmi.UnexpectedException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +43,7 @@ public class Main {
         for (JButton jButton : buttonList) {
             jButton.setFont(new Font("黑体", jButton.getFont().getStyle(), jButton.getFont().getSize()));
         }
-        DataZone.setFont(start, produceComponent, readExcel, saveButton, reflectToCode, reflectToDatabase, reviewAllModel, produceStaticFieldModel);
+        UIUtil.setFont(start, produceComponent, readExcel, saveButton, reflectToCode, reflectToDatabase, reviewAllModel, produceStaticFieldModel);
         produceComponent.setVisible(false);
         saveButton.addActionListener(e -> databaseConnectionInput.saveConfig());
         reviewAllModel.addActionListener(e -> {

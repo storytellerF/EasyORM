@@ -1,4 +1,4 @@
-package com.storyteller.gui.createHtml;
+package com.storyteller.gui.create_html;
 
 public class RegularTypeInnerInput extends RegularType{
 

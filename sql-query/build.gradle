@@ -23,7 +23,6 @@ task pub(type:Copy){
     from("$buildDir\\libs\\${project.name}-${version}.jar")
     into("${project.rootDir}\\gui\\src\\main\\resources\\")
     into("${project.rootDir}\\projector-ui\\src\\main\\resources\\")
-
 }
 
 
@@ -42,8 +41,8 @@ publishing {
             url 'http://192.168.43.170:8081/repository/maven-releases/'
             credentials {
                 // 这里就是之前在issues.sonatype.org注册的账号
-                username 'admin'
-                password "842474"
+                username '$u_n'
+                password '$u_p'
             }
         }
     }

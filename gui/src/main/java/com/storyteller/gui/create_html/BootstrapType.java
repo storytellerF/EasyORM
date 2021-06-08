@@ -1,4 +1,4 @@
-package com.storyteller.gui.createHtml;
+package com.storyteller.gui.create_html;
 
 import java.lang.reflect.Field;
 

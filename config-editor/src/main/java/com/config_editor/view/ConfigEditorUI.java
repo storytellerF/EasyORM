@@ -3,7 +3,7 @@ package com.config_editor.view;
 import com.config_editor.ConfigEditorReusable;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.config_editor.model.Config;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
@@ -17,7 +17,7 @@ public class ConfigEditorUI implements ConfigEditorReusable {
     private final ConfigEditorCore core;
 
     public ConfigEditorUI() {
-        DataZone.setFont(main_comboBox, menu_comboBox);
+        UIUtil.setFont(main_comboBox, menu_comboBox);
         core=new ConfigEditorCore();
     }
 

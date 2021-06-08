@@ -1,7 +1,7 @@
 package com.storyteller.gui.view;
 
 import com.storyteller.gui.main.ClassLoaderManager;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -19,7 +19,7 @@ public class ShowAllModelClass {
     private String packageName;
 
     public ShowAllModelClass() {
-        DataZone.setFont(jTree,generateForm);
+        UIUtil.setFont(jTree,generateForm);
         contentPanel.add(scrollPanel, BorderLayout.CENTER);
         generateForm.addActionListener(e -> openGenerateHTMLFormWindow());
         for (int i = 0; i < 10; i++) {

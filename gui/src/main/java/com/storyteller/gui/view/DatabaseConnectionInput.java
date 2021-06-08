@@ -7,7 +7,7 @@ import com.storyteller.gui.model.ConnectionConfig;
 import com.storyteller.gui.model.MainViewDatabaseConnectionConfig;
 import com.storyteller.util.Util;
 import com.storyteller_f.relay_message.RelayMessage;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -36,7 +36,7 @@ public class DatabaseConnectionInput {
     private JPanel inputGroup;
 
     public DatabaseConnectionInput() {
-        DataZone.setFont(testConnection,enableLombok);
+        UIUtil.setFont(testConnection,enableLombok);
         initEditor();
         TextChange textChange = new TextChange();
         loopComponent(textChange);

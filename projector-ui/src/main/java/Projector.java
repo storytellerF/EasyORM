@@ -1,10 +1,8 @@
 import com.storyteller.gui.main.ClassLoaderManager;
 import com.storyteller.gui.model.ConnectionConfig;
 import com.storyteller.gui.main.TableConfig;
-import com.storyteller.gui.model.InformationSchemaColumn;
-import com.storyteller.gui.model.Table;
 import com.storyteller.gui.view.DatabaseConnectionInput;
-import com.storyteller_f.uiscale.DataZone;
+import com.storyteller_f.uiscale.UIUtil;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Set;
 
 public class Projector {
@@ -46,7 +43,7 @@ public class Projector {
     private ConnectionConfig config;
 
     public Projector() {
-        DataZone.setFont(queryButton, exitButton, newConnectionButton, stateButton, databaseStatusLabel,
+        UIUtil.setFont(queryButton, exitButton, newConnectionButton, stateButton, databaseStatusLabel,
                 listInDatabase, listInModel, table1, table2);
         databaseTableModel = new DatabaseTableModel();
         entityTableModel = new EntityTableModel();

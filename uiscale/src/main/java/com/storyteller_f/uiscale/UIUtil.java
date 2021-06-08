@@ -3,12 +3,12 @@ package com.storyteller_f.uiscale;
 import javax.swing.*;
 import java.awt.*;
 
-public class DataZone {
-    private static final DataZone dataZone = new DataZone();
+public class UIUtil {
+    private static final UIUtil UI_UTIL = new UIUtil();
     double scale = 0;
 
-    public static DataZone getInstance() {
-        return dataZone;
+    public static UIUtil getInstance() {
+        return UI_UTIL;
     }
 
     public double getScale() {
@@ -19,7 +19,7 @@ public class DataZone {
         return scale;
     }
     public static Font getFont(Font font) {
-        double scale=DataZone.getInstance().getScale();
+        double scale= UIUtil.getInstance().getScale();
         return new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale));
     }
 
@@ -33,7 +33,7 @@ public class DataZone {
         }
     }
     public static Font getFont(String fontName,Font font) {
-        double scale=DataZone.getInstance().getScale();
+        double scale= UIUtil.getInstance().getScale();
         return new Font(fontName, font.getStyle(), (int) (font.getSize() * scale));
     }
 
