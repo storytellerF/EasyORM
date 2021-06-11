@@ -1,8 +1,8 @@
 package com.storyteller_f.easyorm_jdbc;
 
-import com.storyteller_f.sql_query.obtain.Columns;
+import com.storyteller_f.sql_query.obtain.DatabaseColumnsInfo;
 import com.storyteller_f.sql_query.obtain.DatabaseTable;
-import com.storyteller_f.sql_query.obtain.Fields;
+import com.storyteller_f.sql_query.obtain.ColumnFields;
 import com.storyteller_f.sql_query.obtain.Obtain;
 import com.storyteller_f.sql_query.query.Select;
 import org.apache.commons.text.WordUtils;
@@ -10,7 +10,7 @@ import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.query.ExpressionQuery;
 import com.storyteller_f.sql_query.query.result.Result;
-import com.storyteller.util.ORMUtil;
+import com.storyteller_f.sql_query.util.ORMUtil;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
@@ -47,10 +47,11 @@ public class JDBCObtain extends Obtain {
             ResultSet resultSet = getResultSet(executableQuery);
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             int columnCount = resultSetMetaData.getColumnCount();
-            Fields fields = getFields(returnType, columnCount);
-            DatabaseTable databaseTable = getDatabaseTable(getColumns(resultSetMetaData));
-            Result result = getResultObject(resultSet, columnCount, databaseTable);
-            provideAccessPoint(returnType, fields, databaseTable, result);
+            ColumnFields columnFields = getFields(returnType, columnCount);
+            DatabaseColumnsInfo columns = getColumns(resultSetMetaData);
+            DatabaseTable databaseTable = getDatabaseTable(columns);//database column 转换成了database table
+            Result result = getResultObject(resultSet, columnCount, databaseTable);//获取所有的值
+            provideAccessPoint(returnType, columnFields, databaseTable, result);
             closeConnection();
             return result;
         } catch (Exception e) {
@@ -68,16 +69,16 @@ public class JDBCObtain extends Obtain {
     }
 
 
-    private Columns getColumns(ResultSetMetaData resultSetMetaData) throws SQLException {
+    private DatabaseColumnsInfo getColumns(ResultSetMetaData resultSetMetaData) throws SQLException {
         int count = resultSetMetaData.getColumnCount();
-        Columns columns = new Columns(count);
+        DatabaseColumnsInfo databaseColumnsInfo = new DatabaseColumnsInfo(count);
         for (int i = 0; i < count; i++) {
             int offset = i + 1;
             String columnLabel = resultSetMetaData.getColumnLabel(offset);
             String columnTypeName = resultSetMetaData.getColumnTypeName(offset);
-            columns.add(i, columnLabel, columnTypeName);
+            databaseColumnsInfo.add(i, columnLabel, columnTypeName);
         }
-        return columns;
+        return databaseColumnsInfo;
     }
 
     private Result getResultObject(ResultSet resultSet, int columnCount, DatabaseTable databaseTable) throws NoSuchMethodException, SQLException, IllegalAccessException, InvocationTargetException {

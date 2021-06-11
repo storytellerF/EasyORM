@@ -3,7 +3,7 @@ package com.storyteller_f.sql_query.query.query;
 import com.storyteller_f.sql_query.query.Query;
 import com.storyteller_f.sql_query.query.Value;
 import com.storyteller_f.sql_query.query.expression.ValueExpression;
-import com.storyteller.util.ORMUtil;
+import com.storyteller_f.sql_query.util.ORMUtil;
 
 public class ValueQuery extends Value implements Query {
     private ValueExpression<?> pointer;

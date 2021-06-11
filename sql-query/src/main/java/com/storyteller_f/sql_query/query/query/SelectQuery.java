@@ -7,7 +7,7 @@ import java.util.*;
 import com.storyteller_f.sql_query.annotation.Children;
 import com.storyteller_f.sql_query.annotation.NoQuery;
 import com.storyteller_f.sql_query.query.Query;
-import com.storyteller.util.ORMUtil;
+import com.storyteller_f.sql_query.util.ORMUtil;
 
 public class SelectQuery implements Query{
     private HashMap<String, String> tableMap;

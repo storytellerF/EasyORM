@@ -1,5 +1,8 @@
 package com.storyteller_f.sql_query.obtain;
 
+/**
+ * 目前来看是个多余的结构，后期考虑移除
+ */
 public class DatabaseTable {
     String[] columnNames;
     /*
@@ -16,15 +19,15 @@ public class DatabaseTable {
         columnType = new String[columnCount];
     }
 
-    public DatabaseTable(Columns columns) {
-        int columnCount=columns.getCount();
+    public DatabaseTable(DatabaseColumnsInfo databaseColumnsInfo) {
+        int columnCount= databaseColumnsInfo.getCount();
         init(columnCount);
         for (int i1 = 0; i1 < columnCount; i1++) {
             /*
              * 获取到列类型和列名
              */
-            String columnLabel = columns.getName(i1);
-            String columnTypeName = columns.getType(i1);
+            String columnLabel = databaseColumnsInfo.getName(i1);
+            String columnTypeName = databaseColumnsInfo.getType(i1);
             add(i1, columnLabel, columnTypeName);
         }
     }

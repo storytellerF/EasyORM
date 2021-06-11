@@ -1,13 +1,13 @@
 package com.storyteller_f.sql_query.obtain;
 
-public class Columns {
+public class DatabaseColumnsInfo {
     /**
      * 从数据库中获得真实的列名
      */
     private final String[] name;
     private final String[] type;
 
-    public Columns(int count) {
+    public DatabaseColumnsInfo(int count) {
         name=new String[count];
         type=new String[count];
     }

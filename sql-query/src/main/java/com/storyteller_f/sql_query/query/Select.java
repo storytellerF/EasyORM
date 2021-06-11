@@ -1,18 +1,22 @@
 package com.storyteller_f.sql_query.query;
 
+import com.storyteller_f.sql_query.annotation.Children;
 import com.storyteller_f.sql_query.annotation.Convert;
+import com.storyteller_f.sql_query.obtain.FieldWithPath;
+import com.storyteller_f.sql_query.obtain.MethodWithPath;
 import com.storyteller_f.sql_query.obtain.Obtain;
-import com.storyteller_f.sql_query.util.EasyCache;
-import org.apache.commons.text.CaseUtils;
 import com.storyteller_f.sql_query.query.expression.TwoExpression;
 import com.storyteller_f.sql_query.query.query.*;
 import com.storyteller_f.sql_query.query.result.Result;
 import com.storyteller_f.sql_query.query.type.Search;
+import com.storyteller_f.sql_query.util.EasyCache;
+import com.storyteller_f.sql_query.util.ReflectUtil;
+import org.apache.commons.text.CaseUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,61 +173,88 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
                 continue;
             }
             Constructor<RETURN_TYPE> constructor = getReturnType().getConstructor();
-            RETURN_TYPE instance = constructor.newInstance();// 利用放射实例化到对象
+
+            RETURN_TYPE instance = constructor.newInstance();// 利用反射实例化到对象
+            init(instance);
             for (int i = 0; i < result.getColumnCount(); i++) {// 进行赋值
-                Method method = result.getMethod(i);
+                MethodWithPath methodWithPath = result.getMethod(i);
                 Object datum = data[i];
-                if (method != null) {// 字段的setter 方法
-                    method.invoke(instance, datum);
+                if (methodWithPath != null) {// 字段的setter 方法
+                    Class<?> object = getObject(methodWithPath.path, getReturnType());
+                    methodWithPath.method.invoke(instance, datum);
                 } else {
-                    Field field = result.getField(i);
-                    if (!field.getDeclaringClass().equals(getReturnType())) {//属于子字段中的
-                        //检查响应对象是否实例化
-                        Field childField = getChildField(field.getDeclaringClass());
-                        if (childField == null) {
-                            throw new Exception(field.getName() + "在子字段在查找不到");
-                        }
-                        Object o = checkInstance(childField, instance);
-                        boolean c = field.isAccessible();
-                        field.setAccessible(true);
-                        if (datum.getClass().equals(Date.class)) {
-                            field.set(o, new java.util.Date(((Date) datum).getTime()));
-                        } else {
-                            field.set(o, datum);
-                        }
-                        field.setAccessible(c);
-                        continue;
-                    }
+                    FieldWithPath fieldWithPath = result.getField(i);
+                    Field field = fieldWithPath.field;
                     String typeName = field.getType().getName();
-                    System.out.println("field.name:" + typeName);
-                    boolean a = field.isAccessible();
-                    field.setAccessible(true);
+                    System.out.println("type_name:" + typeName);
 
                     // 获得方法
                     String convertMethodName;
-                    if (field.isAnnotationPresent(Convert.class)) {
+                    if (field.isAnnotationPresent(Convert.class)) {//指明了转换函数
                         Convert convertAnnotation = field.getAnnotation(Convert.class);
                         convertMethodName = convertAnnotation.name();
                     } else {
-                        if (result.typeCoincide(i)) {
-                            field.set(instance, datum);
-                            field.setAccessible(a);
+                        if (result.typeCoincide(i)) {//无需使用转换函数
+                            fieldSetValue(instance, datum, field);
                             continue;
-                        } else {
-                            convertMethodName = field.getName();
+                        } else {//使用默认转换函数名
+                            convertMethodName = reverse(field.getName());
                         }
                     }
                     //需要使用转换函数
                     Method convert = getReturnType().getDeclaredMethod(convertMethodName, result.getType(i));
-                    field.set(instance, convert.invoke(instance, datum));
-                    field.setAccessible(a);
+                    fieldSetValue(instance, convert.invoke(instance, datum), field);
                 }
             }
             list.add(instance);
         }
-        EasyCache.getEasyCache().workDone(parse,list);
+        EasyCache.getEasyCache().workDone(parse, list);
         return list;
 
+    }
+
+    private void fieldSetValue(RETURN_TYPE instance, Object datum, Field field) throws IllegalAccessException {
+        boolean a = field.isAccessible();
+        field.setAccessible(true);
+        field.set(instance, datum);
+        field.setAccessible(a);
+    }
+
+
+    /**
+     * 根据路径获取指定的对象，应该保证对象已经实例化，因为此方法，不会进行实例化操作
+     *
+     * @param path 父子关系路径
+     * @param cls 当前查找的类
+     * @return 返回查找到的类
+     */
+    private Class<?> getObject(String path, Class<?> cls) throws NoSuchFieldException {
+        if (path.length() == 0) {
+            return cls;
+        }
+        int i = path.indexOf("/");
+        String name = path.substring(0, i);
+        return getObject(path.substring(i + 1), cls.getDeclaredField(name).getType());
+    }
+
+    private void init(Object instance) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        List<Field> allField = ReflectUtil.getAllField(instance.getClass());
+        for (Field field : allField) {
+            //todo 对带有children 的字段进行类型检查
+            if (field.isAnnotationPresent(Children.class)) {
+                //初始化值
+                Constructor<?> constructor = field.getType().getConstructor();
+                Object o = constructor.newInstance();
+                fieldSetValue(instance, field, o);
+                init(o);
+            }
+        }
+    }
+
+    private void fieldSetValue(Object instance, Field field, Object value) throws IllegalAccessException {
+        boolean accessible = field.isAccessible();
+        field.set(instance, value);
+        field.setAccessible(accessible);
     }
 
     public RETURN_TYPE one() throws Exception {
@@ -262,10 +293,7 @@ public class Select<RETURN_TYPE> extends ExecutableQuery<Select<RETURN_TYPE>> im
             if (childField == null) {
                 throw new Exception();
             }
-            boolean b = childField.isAccessible();
-            childField.setAccessible(true);
-            childField.set(instance, ob);
-            childField.setAccessible(b);
+            fieldSetValue(instance, ob, childField);
         }
         return ob;
 

@@ -9,7 +9,7 @@ javadoc {
         charSet 'UTF-8'
         author true
         version true
-        title "api"
+        title "sql query API"
     }
 }
 dependencies {
@@ -29,10 +29,9 @@ task pub(type:Copy){
 publishing {
     publications {
         sqlquery(MavenPublication) {
-            groupId = 'com.storyteller_f'
-            artifactId = 'sql-query'
-            version = '2.2.2'
-
+            groupId = group
+            artifactId = 'sql-query' as Publication
+            version = version as Publication
             from components.java
         }
     }
@@ -40,9 +39,8 @@ publishing {
         maven {
             url 'http://192.168.43.170:8081/repository/maven-releases/'
             credentials {
-                // 这里就是之前在issues.sonatype.org注册的账号
-                username '$u_n'
-                password '$u_p'
+                username n_u
+                password n_p
             }
         }
     }

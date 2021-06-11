@@ -4,6 +4,7 @@ import com.storyteller_f.sql_query.annotation.Children;
 import com.storyteller_f.sql_query.annotation.Column;
 import com.storyteller_f.sql_query.annotation.Convert;
 import com.storyteller_f.sql_query.query.*;
+import com.storyteller_f.sql_query.util.ReflectUtil;
 import org.apache.commons.text.WordUtils;
 import com.storyteller_f.sql_query.query.query.ExecutableQuery;
 import com.storyteller_f.sql_query.query.result.Result;
@@ -12,6 +13,7 @@ import com.storyteller_f.sql_query.util.ORMUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.rmi.UnexpectedException;
+import java.util.List;
 
 public abstract class Obtain {
 
@@ -31,10 +33,17 @@ public abstract class Obtain {
         return new Insert<>(this);
     }
 
-    public <T>Delete<T> getDelete(){
+    public <T> Delete<T> getDelete() {
         return new Delete<>(this);
     }
 
+    /**
+     * 继承此方法是，需要调用 provideAccessPoint
+     *
+     * @param executableQuery
+     * @return 返回平台平台无关的结果
+     * @throws Exception
+     */
     public abstract Result getResult(Select<?> executableQuery) throws Exception;
 
     public abstract int getInt(ExecutableQuery<?> executableQuery) throws Exception;
@@ -45,81 +54,104 @@ public abstract class Obtain {
      * 如果获取不到，那就只能使用Field
      *
      * @param returnType    返回类型，进对于select 有效
-     * @param fields        存储字段信息
+     * @param columnFields  存储字段信息，带有@Column 的字段
      * @param databaseTable 数据库表主要结构
      * @param result        存储执行的结果
      * @throws NoSuchMethodException
      */
-    protected void provideAccessPoint(Class<?> returnType, Fields fields, DatabaseTable databaseTable, Result result) throws NoSuchMethodException {
+    protected void provideAccessPoint(Class<?> returnType, ColumnFields columnFields, DatabaseTable databaseTable, Result result) throws NoSuchMethodException, NoSuchFieldException {
         int columnCount = result.getColumnCount();
         /*
          */
         for (int i = 0; i < columnCount; i++) {
             String type = databaseTable.getType(i);
             Class<?> typeClass = ORMUtil.getClassByType(type);
-            String columnName = databaseTable.getName(i);
-            System.out.println(i+" "+columnName);
-            if (fields.getField(columnName)==null) {
+            String columnNameInDatabase = databaseTable.getName(i);
+            System.out.println(i + " " + columnNameInDatabase);
+            String name;
+            Field field = columnFields.getField(columnNameInDatabase);
+            if (field == null) {
+                name=columnNameInDatabase;
                 /*
-                 当前列的名字没有通过@Column 注解特殊设置，一般情况下字段名和列名是相同的，如果不相同，那也不能够进行处理
-                 不做空指针判断，因为找不到就会抛出异常
+                 当前列的名字没有通过@Column 注解特殊设置，这种情况下要求字段名和列名是相同的，如果不相同，那也不能够进行处理
+                 不需要做空指针判断，因为找不到就会抛出异常
                  */
-                /*
-                 * 数据库中存储的列名
-                 */
-                getAccessPointWhenNoAnnotation(returnType, result, i, typeClass, columnName);
             } else {// 当前列通过@Column 注解特殊设置过，所以可能字段名与列名不同，最好使用字段
+                name= field.getName();
                 //但还是获取一下方法试试
-                getAccessPointWhenHasAnnotation(fields, result, i, typeClass, columnName);
             }
+            getAccessPointWhenNoAnnotation(returnType, result, i, typeClass, name);
         }
     }
 
-    private void getAccessPointWhenHasAnnotation(Fields fields, Result result, int i, Class<?> typeClass, String columnName) {
-        Field field = fields.getField(columnName);
-        try {
-            //使用方法访问，这样不需要设置权限，当然默认setter是共有的，使用方法好处更多，不过多半是不行的
-            String methodName = "set" + WordUtils.capitalize(columnName);
-            Method method = field.getDeclaringClass().getDeclaredMethod(methodName, typeClass);
-            result.add(method, i);
-        } catch (Exception exception) {
-            result.add(field, i);
-        }
+    /**
+     * 没有使用@Column 注解
+     *
+     * @param returnType
+     * @param result
+     * @param i
+     * @param typeClass
+     * @param columnName
+     */
+    private void getAccessPointWhenNoAnnotation(Class<?> returnType, Result result, int i, Class<?> typeClass, String columnName) throws NoSuchFieldException {
         result.add(typeClass, i);
+        //todo 首先获取方法，如果获取不到，就获取字段
+        String methodName = "set" + WordUtils.capitalize(columnName);
+        MethodWithPath methodInChildren = getMethodInChildren(methodName, returnType, "");
+        if (methodInChildren!=null){//方法找到了
+            result.add(methodInChildren,i);
+        }else {//方法没有找到
+            FieldWithPath field = getFieldInChildren(columnName, returnType, "");//todo 字段可能使用了转换函数
+            if (field==null){
+                throw new NoSuchFieldException("找不到相应的字段");
+            }
+            result.add(field,i);
+        }
+
     }
 
-    private void getAccessPointWhenNoAnnotation(Class<?> returnType, Result result, int i, Class<?> typeClass, String columnName) throws NoSuchMethodException {
-        Field field = getFieldInChildren(columnName,returnType);
-        if (field.isAnnotationPresent(Convert.class)) {//使用了转换函数，不在这里获取，交由其他布局处理
-            result.add(field, i);
-        } else {
-            //使用方法，这样不需要设置权限，当然默认setter是共有的，使用方法好处更多
-            String methodName = "set" + WordUtils.capitalize(columnName);
-            Method method = returnType.getDeclaredMethod(methodName, typeClass);
-            result.add(method, i);
-        }
-        result.add(typeClass, i);
-    }
 
     /**
      * 在当前类中获取不到，只能到标有@Children 的字段中获取
      *
-     * @param fieldName 要获得的字段名
+     * @param fieldName  要获得的字段名
      * @param returnType 用来获取所有的字段
+     * @param path
      * @return 获得的字段，如果找不到，返回null
      */
-    protected Field getFieldInChildren(String fieldName, Class<?> returnType) {
-        Field[] declaredFields = returnType.getDeclaredFields();
+    protected FieldWithPath getFieldInChildren(String fieldName, Class<?> returnType, String path) {
+        List<Field> declaredFields = ReflectUtil.getAllField(returnType);
         for (Field declaredField : declaredFields) {
             if (fieldName.equals(declaredField.getName())) {
-                return declaredField;
+                return new FieldWithPath(declaredField, path);
             }
             if (declaredField.isAnnotationPresent(Children.class)) {
-                return getFieldInChildren(fieldName, declaredField.getType());
+                FieldWithPath fieldInChildren = getFieldInChildren(fieldName, declaredField.getType(), path + "/" + declaredField.getName());
+                if (fieldInChildren != null)
+                    return fieldInChildren;
             }
         }
         return null;
     }
+
+    protected MethodWithPath getMethodInChildren(String methodName, Class<?> c, String path) {
+        List<Method> methods = ReflectUtil.getAllMethod(c);
+        for (Method declaredField : methods) {
+            if (methodName.equals(declaredField.getName())) {
+                return new MethodWithPath(declaredField, path);
+            }
+        }
+        //TODO 查找所有字段，继续向下查找方法
+        List<Field> allField = ReflectUtil.getAllField(c);
+        for (Field field : allField) {
+            if (field.isAnnotationPresent(Children.class)) {
+                MethodWithPath methodInChildren = getMethodInChildren(methodName, field.getType(), path + "/" + field.getName());
+                if (methodInChildren != null) return methodInChildren;
+            }
+        }
+        return null;
+    }
+
     /**
      * 带有类型检查，如果出现错误，经会抛出异常
      *
@@ -143,19 +175,19 @@ public abstract class Obtain {
      * @param returnType 用来获取所有字段
      * @return
      */
-    protected Fields getFields(Class<?> returnType,int count) {
+    protected ColumnFields getFields(Class<?> returnType, int count) {
         Field[] allFields = returnType.getDeclaredFields();
-        Fields fields = new Fields(count);
+        ColumnFields columnFields = new ColumnFields(count);
         for (Field field : allFields) {
             if (field.isAnnotationPresent(Children.class)) {
-                fields.add(getFields(field.getType(),field.getClass().getDeclaredFields().length));
+                columnFields.add(getFields(field.getType(), field.getClass().getDeclaredFields().length));
             }
             if (field.isAnnotationPresent(Column.class)) {
                 Column column = field.getAnnotation(Column.class);
-                fields.add(column.name(), field);
+                columnFields.add(column.name(), field);
             }
         }
-        return fields;
+        return columnFields;
     }
 
     /*
@@ -164,7 +196,7 @@ public abstract class Obtain {
      * 因为在模型类中字段的顺序，并不是和数据库返回的数据顺序一定符合
      * *比如自己手动修改语句
      */
-    public DatabaseTable getDatabaseTable(Columns columns) {
-        return new DatabaseTable(columns);
+    public DatabaseTable getDatabaseTable(DatabaseColumnsInfo databaseColumnsInfo) {
+        return new DatabaseTable(databaseColumnsInfo);
     }
 }

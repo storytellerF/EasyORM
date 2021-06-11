@@ -1,16 +1,16 @@
 package com.storyteller_f.sql_query.obtain;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.function.BiConsumer;
 
-public class Fields {
+/**
+ * 存储带有@Column 注解的字段
+ */
+public class ColumnFields {
 
     HashMap<String,Field> value;
 
-    public Fields(int count) {
+    public ColumnFields(int count) {
         value=new HashMap<>(count);
     }
 
@@ -22,8 +22,8 @@ public class Fields {
         return value.get(name);
     }
 
-    public void add(Fields fields) {
-        fields.value.forEach((s, field) -> {
+    public void add(ColumnFields columnFields) {
+        columnFields.value.forEach((s, field) -> {
             value.put(s,field);
         });
     }

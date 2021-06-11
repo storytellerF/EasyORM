@@ -6,10 +6,10 @@ subprojects {
     repositories {
         maven {
             credentials {
-                username '$n_u'
-                password '$n_p'
+                username n_u
+                password n_p
             }
-            url "http://192.168.43.170:8081/repository/maven-central/"
+            url "http://127.0.0.1:8081/repository/maven-public/"
         }
         mavenCentral()
     }

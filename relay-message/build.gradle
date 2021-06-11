@@ -1,5 +1,8 @@
-version '1.0-SNAPSHOT'
+plugins {
+    id 'maven-publish'
+}
 
+version '1.0-SNAPSHOT'
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -7,4 +10,35 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+publishing {
+    publications {
+        relayMessage(MavenPublication) {
+            groupId = group
+            artifactId = 'relay-message'
+            version = version
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'snapshots'
+            url 'http://192.168.43.170:8081/repository/maven-snapshots/'
+            credentials {
+                username n_u
+                password n_p
+            }
+        }
+    }
+    repositories {
+        maven {
+            name 'releases'
+            url 'http://192.168.43.170:8081/repository/maven-releases/'
+            credentials {
+                username n_u
+                password n_p
+            }
+        }
+    }
 }
