@@ -78,7 +78,20 @@ public class DatabaseConnectionInput {
             @Override
             public void onShow(Config config) {
                 if (config instanceof MainViewDatabaseConnectionConfig) {
-                    bind((MainViewDatabaseConnectionConfig) config);
+                    binding=true;
+                    MainViewDatabaseConnectionConfig config1 = (MainViewDatabaseConnectionConfig) config;
+                    linkInput.setText(config1.getLink());
+                    urlInput.setText(config1.getUrl());
+                    portInput.setText(config1.getPort());
+                    modelPathInput.setText(config1.getModelPath());
+                    packageNameInput.setText(config1.getModelPathPackageName());
+                    databaseInput.setText(config1.getDatabase());
+                    extraParamInput.setText(config1.getExtraParams());
+                    nameInput.setText(config1.getUserName());
+                    passwordInput.setText(config1.getPassword());
+                    enableLombok.setSelected(config1.isEnableLombok());
+                    urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
+                    binding=false;
                 }
             }
 
@@ -87,6 +100,23 @@ public class DatabaseConnectionInput {
                 MainViewDatabaseConnectionConfig connectionConfig = new MainViewDatabaseConnectionConfig();
                 connectionConfig.setName("未命名" + System.currentTimeMillis());
                 return connectionConfig;
+            }
+
+            @Override
+            public void onUiChange(Config configEditorCurrent) {
+                if (configEditorCurrent instanceof MainViewDatabaseConnectionConfig) {
+                    MainViewDatabaseConnectionConfig current = (MainViewDatabaseConnectionConfig) configEditorCurrent;
+                    current.setLink(linkInput.getText());
+                    current.setUrl(urlInput.getText());
+                    current.setDatabase(databaseInput.getText());
+                    current.setExtraParams(extraParamInput.getText());
+                    current.setUserName(nameInput.getText());
+                    current.setPassword(String.valueOf(passwordInput.getPassword()));
+                    current.setPort(portInput.getText());
+                    current.setEnableLombok(enableLombok.isSelected());
+                    current.setModelPath(modelPathInput.getText());
+                    current.setModelPathPackageName(packageNameInput.getText());
+                }
             }
         });
         RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)
@@ -97,27 +127,6 @@ public class DatabaseConnectionInput {
             e.printStackTrace();
         }
 
-    }
-
-    /**
-     * 将对象中的数据填充到控件上
-     *
-     * @param config
-     */
-    public void bind(MainViewDatabaseConnectionConfig config) {
-        binding=true;
-        linkInput.setText(config.getLink());
-        urlInput.setText(config.getUrl());
-        portInput.setText(config.getPort());
-        modelPathInput.setText(config.getModelPath());
-        packageNameInput.setText(config.getModelPathPackageName());
-        databaseInput.setText(config.getDatabase());
-        extraParamInput.setText(config.getExtraParams());
-        nameInput.setText(config.getUserName());
-        passwordInput.setText(config.getPassword());
-        enableLombok.setSelected(config.isEnableLombok());
-        urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
-        binding=false;
     }
 
     public String getModelPathFromPath(String path) {
@@ -136,26 +145,6 @@ public class DatabaseConnectionInput {
             MainViewDatabaseConnectionConfig current1 = (MainViewDatabaseConnectionConfig) current;
             current1.setModelPathPackageName(packageNameInput.getText());
             current1.setModelPath(modelPathInput.getText());
-        }
-    }
-
-    /**
-     * 将数据保存到对象中
-     */
-    public void saveToObject() {
-        Config configEditorCurrent = configEditorUI.getCurrent();
-        if (configEditorCurrent instanceof MainViewDatabaseConnectionConfig) {
-            MainViewDatabaseConnectionConfig current = (MainViewDatabaseConnectionConfig) configEditorCurrent;
-            current.setLink(linkInput.getText());
-            current.setUrl(urlInput.getText());
-            current.setDatabase(databaseInput.getText());
-            current.setExtraParams(extraParamInput.getText());
-            current.setUserName(nameInput.getText());
-            current.setPassword(String.valueOf(passwordInput.getPassword()));
-            current.setPort(portInput.getText());
-            current.setEnableLombok(enableLombok.isSelected());
-            current.setModelPath(modelPathInput.getText());
-            current.setModelPathPackageName(packageNameInput.getText());
         }
     }
 
@@ -228,7 +217,7 @@ public class DatabaseConnectionInput {
         private void textChange() {
             if (binding) return;
             urlInput.setText(String.format("jdbc:mysql://%s:%s/%s?%s", linkInput.getText(), portInput.getText(), databaseInput.getText(), extraParamInput.getText()));
-            saveToObject();
+            configEditorUI.saveChange();
 //            bindPath();
         }
 

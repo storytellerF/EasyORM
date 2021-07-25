@@ -43,8 +43,7 @@ public class Projector {
     private ConnectionConfig config;
 
     public Projector() {
-        UIUtil.setFont(queryButton, exitButton, newConnectionButton, stateButton, databaseStatusLabel,
-                listInDatabase, listInModel, table1, table2);
+        UIUtil.setFontList(panel1);
         databaseTableModel = new DatabaseTableModel();
         entityTableModel = new EntityTableModel();
         table2.setModel(databaseTableModel);

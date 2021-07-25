@@ -53,7 +53,7 @@ public class GenerateHTMLFormElement {
     private JFrame jFrame;
 
     public GenerateHTMLFormElement() {
-        UIUtil.setFont(produceResultPanel,copyToButton,openFileButton,filePath,charsetComboBox,button1);
+        UIUtil.setFontList(contentPanel);
         setTab(4);
         charsetList = new ArrayList<>();
         try {
@@ -252,6 +252,11 @@ public class GenerateHTMLFormElement {
                         new HTMLCreatorConfig();
                 creatorConfig.setName("未命名" + System.currentTimeMillis());
                 return creatorConfig;
+            }
+
+            @Override
+            public void onUiChange(Config current) {
+                dnib();
             }
         });
         RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)

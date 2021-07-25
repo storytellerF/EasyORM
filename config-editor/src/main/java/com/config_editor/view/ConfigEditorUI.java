@@ -17,7 +17,7 @@ public class ConfigEditorUI implements ConfigEditorReusable {
     private final ConfigEditorCore core;
 
     public ConfigEditorUI() {
-        UIUtil.setFont(main_comboBox, menu_comboBox);
+        UIUtil.setFontList(contentPanel);
         core=new ConfigEditorCore();
     }
 
@@ -79,6 +79,9 @@ public class ConfigEditorUI implements ConfigEditorReusable {
         core.save();
     }
 
+    public void saveChange() {
+        configEditorListener.onUiChange(getCurrent());
+    }
     /**
      * 更新comboBox 的内容，然后选中
      * @param index 应该被选中的索引位置
@@ -106,6 +109,12 @@ public class ConfigEditorUI implements ConfigEditorReusable {
         void onShow(Config configs);
 
         Config onNew();
+
+        /**
+         * 当界面上的内容发生更改时，要做的
+         * 此代码需要用户实现，实际起作用需要用户调用.saveChange
+         */
+        void onUiChange(Config current);
     }
 
     public static void main(String[] args) {

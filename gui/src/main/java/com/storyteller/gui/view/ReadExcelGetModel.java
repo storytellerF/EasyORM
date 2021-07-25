@@ -61,8 +61,7 @@ public class ReadExcelGetModel {
         typeList.add("enum");
         typeList.add("nullable");
         typeList.add("restrain");
-        UIUtil.setFont(headerNamePosition, filePath, selectFile, sheet1TextField, columnCount22, startButton, cells, rowCount,
-                parseButton, textPane1, saveButton);
+        UIUtil.setFontList(jPanel);
         ComboShow comboShow = new ComboShow();
         ComboSelected comboSelected = new ComboSelected();
         selectFile.addActionListener(e -> {
@@ -181,6 +180,11 @@ public class ReadExcelGetModel {
                         new ExcelReadConfig();
                 creatorConfig.setName("未命名" + System.currentTimeMillis());
                 return creatorConfig;
+            }
+
+            @Override
+            public void onUiChange(Config current) {
+                dnib();
             }
         });
         RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Config.class)

@@ -1,11 +1,13 @@
 package com.storyteller_f.sql_query.util;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EasyCache {
     private static final EasyCache easyCache = new EasyCache();
-    private final Hashtable<String, List<?>> cache = new Hashtable<>(100);
-    private final List<String> working = new Vector<>();//值正在工作的项目
+    private final ConcurrentHashMap<String, List<?>> cache = new ConcurrentHashMap<>(100);
+    private final List<String> working = new CopyOnWriteArrayList<>();//值正在工作的项目
 
     private EasyCache() {
 

@@ -32,6 +32,11 @@ public class TestConfigEditor {
                     loginConfig.setName("未命名"+System.currentTimeMillis());
                     return loginConfig;
                 }
+
+                @Override
+                public void onUiChange(Config current) {
+
+                }
             });
             RuntimeTypeAdapterFactory<Config> runtimeTypeAdapterFactory=RuntimeTypeAdapterFactory.of(Config.class)
                     .registerSubtype(LoginConfig.class);

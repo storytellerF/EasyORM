@@ -43,7 +43,7 @@ public class Main {
         for (JButton jButton : buttonList) {
             jButton.setFont(new Font("黑体", jButton.getFont().getStyle(), jButton.getFont().getSize()));
         }
-        UIUtil.setFont(start, produceComponent, readExcel, saveButton, reflectToCode, reflectToDatabase, reviewAllModel, produceStaticFieldModel);
+        UIUtil.setFontList(contentPanel);
         produceComponent.setVisible(false);
         saveButton.addActionListener(e -> databaseConnectionInput.saveConfig());
         reviewAllModel.addActionListener(e -> {
@@ -69,10 +69,10 @@ public class Main {
                 ConnectionConfig config = databaseConnectionInput.getCreateConfig();
                 connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
                 start.setBackground(Color.GREEN);
-                windowRelease();
             } catch (SQLException exception) {
-                windowRelease();
                 JOptionPane.showMessageDialog(contentPanel, exception.getMessage());
+            } finally {
+                windowRelease();
             }
         });
 
@@ -121,19 +121,6 @@ public class Main {
         //endregion
     }
 
-    private void dialogShowMessage(RelayMessage relayMessage) {
-        JOptionPane.showMessageDialog(contentPanel,relayMessage.message);
-    }
-
-    private void windowRelease() {
-        contentPanel.setCursor(Cursor.getDefaultCursor());
-    }
-
-    private void windowWait() {
-        contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    }
-
-
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -147,13 +134,6 @@ public class Main {
         jFrame.setIconImage(imageIcon.getImage());
         jFrame.setContentPane(main.contentPanel);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                main.destroy();
-            }
-        });
         jFrame.pack();
         jFrame.addWindowListener(new WindowAdapter() {
             @Override
@@ -168,6 +148,7 @@ public class Main {
                     if (main.connection != null && !main.connection.isClosed()) {
                         main.connection.close();
                     }
+                    main.destroy();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
@@ -176,11 +157,24 @@ public class Main {
         jFrame.setVisible(true);
     }
 
+    private void dialogShowMessage(RelayMessage relayMessage) {
+        JOptionPane.showMessageDialog(contentPanel, relayMessage.message);
+    }
+
+    private void windowRelease() {
+        contentPanel.setCursor(Cursor.getDefaultCursor());
+    }
+
+    private void windowWait() {
+        contentPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    }
+
     private void destroy() {
         try {
-            connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            if (connection != null)
+                connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
